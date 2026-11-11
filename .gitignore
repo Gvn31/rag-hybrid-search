@@ -1,0 +1,40 @@
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Environments
+.venv/
+venv/
+env/
+
+# Environment variables
+.env
+
+# Data
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Vector database
+storage/chroma_db/
+
+# BM25 indexes
+storage/bm25/
+
+# Logs
+logs/*
+!logs/.gitkeep
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
