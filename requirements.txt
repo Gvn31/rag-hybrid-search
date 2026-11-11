@@ -1,0 +1,56 @@
+# Document Loading
+pypdf==5.3.0
+python-docx==1.1.2
+beautifulsoup4==4.13.3
+unstructured==0.16.20
+
+# Text Processing and Chunking
+langchain-text-splitters==0.3.6
+nltk==3.9.1
+
+# Embeddings
+sentence-transformers==3.4.1
+transformers==4.48.3
+
+# Vector Database
+chromadb==0.6.3
+
+# Sparse Retrieval
+rank-bm25==0.2.2
+
+# LLM Integration
+ollama==0.4.7
+
+# API Development
+fastapi==0.115.8
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+pydantic==2.10.6
+
+# Dashboard
+streamlit==1.42.0
+
+# Configuration and Environment
+python-dotenv==1.0.1
+PyYAML==6.0.2
+
+# Data Processing
+numpy==1.26.4
+pandas==2.2.3
+
+# Evaluation
+scikit-learn==1.6.1
+
+# Testing
+pytest==8.3.4
+httpx==0.28.1
+
+# Logging
+loguru==0.7.3
+
+# Development
+ipykernel==6.29.5
+jupyterlab==4.3.5
+
+# AWS SDK
+boto3==1.36.26
