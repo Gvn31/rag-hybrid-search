@@ -3,6 +3,12 @@ pypdf==5.3.0
 python-docx==1.1.2
 beautifulsoup4==4.13.3
 unstructured==0.16.20
+python-pptx==1.0.2
+Markdown==3.7
+PyMuPDF==1.25.3
+pytesseract==0.3.13 
+Pillow==11.1.0
+
 
 # Text Processing and Chunking
 langchain-text-splitters==0.3.6
