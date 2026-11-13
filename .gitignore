@@ -38,3 +38,24 @@ logs/*
 .DS_Store
 Thumbs.db
 
+
+# ChromaDB generated storage files
+storage/chroma/
+
+# BM25 generated index files
+storage/bm25/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Environment files
+.env
+venv/
+
+# Log files
+logs/
+*.log
+
+# Temporary files
+*.tmp
