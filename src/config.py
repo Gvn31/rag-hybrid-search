@@ -47,6 +47,9 @@ TOP_K=10  # Number of top documents to retrieve
 DENSE_WEIGHT=0.7  # Weight for dense retrieval (Chroma)
 SPARSE_WEIGHT=0.3  # Weight for sparse retrieval (BM25)
 
+RERANKER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2" #reranking model
+RERANK_TOP_K = 5 #rerank top k documents
+
 
 #generation configuration
 LLM_MODEL=os.getenv("LLM_MODEL","qwen3:4b")
