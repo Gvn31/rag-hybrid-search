@@ -1,4 +1,6 @@
 
+import math
+
 from src.config import (
     TOP_K,
     DENSE_WEIGHT,
@@ -8,50 +10,102 @@ from src.config import (
 from src.logger import logger
 from src.exception import RAGPipelineException
 
-from src.embeddings import generate_embeddings
+from src.embeddings import get_embedding_model
 from src.vector_store import search_similar_chunks
 from src.bm25_store import search_bm25
 
 
-# Define the RRF ranking constant
+# Weighted Reciprocal Rank Fusion configuration
 RRF_K = 60
+
+
+# Validate retrieval parameters
+def validate_retrieval_parameters(top_k):
+    try:
+        if (
+            isinstance(top_k, bool)
+            or not isinstance(top_k, int)
+            or top_k <= 0
+        ):
+            raise ValueError(
+                "top_k must be a positive integer"
+            )
+
+        return top_k
+
+    except Exception as e:
+        raise RAGPipelineException(str(e)) from e
+
+
+# Validate RRF weights
+def validate_rrf_weights(dense_weight, sparse_weight):
+    try:
+        weights = [dense_weight, sparse_weight]
+
+        for weight in weights:
+            if isinstance(weight, bool) or not isinstance(weight, (int, float)):
+                raise ValueError("RRF weights must be numeric")
+
+            if not math.isfinite(weight) or weight < 0:
+                raise ValueError(
+                    "RRF weights must be finite and non-negative"
+                )
+
+        if dense_weight + sparse_weight <= 0:
+            raise ValueError(
+                "At least one RRF weight must be positive"
+            )
+
+        return float(dense_weight), float(sparse_weight)
+
+    except Exception as e:
+        raise RAGPipelineException(str(e)) from e
 
 
 # Generate an embedding for the user's search query
 def generate_query_embedding(query):
     try:
-        # Validate the search query
         if not isinstance(query, str) or not query.strip():
             raise ValueError("Search query cannot be empty")
 
-        # Prepare the query in the same format as document chunks
-        query_data = [
-            {
-                "text": query.strip(),
-                "metadata": {
-                    "source": "user_query"
-                }
-            }
-        ]
+        # Load the same embedding model used for document chunks
+        embedding_model = get_embedding_model()
 
-        # Generate the query vector using the existing embedding model
-        embedded_query = generate_embeddings(query_data)
+        # Generate query embedding directly
+        query_embedding = embedding_model.encode(
+            [query.strip()],
+            convert_to_numpy=True,
+            normalize_embeddings=True,
+            show_progress_bar=False
+        )
 
-        if not embedded_query:
-            raise ValueError("Query embedding generation returned empty")
+        if query_embedding.ndim != 2 or query_embedding.shape[0] != 1:
+            raise ValueError(
+                "Query embedding generation returned an invalid shape"
+            )
 
-        query_embedding = embedded_query[0]["embedding"]
+        embedding = query_embedding[0].tolist()
+
+        if not embedding:
+            raise ValueError(
+                "Query embedding generation returned an empty vector"
+            )
+
+        if not all(math.isfinite(float(value)) for value in embedding):
+            raise ValueError(
+                "Query embedding contains invalid numeric values"
+            )
 
         logger.info("Query embedding generated successfully")
 
-        return query_embedding
+        return embedding
 
     except RAGPipelineException:
         raise
 
     except Exception as e:
         logger.exception("Query embedding generation failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Perform dense retrieval using ChromaDB
@@ -62,7 +116,8 @@ def dense_retrieval(
     where=None
 ):
     try:
-        # Search for semantically similar document chunks
+        validate_retrieval_parameters(top_k)
+
         dense_results = search_similar_chunks(
             query_embedding=query_embedding,
             top_k=top_k,
@@ -81,7 +136,7 @@ def dense_retrieval(
 
     except Exception as e:
         logger.exception("Dense retrieval failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Perform sparse retrieval using BM25
@@ -92,7 +147,11 @@ def sparse_retrieval(
     where=None
 ):
     try:
-        # Search for keyword-relevant document chunks
+        if not isinstance(query, str) or not query.strip():
+            raise ValueError("Search query cannot be empty")
+
+        validate_retrieval_parameters(top_k)
+
         sparse_results = search_bm25(
             query=query,
             top_k=top_k,
@@ -111,7 +170,62 @@ def sparse_retrieval(
 
     except Exception as e:
         logger.exception("Sparse retrieval failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
+
+
+# Validate retrieval result records before fusion
+def validate_retrieval_results(results, retrieval_type):
+    try:
+        if not isinstance(results, list):
+            raise ValueError(
+                f"{retrieval_type} results must be a list"
+            )
+
+        seen_ids = set()
+
+        for result in results:
+
+            if not isinstance(result, dict):
+                raise ValueError(
+                    f"Each {retrieval_type} result must be a dictionary"
+                )
+
+            if not all(
+                key in result
+                for key in ["id", "text", "metadata"]
+            ):
+                raise ValueError(
+                    f"{retrieval_type} result must contain id, text and metadata"
+                )
+
+            chunk_id = result["id"]
+
+            if not isinstance(chunk_id, str) or not chunk_id.strip():
+                raise ValueError(
+                    f"{retrieval_type} result contains an invalid ID"
+                )
+
+            if chunk_id in seen_ids:
+                raise ValueError(
+                    f"Duplicate ID in {retrieval_type} results: {chunk_id}"
+                )
+
+            seen_ids.add(chunk_id)
+
+            if not isinstance(result["text"], str):
+                raise ValueError(
+                    f"{retrieval_type} result text must be a string"
+                )
+
+            if not isinstance(result["metadata"], dict):
+                raise ValueError(
+                    f"{retrieval_type} result metadata must be a dictionary"
+                )
+
+        return True
+
+    except Exception as e:
+        raise RAGPipelineException(str(e)) from e
 
 
 # Combine dense and sparse rankings using weighted RRF
@@ -123,21 +237,22 @@ def reciprocal_rank_fusion(
     sparse_weight=SPARSE_WEIGHT
 ):
     try:
-        # Validate the retrieval results
-        if not isinstance(dense_results, list):
-            raise ValueError("Dense results must be a list")
+        validate_retrieval_parameters(top_k)
 
-        if not isinstance(sparse_results, list):
-            raise ValueError("Sparse results must be a list")
+        validate_rrf_weights(
+            dense_weight,
+            sparse_weight
+        )
 
-        if not isinstance(top_k, int) or top_k <= 0:
-            raise ValueError("top_k must be a positive integer")
+        validate_retrieval_results(
+            dense_results,
+            "Dense"
+        )
 
-        if dense_weight < 0 or sparse_weight < 0:
-            raise ValueError("RRF weights cannot be negative")
-
-        if dense_weight + sparse_weight == 0:
-            raise ValueError("At least one RRF weight must be positive")
+        validate_retrieval_results(
+            sparse_results,
+            "Sparse"
+        )
 
         # Store fused scores and chunk information
         fused_results = {}
@@ -145,12 +260,8 @@ def reciprocal_rank_fusion(
         # Process dense retrieval rankings
         for rank, result in enumerate(dense_results, start=1):
 
-            chunk_id = result.get("id")
+            chunk_id = result["id"]
 
-            if not chunk_id:
-                raise ValueError("Dense result is missing its ID")
-
-            # Calculate the weighted dense RRF score
             rrf_score = dense_weight / (RRF_K + rank)
 
             if chunk_id not in fused_results:
@@ -175,12 +286,8 @@ def reciprocal_rank_fusion(
         # Process sparse retrieval rankings
         for rank, result in enumerate(sparse_results, start=1):
 
-            chunk_id = result.get("id")
+            chunk_id = result["id"]
 
-            if not chunk_id:
-                raise ValueError("Sparse result is missing its ID")
-
-            # Calculate the weighted sparse RRF score
             rrf_score = sparse_weight / (RRF_K + rank)
 
             if chunk_id not in fused_results:
@@ -202,14 +309,13 @@ def reciprocal_rank_fusion(
                 result.get("score")
             )
 
-        # Sort all chunks by their combined RRF score
+        # Sort chunks by combined RRF score
         ranked_results = sorted(
             fused_results.values(),
             key=lambda result: result["rrf_score"],
             reverse=True
         )
 
-        # Return only the requested number of results
         final_results = ranked_results[:top_k]
 
         logger.info(
@@ -223,7 +329,7 @@ def reciprocal_rank_fusion(
 
     except Exception as e:
         logger.exception("Reciprocal Rank Fusion failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Execute the complete hybrid retrieval pipeline
@@ -236,9 +342,21 @@ def hybrid_retrieval(
     sparse_weight=SPARSE_WEIGHT
 ):
     try:
-        # Validate the query
         if not isinstance(query, str) or not query.strip():
             raise ValueError("Search query cannot be empty")
+
+        validate_retrieval_parameters(top_k)
+
+        validate_rrf_weights(
+            dense_weight,
+            sparse_weight
+        )
+
+        if user_id is not None:
+            if not isinstance(user_id, str) or not user_id.strip():
+                raise ValueError(
+                    "user_id must be a non-empty string"
+                )
 
         logger.info("Starting hybrid retrieval")
 
@@ -261,7 +379,7 @@ def hybrid_retrieval(
             where=where
         )
 
-        # Step 4: Combine both retrieval rankings using weighted RRF
+        # Step 4: Combine both rankings using weighted RRF
         final_results = reciprocal_rank_fusion(
             dense_results=dense_results,
             sparse_results=sparse_results,
@@ -282,12 +400,14 @@ def hybrid_retrieval(
 
     except Exception as e:
         logger.exception("Hybrid retrieval failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Test the complete hybrid retrieval pipeline
 def main():
     try:
+        from src.embeddings import generate_embeddings
+
         from src.vector_store import (
             store_embeddings,
             delete_document as delete_vector_document
@@ -298,50 +418,52 @@ def main():
             delete_document as delete_bm25_document
         )
 
-        # Create sample document chunks for testing
-        sample_chunks = [
-            {
-                "text": (
-                    "Artificial intelligence enables machines "
-                    "to perform tasks requiring human intelligence."
-                ),
-                "metadata": {
-                    "source": "hybrid_test.txt",
-                    "chunk_id": "hybrid_test_001",
-                    "chunk_index": 0
-                }
-            },
-            {
-                "text": (
-                    "Machine learning allows computers to learn "
-                    "patterns from data."
-                ),
-                "metadata": {
-                    "source": "hybrid_test.txt",
-                    "chunk_id": "hybrid_test_002",
-                    "chunk_index": 1
-                }
-            },
-            {
-                "text": (
-                    "Deep learning uses neural networks "
-                    "to understand complex data."
-                ),
-                "metadata": {
-                    "source": "hybrid_test.txt",
-                    "chunk_id": "hybrid_test_003",
-                    "chunk_index": 2
-                }
-            }
+        sample_texts = [
+            (
+                "Artificial intelligence enables machines "
+                "to perform tasks requiring human intelligence."
+            ),
+            (
+                "Machine learning allows computers to learn "
+                "patterns from data."
+            ),
+            (
+                "Deep learning uses neural networks "
+                "to understand complex data."
+            )
         ]
 
-        # Generate embeddings for the sample chunks
+        sample_chunks = []
+
+        current_position = 0
+
+        # Create sample chunks with complete metadata
+        for index, text in enumerate(sample_texts):
+
+            start_index = current_position
+            end_index = start_index + len(text)
+
+            sample_chunks.append({
+                "text": text,
+                "metadata": {
+                    "source": "hybrid_test.txt",
+                    "chunk_id": f"hybrid_test_{index + 1:03d}",
+                    "chunk_index": index,
+                    "chunking_strategy": "test",
+                    "char_count": len(text),
+                    "start_index": start_index,
+                    "end_index": end_index,
+                    "section_heading": None
+                }
+            })
+
+            current_position = end_index + 1
+
+        # Generate embeddings for the sample document
         embedded_chunks = generate_embeddings(sample_chunks)
 
-        # Store chunks in the dense vector database
+        # Store document chunks in both indexes
         vector_count = store_embeddings(embedded_chunks)
-
-        # Store chunks in the sparse BM25 index
         bm25_count = index_chunks(sample_chunks)
 
         print(f"\nChromaDB chunks stored: {vector_count}")
@@ -352,13 +474,13 @@ def main():
 
         print(f"\nHybrid search query: {query}")
 
-        # Execute the complete hybrid retrieval pipeline
+        # Execute hybrid retrieval
         results = hybrid_retrieval(
             query=query,
             top_k=3
         )
 
-        # Display the final fused results
+        # Display fused results
         print("\nHybrid Retrieval Results:")
 
         for rank, result in enumerate(results, start=1):
@@ -373,7 +495,7 @@ def main():
             print("Sparse Score:", result["sparse_score"])
             print("Metadata:", result["metadata"])
 
-        # Remove only the sample test document from both indexes
+        # Remove only the test document from both indexes
         deleted_vector_count = delete_vector_document(
             source="hybrid_test.txt"
         )
@@ -395,10 +517,11 @@ def main():
         print(f"Hybrid retrieval test failed: {e}")
 
     except Exception as e:
-        logger.exception("Unexpected error in retrieval module")
+        logger.exception(
+            "Unexpected error in retrieval module"
+        )
         print(f"Unexpected error: {e}")
 
 
-# Run the test when this file is executed directly
 if __name__ == "__main__":
     main()
