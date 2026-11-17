@@ -1,3 +1,4 @@
+
 import sys
 import re
 import unicodedata
@@ -6,51 +7,59 @@ from src.logger import logger
 from src.exception import RAGPipelineException
 
 
-#Normlize extracted text
-def normalize_text(text:str)->str:
+# Normalize extracted text
+def normalize_text(text: str) -> str:
+
     try:
-        if not isinstance(text,str):
+        if not isinstance(text, str):
             raise TypeError("Input text must be a string.")
-        
+
         # Normalize Unicode characters
-        text=unicodedata.normalize("NFKC",text)
-        
-        #Remove null characters and control characters
-        text="".join(
+        text = unicodedata.normalize("NFKC", text)
+
+        # Remove null characters and unwanted control characters
+        text = "".join(
             char for char in text
-            if char=="\n" or char=="\t" or not 
-            unicodedata.category(char).startswith("C")
+            if char in {"\n", "\t", "\r"}
+            or not unicodedata.category(char).startswith("C")
         )
-        
-        #Normalize line endings
-        text=text.replace("\r\n","\n").replace("\r","\n")
-        
-        #Remove excessive spaces and tabs
-        text=re.sub(r"[\t]+","",text)
-        
-        #Remove leading and trailing whitespace
-        text=text.strip()
-        
+
+        # Normalize line endings
+        text = text.replace("\r\n", "\n").replace("\r", "\n")
+
+        # Replace tabs with spaces to avoid joining words
+        text = re.sub(r"\t+", " ", text)
+
+        # Normalize consecutive spaces without affecting newlines
+        text = re.sub(r"[ ]{2,}", " ", text)
+
+        # Remove unnecessary spaces around line breaks
+        text = re.sub(r" *\n *", "\n", text)
+
+        # Reduce excessive consecutive blank lines
+        text = re.sub(r"\n{3,}", "\n\n", text)
+
+        # Remove leading and trailing whitespace
+        text = text.strip()
+
         return text
-    
-    
+
     except Exception as e:
-        logger.exception("Text Normalization Failed")
-        raise RAGPipelineException(str(e))from e
-    
-    
-    
-#Preprocess extracted documents and preserve metadata
-def preprocess_documents(documents:list[dict])->list[dict]:
-    
+        logger.exception("Text normalization failed")
+        raise RAGPipelineException(str(e)) from e
+
+
+# Preprocess extracted documents and preserve metadata
+def preprocess_documents(documents: list[dict]) -> list[dict]:
+
     try:
-        
-        if not isinstance(documents,list):
+        if not isinstance(documents, list):
             raise TypeError("Documents must be provided as a list")
-        
-        processed_documents=[]
-        
+
+        processed_documents = []
+
         for index, document in enumerate(documents):
+
             if not isinstance(document, dict):
                 raise TypeError(
                     f"Document at index {index} must be a dictionary"
@@ -59,6 +68,11 @@ def preprocess_documents(documents:list[dict])->list[dict]:
             if "text" not in document or "metadata" not in document:
                 raise ValueError(
                     f"Document at index {index} must contain text and metadata"
+                )
+
+            if not isinstance(document["metadata"], dict):
+                raise TypeError(
+                    f"Metadata at index {index} must be a dictionary"
                 )
 
             # Normalize document text
@@ -94,10 +108,14 @@ def preprocess_documents(documents:list[dict])->list[dict]:
 
 # Run preprocessing independently for testing
 def main():
+
     try:
         sample_documents = [
             {
-                "text": "  Employees    must follow\n\n\n security rules.  ",
+                "text": (
+                    "  Employees    must follow\tsecurity rules.  "
+                    "\n\n\n Data protection is important.  "
+                ),
                 "metadata": {
                     "source": "sample.txt",
                     "file_type": ".txt"
@@ -107,7 +125,10 @@ def main():
 
         processed_documents = preprocess_documents(sample_documents)
 
-        for index, document in enumerate(processed_documents, start=1):
+        for index, document in enumerate(
+            processed_documents, start=1
+        ):
+
             print(f"\nDocument {index}")
             print(f"Metadata: {document['metadata']}")
             print(f"Cleaned text: {document['text']}")
