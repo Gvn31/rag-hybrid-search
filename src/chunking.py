@@ -1,4 +1,4 @@
-  
+
 import sys
 import re
 import hashlib
@@ -23,31 +23,74 @@ from src.exception import RAGPipelineException
 _embedding_model = None
 
 
+# Validate chunking configuration
+def validate_chunking_config():
+
+    try:
+        if (
+            not isinstance(CHUNK_SIZE, int)
+            or isinstance(CHUNK_SIZE, bool)
+            or CHUNK_SIZE <= 0
+        ):
+            raise ValueError("CHUNK_SIZE must be a positive integer")
+
+        if (
+            not isinstance(CHUNK_OVERLAP, int)
+            or isinstance(CHUNK_OVERLAP, bool)
+            or CHUNK_OVERLAP < 0
+            or CHUNK_OVERLAP >= CHUNK_SIZE
+        ):
+            raise ValueError(
+                "CHUNK_OVERLAP must be non-negative "
+                "and smaller than CHUNK_SIZE"
+            )
+
+        if (
+            not isinstance(SEMANTIC_SIMILARITY_THRESHOLD, (int, float))
+            or isinstance(SEMANTIC_SIMILARITY_THRESHOLD, bool)
+            or not 0 <= SEMANTIC_SIMILARITY_THRESHOLD <= 1
+        ):
+            raise ValueError(
+                "SEMANTIC_SIMILARITY_THRESHOLD must be between 0 and 1"
+            )
+
+    except Exception as e:
+        logger.exception("Invalid chunking configuration")
+        raise RAGPipelineException(str(e)) from e
+
+
 # Load the sentence transformer model
 def get_embedding_model():
+
     global _embedding_model
 
     try:
         if _embedding_model is None:
-            logger.info(f"Loading embedding model: {EMBEDDING_MODEL}")
+            logger.info(
+                f"Loading embedding model: {EMBEDDING_MODEL}"
+            )
+
             _embedding_model = SentenceTransformer(EMBEDDING_MODEL)
 
         return _embedding_model
 
     except Exception as e:
         logger.exception("Failed to load embedding model")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Find the nearest section heading before a given text position
 def get_section_heading(text, position):
+
     try:
         heading_pattern = re.compile(
-            r"^(?:#{1,6}\s+.+|(?:\d+(?:\.\d+)*[.)]?\s+).+)$",
+            r"^(?:#{1,6}\s+.+|\d+(?:\.\d+)*[.)]?\s+.+)$",
             re.MULTILINE
         )
 
-        headings = list(heading_pattern.finditer(text[:position + 1]))
+        headings = list(
+            heading_pattern.finditer(text[:position + 1])
+        )
 
         if headings:
             return headings[-1].group().strip()
@@ -56,31 +99,65 @@ def get_section_heading(text, position):
 
     except Exception as e:
         logger.exception("Failed to extract section heading")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
+
+
+# Trim chunk whitespace while preserving original text positions
+def trim_chunk_positions(text, start_index, end_index):
+
+    try:
+        raw_text = text[start_index:end_index]
+
+        leading_spaces = len(raw_text) - len(raw_text.lstrip())
+        trailing_spaces = len(raw_text) - len(raw_text.rstrip())
+
+        adjusted_start = start_index + leading_spaces
+        adjusted_end = end_index - trailing_spaces
+
+        return (
+            text[adjusted_start:adjusted_end],
+            adjusted_start,
+            adjusted_end
+        )
+
+    except Exception as e:
+        logger.exception("Failed to calculate chunk positions")
+        raise RAGPipelineException(str(e)) from e
 
 
 # Split text into fixed-size chunks with overlap
 def fixed_size_chunking(text):
+
     try:
+        validate_chunking_config()
+
         chunks = []
 
-        if not text or not text.strip():
+        if not isinstance(text, str):
+            raise TypeError("Input text must be a string")
+
+        if not text.strip():
             return chunks
 
         text_length = len(text)
         start = 0
 
         while start < text_length:
+
             end = min(start + CHUNK_SIZE, text_length)
 
-            chunk_text = text[start:end].strip()
+            chunk_text, actual_start, actual_end = (
+                trim_chunk_positions(text, start, end)
+            )
 
             if chunk_text:
                 chunks.append({
                     "text": chunk_text,
-                    "start_index": start,
-                    "end_index": end,
-                    "section_heading": get_section_heading(text, start)
+                    "start_index": actual_start,
+                    "end_index": actual_end,
+                    "section_heading": get_section_heading(
+                        text, actual_start
+                    )
                 })
 
             # Move forward while maintaining overlap
@@ -96,19 +173,30 @@ def fixed_size_chunking(text):
 
             start = next_start
 
-        logger.info(f"Fixed-size chunking created {len(chunks)} chunks")
+        logger.info(
+            f"Fixed-size chunking created {len(chunks)} chunks"
+        )
 
         return chunks
 
+    except RAGPipelineException:
+        raise
+
     except Exception as e:
         logger.exception("Fixed-size chunking failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Split text recursively using separators
 def recursive_chunking(text):
+
     try:
-        if not text or not text.strip():
+        validate_chunking_config()
+
+        if not isinstance(text, str):
+            raise TypeError("Input text must be a string")
+
+        if not text.strip():
             return []
 
         # Define the order of separators for recursive splitting
@@ -135,33 +223,51 @@ def recursive_chunking(text):
         chunks = []
 
         for document in split_documents:
-            chunk_text = document.page_content.strip()
+
+            raw_chunk = document.page_content
             start_index = document.metadata.get("start_index", 0)
+
+            # Find the original end position
+            end_index = start_index + len(raw_chunk)
+
+            # Correct positions after trimming whitespace
+            chunk_text, actual_start, actual_end = (
+                trim_chunk_positions(
+                    text,
+                    start_index,
+                    end_index
+                )
+            )
 
             if not chunk_text:
                 continue
 
-            # Find the actual end position in the original text
-            end_index = start_index + len(document.page_content)
-
             chunks.append({
                 "text": chunk_text,
-                "start_index": start_index,
-                "end_index": end_index,
-                "section_heading": get_section_heading(text, start_index)
+                "start_index": actual_start,
+                "end_index": actual_end,
+                "section_heading": get_section_heading(
+                    text, actual_start
+                )
             })
 
-        logger.info(f"Recursive chunking created {len(chunks)} chunks")
+        logger.info(
+            f"Recursive chunking created {len(chunks)} chunks"
+        )
 
         return chunks
 
+    except RAGPipelineException:
+        raise
+
     except Exception as e:
         logger.exception("Recursive chunking failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Split text into sentences while preserving original positions
 def split_into_sentences(text):
+
     try:
         sentence_pattern = re.compile(
             r".+?(?:[.!?](?=\s|$)|\n+|$)",
@@ -171,21 +277,23 @@ def split_into_sentences(text):
         sentences = []
 
         for match in sentence_pattern.finditer(text):
-            sentence_text = match.group().strip()
 
-            if sentence_text:
-                # Locate the actual sentence boundaries in the original text
-                original_text = match.group()
-                leading_spaces = len(original_text) - len(
-                    original_text.lstrip()
-                )
+            original_text = match.group()
 
-                trailing_spaces = len(original_text) - len(
-                    original_text.rstrip()
-                )
+            leading_spaces = len(original_text) - len(
+                original_text.lstrip()
+            )
 
-                start_index = match.start() + leading_spaces
-                end_index = match.end() - trailing_spaces
+            trailing_spaces = len(original_text) - len(
+                original_text.rstrip()
+            )
+
+            start_index = match.start() + leading_spaces
+            end_index = match.end() - trailing_spaces
+
+            sentence_text = text[start_index:end_index]
+
+            if sentence_text.strip():
 
                 sentences.append({
                     "text": sentence_text,
@@ -197,17 +305,55 @@ def split_into_sentences(text):
 
     except Exception as e:
         logger.exception("Sentence splitting failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Group sentences based on semantic similarity
 def semantic_chunking(text):
+
     try:
-        if not text or not text.strip():
+        validate_chunking_config()
+
+        if not isinstance(text, str):
+            raise TypeError("Input text must be a string")
+
+        if not text.strip():
             return []
 
         # Split the document into individual sentences
         sentences = split_into_sentences(text)
+
+        if not sentences:
+            return []
+
+        # Split oversized sentences into smaller recursive chunks
+        expanded_sentences = []
+
+        for sentence in sentences:
+
+            if len(sentence["text"]) <= CHUNK_SIZE:
+                expanded_sentences.append(sentence)
+                continue
+
+            smaller_chunks = recursive_chunking(
+                sentence["text"]
+            )
+
+            for smaller_chunk in smaller_chunks:
+
+                expanded_sentences.append({
+                    "text": smaller_chunk["text"],
+                    "start_index": (
+                        sentence["start_index"]
+                        + smaller_chunk["start_index"]
+                    ),
+                    "end_index": (
+                        sentence["start_index"]
+                        + smaller_chunk["end_index"]
+                    )
+                })
+
+        sentences = expanded_sentences
 
         if not sentences:
             return []
@@ -232,6 +378,7 @@ def semantic_chunking(text):
 
         # Compare each sentence with the previous sentence
         for index in range(1, len(sentences)):
+
             previous_embedding = embeddings[index - 1]
             current_embedding = embeddings[index]
 
@@ -239,63 +386,105 @@ def semantic_chunking(text):
                 np.dot(previous_embedding, current_embedding)
             )
 
-            current_start = sentences[current_group[0]]["start_index"]
-            current_end = sentences[index]["end_index"]
+            current_start = sentences[
+                current_group[0]
+            ]["start_index"]
 
-            current_length = current_end - current_start
+            candidate_end = sentences[index]["end_index"]
 
-            # Merge sentences when they are semantically related
-            # and the maximum chunk size is not exceeded
+            candidate_length = candidate_end - current_start
+
+            # Merge sentences when semantically related
+            # and the resulting chunk does not exceed CHUNK_SIZE
             if (
                 similarity >= SEMANTIC_SIMILARITY_THRESHOLD
-                and current_length <= CHUNK_SIZE
+                and candidate_length <= CHUNK_SIZE
             ):
                 current_group.append(index)
 
             else:
                 # Create a chunk from the current sentence group
-                group_start = sentences[current_group[0]]["start_index"]
-                group_end = sentences[current_group[-1]]["end_index"]
+                group_start = sentences[
+                    current_group[0]
+                ]["start_index"]
 
-                chunks.append({
-                    "text": text[group_start:group_end].strip(),
-                    "start_index": group_start,
-                    "end_index": group_end,
-                    "section_heading": get_section_heading(
-                        text, group_start
+                group_end = sentences[
+                    current_group[-1]
+                ]["end_index"]
+
+                chunk_text, actual_start, actual_end = (
+                    trim_chunk_positions(
+                        text,
+                        group_start,
+                        group_end
                     )
-                })
+                )
+
+                if chunk_text:
+                    chunks.append({
+                        "text": chunk_text,
+                        "start_index": actual_start,
+                        "end_index": actual_end,
+                        "section_heading": get_section_heading(
+                            text, actual_start
+                        )
+                    })
 
                 current_group = [index]
 
         # Add the final sentence group
         if current_group:
-            group_start = sentences[current_group[0]]["start_index"]
-            group_end = sentences[current_group[-1]]["end_index"]
 
-            chunks.append({
-                "text": text[group_start:group_end].strip(),
-                "start_index": group_start,
-                "end_index": group_end,
-                "section_heading": get_section_heading(
-                    text, group_start
+            group_start = sentences[
+                current_group[0]
+            ]["start_index"]
+
+            group_end = sentences[
+                current_group[-1]
+            ]["end_index"]
+
+            chunk_text, actual_start, actual_end = (
+                trim_chunk_positions(
+                    text,
+                    group_start,
+                    group_end
                 )
-            })
+            )
 
-        logger.info(f"Semantic chunking created {len(chunks)} chunks")
+            if chunk_text:
+                chunks.append({
+                    "text": chunk_text,
+                    "start_index": actual_start,
+                    "end_index": actual_end,
+                    "section_heading": get_section_heading(
+                        text, actual_start
+                    )
+                })
+
+        logger.info(
+            f"Semantic chunking created {len(chunks)} chunks"
+        )
 
         return chunks
 
+    except RAGPipelineException:
+        raise
+
     except Exception as e:
         logger.exception("Semantic chunking failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Apply the selected chunking strategy to all documents
 def chunk_documents(documents, strategy=CHUNKING_STRATEGY):
+
     try:
+        validate_chunking_config()
+
         if not isinstance(documents, list):
-            raise ValueError("Documents must be provided as a list")
+            raise ValueError(
+                "Documents must be provided as a list"
+            )
 
         # Map each strategy to its corresponding chunking function
         chunking_functions = {
@@ -305,7 +494,9 @@ def chunk_documents(documents, strategy=CHUNKING_STRATEGY):
         }
 
         if strategy not in chunking_functions:
-            raise ValueError(f"Unsupported chunking strategy: {strategy}")
+            raise ValueError(
+                f"Unsupported chunking strategy: {strategy}"
+            )
 
         chunking_function = chunking_functions[strategy]
 
@@ -315,7 +506,9 @@ def chunk_documents(documents, strategy=CHUNKING_STRATEGY):
         for document in documents:
 
             if not isinstance(document, dict):
-                raise ValueError("Each document must be a dictionary")
+                raise ValueError(
+                    "Each document must be a dictionary"
+                )
 
             if "text" not in document or "metadata" not in document:
                 raise ValueError(
@@ -326,10 +519,14 @@ def chunk_documents(documents, strategy=CHUNKING_STRATEGY):
             metadata = document["metadata"]
 
             if not isinstance(text, str):
-                raise ValueError("Document text must be a string")
+                raise ValueError(
+                    "Document text must be a string"
+                )
 
             if not isinstance(metadata, dict):
-                raise ValueError("Document metadata must be a dictionary")
+                raise ValueError(
+                    "Document metadata must be a dictionary"
+                )
 
             if not text.strip():
                 logger.warning("Skipping empty document")
@@ -343,12 +540,23 @@ def chunk_documents(documents, strategy=CHUNKING_STRATEGY):
 
                 chunk_text = chunk["text"]
 
+                # Include page/slide and strategy context in chunk ID
+                chunk_identity = (
+                    str(metadata.get("source", "unknown"))
+                    + "|"
+                    + str(metadata.get("page_number", ""))
+                    + "|"
+                    + str(metadata.get("slide_number", ""))
+                    + "|"
+                    + str(strategy)
+                    + "|"
+                    + str(chunk["start_index"])
+                    + "|"
+                    + chunk_text
+                )
+
                 chunk_id = hashlib.sha256(
-                    (
-                        str(metadata.get("source", "unknown"))
-                        + str(chunk["start_index"])
-                        + chunk_text
-                    ).encode("utf-8")
+                    chunk_identity.encode("utf-8")
                 ).hexdigest()
 
                 chunk_metadata = metadata.copy()
@@ -380,11 +588,12 @@ def chunk_documents(documents, strategy=CHUNKING_STRATEGY):
 
     except Exception as e:
         logger.exception("Document chunking failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Test all three chunking strategies independently
 def main():
+
     try:
         sample_documents = [
             {
@@ -424,6 +633,7 @@ def main():
 
             # Display chunk content and metadata
             for chunk in chunks:
+
                 print(
                     f"\nChunk ID: "
                     f"{chunk['metadata']['chunk_id'][:12]}"
@@ -431,6 +641,29 @@ def main():
 
                 print(f"Metadata: {chunk['metadata']}")
                 print(f"Text: {chunk['text']}")
+
+                # Verify recorded character positions
+                start = chunk["metadata"]["start_index"]
+                end = chunk["metadata"]["end_index"]
+
+                assert (
+                    chunk["text"]
+                    == sample_documents[0]["text"][start:end]
+                ), "Chunk character positions do not match text"
+
+                assert (
+                    chunk["metadata"]["char_count"]
+                    == len(chunk["text"])
+                ), "Chunk character count mismatch"
+
+                assert (
+                    len(chunk["text"]) <= CHUNK_SIZE
+                ), "Chunk exceeds configured chunk size"
+
+            print(
+                f"\n{strategy} strategy passed "
+                f"basic chunk validation."
+            )
 
     except RAGPipelineException as e:
         logger.error(f"Chunking failed: {e}")
