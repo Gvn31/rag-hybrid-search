@@ -1,5 +1,6 @@
 
-import sys
+import json
+import math
 from pathlib import Path
 
 import chromadb
@@ -8,26 +9,21 @@ from src.logger import logger
 from src.exception import RAGPipelineException
 
 
-# Define the persistent ChromaDB storage directory
+# ChromaDB configuration
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 CHROMA_DIR = PROJECT_ROOT / "storage" / "chroma"
-
-# Define the ChromaDB collection name
 COLLECTION_NAME = "rag_documents"
 
 
-# Initialize ChromaDB and create or access the collection
+# Initialize persistent ChromaDB storage
 def initialize_vector_store():
     try:
-        # Create the storage directory if it does not exist
         CHROMA_DIR.mkdir(parents=True, exist_ok=True)
 
-        # Initialize persistent ChromaDB client
         client = chromadb.PersistentClient(
             path=str(CHROMA_DIR)
         )
 
-        # Create or access the document collection
         collection = client.get_or_create_collection(
             name=COLLECTION_NAME,
             metadata={
@@ -42,10 +38,10 @@ def initialize_vector_store():
 
     except Exception as e:
         logger.exception("Failed to initialize ChromaDB")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
-# Convert metadata values into ChromaDB-compatible scalar values
+# Convert metadata into ChromaDB-compatible scalar values
 def prepare_metadata(metadata):
     try:
         if not isinstance(metadata, dict):
@@ -55,17 +51,37 @@ def prepare_metadata(metadata):
 
         for key, value in metadata.items():
 
-            # ChromaDB does not accept None or nested metadata values
+            if not isinstance(key, str) or not key.strip():
+                raise ValueError("Metadata keys must be non-empty strings")
+
             if value is None:
                 continue
 
-            if isinstance(value, (str, int, float, bool)):
+            if isinstance(value, bool):
+                prepared_metadata[key] = value
+
+            elif isinstance(value, int):
+                prepared_metadata[key] = value
+
+            elif isinstance(value, float):
+                if not math.isfinite(value):
+                    raise ValueError(
+                        f"Metadata field '{key}' contains an invalid number"
+                    )
+
+                prepared_metadata[key] = value
+
+            elif isinstance(value, str):
                 prepared_metadata[key] = value
 
             else:
-                prepared_metadata[key] = str(value)
+                # Convert nested values into JSON strings
+                prepared_metadata[key] = json.dumps(
+                    value,
+                    ensure_ascii=False,
+                    default=str
+                )
 
-        # ChromaDB requires metadata to contain at least one field
         if not prepared_metadata:
             prepared_metadata["source"] = "unknown"
 
@@ -73,21 +89,78 @@ def prepare_metadata(metadata):
 
     except Exception as e:
         logger.exception("Metadata preparation failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
+
+
+# Validate and normalize an embedding vector
+def validate_embedding(embedding, field_name="Embedding"):
+    try:
+        if not isinstance(embedding, (list, tuple)) or not embedding:
+            raise ValueError(
+                f"{field_name} must be a non-empty list or tuple"
+            )
+
+        vector = [float(value) for value in embedding]
+
+        if not all(math.isfinite(value) for value in vector):
+            raise ValueError(
+                f"{field_name} contains invalid numeric values"
+            )
+
+        return vector
+
+    except Exception as e:
+        raise RAGPipelineException(str(e)) from e
+
+
+# Build metadata filters for ChromaDB
+def build_metadata_filter(where=None, user_id=None):
+    try:
+        filters = []
+
+        if where is not None:
+            if not isinstance(where, dict) or not where:
+                raise ValueError(
+                    "where must be a non-empty dictionary"
+                )
+
+            filters.append(where)
+
+        if user_id is not None:
+            if not isinstance(user_id, str) or not user_id.strip():
+                raise ValueError("user_id must be a non-empty string")
+
+            filters.append({"user_id": user_id})
+
+        if not filters:
+            return None
+
+        if len(filters) == 1:
+            return filters[0]
+
+        return {"$and": filters}
+
+    except Exception as e:
+        logger.exception("Failed to build metadata filter")
+        raise RAGPipelineException(str(e)) from e
 
 
 # Store generated embeddings, text and metadata in ChromaDB
 def store_embeddings(embedded_chunks, user_id=None):
     try:
-        # Validate input
         if not isinstance(embedded_chunks, list):
-            raise ValueError("Embedded chunks must be provided as a list")
+            raise ValueError(
+                "Embedded chunks must be provided as a list"
+            )
 
         if not embedded_chunks:
             logger.warning("No embeddings received for storage")
             return 0
 
-        # Initialize ChromaDB collection
+        if user_id is not None:
+            if not isinstance(user_id, str) or not user_id.strip():
+                raise ValueError("user_id must be a non-empty string")
+
         _, collection = initialize_vector_store()
 
         ids = []
@@ -95,22 +168,26 @@ def store_embeddings(embedded_chunks, user_id=None):
         metadatas = []
         embeddings = []
 
-        # Prepare each embedded chunk for storage
+        seen_ids = set()
+        expected_dimension = None
+
+        # Validate all chunks before writing to ChromaDB
         for chunk in embedded_chunks:
 
             if not isinstance(chunk, dict):
-                raise ValueError("Each embedded chunk must be a dictionary")
+                raise ValueError(
+                    "Each embedded chunk must be a dictionary"
+                )
 
-            if not all(
-                key in chunk for key in ["text", "metadata", "embedding"]
-            ):
+            required_keys = ["text", "metadata", "embedding"]
+
+            if not all(key in chunk for key in required_keys):
                 raise ValueError(
                     "Each chunk must contain text, metadata and embedding"
                 )
 
             text = chunk["text"]
             metadata = chunk["metadata"]
-            embedding = chunk["embedding"]
 
             if not isinstance(text, str) or not text.strip():
                 raise ValueError("Chunk text cannot be empty")
@@ -118,44 +195,58 @@ def store_embeddings(embedded_chunks, user_id=None):
             if not isinstance(metadata, dict):
                 raise ValueError("Chunk metadata must be a dictionary")
 
-            if not isinstance(embedding, list) or not embedding:
-                raise ValueError("Embedding must be a non-empty list")
-
-            # Ensure all vector values are numeric
-            vector = [float(value) for value in embedding]
-
-            if not all(
-                value == value and abs(value) != float("inf")
-                for value in vector
-            ):
-                raise ValueError("Embedding contains invalid numeric values")
-
-            # Prepare metadata for ChromaDB
             chunk_metadata = prepare_metadata(metadata)
 
-            # Add user ID for document-level tenant isolation
-            if user_id is not None:
-                chunk_metadata["user_id"] = str(user_id)
-
-            # Generate a stable ID for each stored chunk
             chunk_id = chunk_metadata.get("chunk_id")
+            source = chunk_metadata.get("source")
 
-            if not chunk_id:
-                raise ValueError("Chunk metadata must contain chunk_id")
+            if not isinstance(chunk_id, str) or not chunk_id.strip():
+                raise ValueError(
+                    "Chunk metadata must contain a valid chunk_id"
+                )
 
-            # Include user ID in the storage ID to avoid cross-user collisions
+            if not isinstance(source, str) or not source.strip():
+                raise ValueError(
+                    "Chunk metadata must contain a valid source"
+                )
+
+            # Add tenant information when supplied
+            if user_id is not None:
+                chunk_metadata["user_id"] = user_id
+
+            # Create a tenant-specific storage ID
             storage_id = (
                 f"{user_id}_{chunk_id}"
                 if user_id is not None
-                else str(chunk_id)
+                else chunk_id
             )
+
+            if storage_id in seen_ids:
+                raise ValueError(
+                    f"Duplicate chunk ID detected: {storage_id}"
+                )
+
+            seen_ids.add(storage_id)
+
+            vector = validate_embedding(
+                chunk["embedding"],
+                field_name=f"Embedding for chunk {chunk_id}"
+            )
+
+            if expected_dimension is None:
+                expected_dimension = len(vector)
+
+            elif len(vector) != expected_dimension:
+                raise ValueError(
+                    "All embeddings in a batch must have the same dimension"
+                )
 
             ids.append(storage_id)
             documents.append(text)
             metadatas.append(chunk_metadata)
             embeddings.append(vector)
 
-        # Store or update chunks in ChromaDB
+        # Insert new chunks or update existing chunks
         collection.upsert(
             ids=ids,
             documents=documents,
@@ -174,7 +265,7 @@ def store_embeddings(embedded_chunks, user_id=None):
 
     except Exception as e:
         logger.exception("Failed to store embeddings")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Retrieve similar document chunks using vector similarity
@@ -185,75 +276,61 @@ def search_similar_chunks(
     where=None
 ):
     try:
-        # Validate query embedding
-        if not isinstance(query_embedding, list) or not query_embedding:
-            raise ValueError("Query embedding must be a non-empty list")
-
-        if not isinstance(top_k, int) or top_k <= 0:
+        if isinstance(top_k, bool) or not isinstance(top_k, int) or top_k <= 0:
             raise ValueError("top_k must be a positive integer")
 
-        query_vector = [float(value) for value in query_embedding]
+        query_vector = validate_embedding(
+            query_embedding,
+            field_name="Query embedding"
+        )
 
-        if not all(
-            value == value and abs(value) != float("inf")
-            for value in query_vector
-        ):
-            raise ValueError("Query embedding contains invalid values")
+        # Build tenant-aware metadata filters
+        where_filter = build_metadata_filter(
+            where=where,
+            user_id=user_id
+        )
 
-        # Initialize ChromaDB collection
         _, collection = initialize_vector_store()
 
-        # Return an empty list when the collection has no documents
         total_documents = collection.count()
 
         if total_documents == 0:
             logger.warning("ChromaDB collection is empty")
             return []
 
-        # Build metadata filters for user-level isolation
-        filters = []
-
-        if where is not None:
-            if not isinstance(where, dict):
-                raise ValueError("where must be a dictionary")
-
-            filters.append(where)
-
-        if user_id is not None:
-            filters.append({"user_id": str(user_id)})
-
-        # Combine filters when multiple conditions are provided
-        where_filter = None
-
-        if len(filters) == 1:
-            where_filter = filters[0]
-
-        elif len(filters) > 1:
-            where_filter = {"$and": filters}
-
-        # Search for the nearest vectors
-        results = collection.query(
-            query_embeddings=[query_vector],
-            n_results=min(top_k, total_documents),
-            where=where_filter,
-            include=[
+        query_arguments = {
+            "query_embeddings": [query_vector],
+            "n_results": min(top_k, total_documents),
+            "include": [
                 "documents",
                 "metadatas",
                 "distances"
             ]
-        )
+        }
 
-        # Convert ChromaDB response into a simple list of chunks
+        if where_filter is not None:
+            query_arguments["where"] = where_filter
+
+        # Perform cosine similarity search
+        results = collection.query(**query_arguments)
+
         retrieved_chunks = []
 
-        if results["ids"]:
-            for index, chunk_id in enumerate(results["ids"][0]):
+        result_ids = results.get("ids") or []
+
+        if result_ids and result_ids[0]:
+
+            documents = results.get("documents") or [[]]
+            metadatas = results.get("metadatas") or [[]]
+            distances = results.get("distances") or [[]]
+
+            for index, chunk_id in enumerate(result_ids[0]):
 
                 retrieved_chunks.append({
                     "id": chunk_id,
-                    "text": results["documents"][0][index],
-                    "metadata": results["metadatas"][0][index],
-                    "distance": results["distances"][0][index]
+                    "text": documents[0][index],
+                    "metadata": metadatas[0][index],
+                    "distance": distances[0][index]
                 })
 
         logger.info(
@@ -267,45 +344,39 @@ def search_similar_chunks(
 
     except Exception as e:
         logger.exception("Vector similarity search failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
-# Delete stored chunks belonging to a particular document
+# Delete chunks belonging to a particular document
 def delete_document(source, user_id=None):
     try:
         if not isinstance(source, str) or not source.strip():
-            raise ValueError("A valid document source is required")
+            raise ValueError(
+                "A valid document source is required"
+            )
 
-        # Initialize ChromaDB collection
+        # Build source and tenant filters
+        where_filter = build_metadata_filter(
+            where={"source": source},
+            user_id=user_id
+        )
+
         _, collection = initialize_vector_store()
 
-        # Build document deletion filter
-        filters = [{"source": source}]
-
-        if user_id is not None:
-            filters.append({"user_id": str(user_id)})
-
-        if len(filters) == 1:
-            where_filter = filters[0]
-        else:
-            where_filter = {"$and": filters}
-
-        # Find matching chunks before deleting them
         existing_chunks = collection.get(
             where=where_filter,
             include=["metadatas"]
         )
 
-        deleted_count = len(existing_chunks["ids"])
+        deleted_count = len(existing_chunks.get("ids", []))
 
         if deleted_count == 0:
-            logger.warning(f"No chunks found for document: {source}")
+            logger.warning(
+                f"No chunks found for document: {source}"
+            )
             return 0
 
-        # Delete all matching chunks
-        collection.delete(
-            where=where_filter
-        )
+        collection.delete(where=where_filter)
 
         logger.info(
             f"Deleted {deleted_count} chunks for document: {source}"
@@ -318,61 +389,72 @@ def delete_document(source, user_id=None):
 
     except Exception as e:
         logger.exception("Document deletion failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Return the total number of stored chunks
 def get_collection_count():
     try:
-        # Initialize ChromaDB collection
         _, collection = initialize_vector_store()
 
         total_chunks = collection.count()
 
-        logger.info(f"Total chunks in ChromaDB: {total_chunks}")
+        logger.info(
+            f"Total chunks in ChromaDB: {total_chunks}"
+        )
 
         return total_chunks
 
     except Exception as e:
         logger.exception("Failed to get collection count")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Test ChromaDB storage and retrieval independently
 def main():
     try:
-        from src.embeddings import generate_embeddings
+        from src.embeddings import generate_embeddings, get_embedding_model
 
-        # Create sample chunks for testing
-        sample_chunks = [
-            {
-                "text": (
-                    "Artificial intelligence enables machines "
-                    "to perform tasks requiring human intelligence."
-                ),
-                "metadata": {
-                    "source": "vector_store_test.txt",
-                    "chunk_id": "vector_test_001",
-                    "chunk_index": 0
-                }
-            },
-            {
-                "text": (
-                    "Machine learning allows computers to learn "
-                    "patterns from data."
-                ),
-                "metadata": {
-                    "source": "vector_store_test.txt",
-                    "chunk_id": "vector_test_002",
-                    "chunk_index": 1
-                }
-            }
+        sample_texts = [
+            (
+                "Artificial intelligence enables machines "
+                "to perform tasks requiring human intelligence."
+            ),
+            (
+                "Machine learning allows computers to learn "
+                "patterns from data."
+            )
         ]
 
-        # Generate embeddings for the sample chunks
+        sample_chunks = []
+
+        current_position = 0
+
+        for index, text in enumerate(sample_texts):
+
+            start_index = current_position
+            end_index = start_index + len(text)
+
+            sample_chunks.append({
+                "text": text,
+                "metadata": {
+                    "source": "vector_store_test.txt",
+                    "chunk_id": f"vector_test_{index + 1:03d}",
+                    "chunk_index": index,
+                    "chunking_strategy": "test",
+                    "char_count": len(text),
+                    "start_index": start_index,
+                    "end_index": end_index,
+                    "section_heading": None
+                }
+            })
+
+            current_position = end_index + 1
+
+        # Generate document embeddings
         embedded_chunks = generate_embeddings(sample_chunks)
 
-        # Store the generated embeddings in ChromaDB
+        # Store document embeddings
         stored_count = store_embeddings(embedded_chunks)
 
         print(f"\nStored chunks: {stored_count}")
@@ -380,27 +462,25 @@ def main():
         # Generate an embedding for the search query
         query_text = "How do computers learn from data?"
 
-        query_chunks = [
-            {
-                "text": query_text,
-                "metadata": {
-                    "source": "query"
-                }
-            }
-        ]
+        embedding_model = get_embedding_model()
 
-        query_embedding = generate_embeddings(query_chunks)[0]["embedding"]
+        query_embedding = embedding_model.encode(
+            [query_text],
+            convert_to_numpy=True,
+            normalize_embeddings=True,
+            show_progress_bar=False
+        )[0].tolist()
 
-        # Search for similar document chunks
+        # Retrieve similar chunks
         search_results = search_similar_chunks(
             query_embedding=query_embedding,
             top_k=2
         )
 
-        # Display retrieved results
         print("\nSearch Results:")
 
         for result in search_results:
+
             print("\nChunk ID:", result["id"])
             print("Text:", result["text"])
             print("Distance:", result["distance"])
@@ -412,7 +492,7 @@ def main():
             get_collection_count()
         )
 
-        # Clean up only the test document
+        # Remove only the test document
         deleted_count = delete_document(
             source="vector_store_test.txt"
         )
@@ -424,12 +504,12 @@ def main():
         print(f"Vector store test failed: {e}")
 
     except Exception as e:
-        logger.exception("Unexpected error in vector store module")
+        logger.exception(
+            "Unexpected error in vector store module"
+        )
         print(f"Unexpected error: {e}")
 
 
-# Run the test when this file is executed directly
 if __name__ == "__main__":
     main()
-
 
