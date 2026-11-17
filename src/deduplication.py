@@ -1,72 +1,93 @@
 
+import math
+
 import numpy as np
 
 from src.logger import logger
 from src.exception import RAGPipelineException
-from src.vector_store import (
-    search_similar_chunks,
-)
+from src.vector_store import search_similar_chunks
 
 
-# Define the cosine similarity threshold
+# Deduplication configuration
 DEDUPLICATION_THRESHOLD = 0.95
+
+
+# Validate the similarity threshold
+def validate_threshold(threshold):
+    try:
+        if (
+            isinstance(threshold, bool)
+            or not isinstance(threshold, (int, float))
+            or not math.isfinite(threshold)
+            or not 0.0 <= threshold <= 1.0
+        ):
+            raise ValueError(
+                "Deduplication threshold must be between 0 and 1"
+            )
+
+        return float(threshold)
+
+    except Exception as e:
+        raise RAGPipelineException(str(e)) from e
 
 
 # Normalize an embedding vector before similarity comparison
 def normalize_embedding(embedding):
     try:
-        # Convert the embedding into a NumPy array
-        vector = np.asarray(embedding, dtype=np.float32)
+        vector = np.asarray(
+            embedding,
+            dtype=np.float32
+        )
 
-        # Validate the embedding dimensions
         if vector.ndim != 1 or vector.size == 0:
-            raise ValueError("Embedding must be a non-empty 1D vector")
+            raise ValueError(
+                "Embedding must be a non-empty 1D vector"
+            )
 
-        # Validate numeric values
         if not np.all(np.isfinite(vector)):
-            raise ValueError("Embedding contains invalid numeric values")
+            raise ValueError(
+                "Embedding contains invalid numeric values"
+            )
 
-        # Calculate the vector magnitude
         magnitude = np.linalg.norm(vector)
 
-        if magnitude == 0:
-            raise ValueError("Embedding magnitude cannot be zero")
+        if not np.isfinite(magnitude) or magnitude == 0:
+            raise ValueError(
+                "Embedding magnitude must be finite and non-zero"
+            )
 
-        # Return the normalized vector
         return vector / magnitude
 
     except Exception as e:
         logger.exception("Embedding normalization failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Calculate cosine similarity between two embedding vectors
 def calculate_cosine_similarity(embedding_1, embedding_2):
     try:
-        # Normalize both embedding vectors
         vector_1 = normalize_embedding(embedding_1)
         vector_2 = normalize_embedding(embedding_2)
 
-        # Ensure both vectors have the same dimensions
         if vector_1.shape != vector_2.shape:
             raise ValueError(
                 "Embedding dimensions do not match"
             )
 
-        # Calculate cosine similarity
-        similarity = float(np.dot(vector_1, vector_2))
+        similarity = float(
+            np.dot(vector_1, vector_2)
+        )
 
-        # Keep the result within the valid cosine similarity range
-        similarity = float(np.clip(similarity, -1.0, 1.0))
-
-        return similarity
+        return float(
+            np.clip(similarity, -1.0, 1.0)
+        )
 
     except RAGPipelineException:
         raise
 
     except Exception as e:
         logger.exception("Cosine similarity calculation failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Validate incoming embedded chunks
@@ -77,7 +98,9 @@ def validate_embedded_chunks(embedded_chunks):
                 "Embedded chunks must be provided as a list"
             )
 
-        # Validate each embedded chunk
+        seen_ids = set()
+        expected_dimension = None
+
         for chunk in embedded_chunks:
 
             if not isinstance(chunk, dict):
@@ -93,22 +116,46 @@ def validate_embedded_chunks(embedded_chunks):
                     "Each chunk must contain text, metadata and embedding"
                 )
 
-            if (
-                not isinstance(chunk["text"], str)
-                or not chunk["text"].strip()
-            ):
+            text = chunk["text"]
+            metadata = chunk["metadata"]
+
+            if not isinstance(text, str) or not text.strip():
                 raise ValueError("Chunk text cannot be empty")
 
-            if not isinstance(chunk["metadata"], dict):
-                raise ValueError("Chunk metadata must be a dictionary")
-
-            if not chunk["metadata"].get("chunk_id"):
+            if not isinstance(metadata, dict):
                 raise ValueError(
-                    "Chunk metadata must contain chunk_id"
+                    "Chunk metadata must be a dictionary"
                 )
 
-            # Validate the embedding vector
-            normalize_embedding(chunk["embedding"])
+            chunk_id = metadata.get("chunk_id")
+            source = metadata.get("source")
+
+            if not isinstance(chunk_id, str) or not chunk_id.strip():
+                raise ValueError(
+                    "Chunk metadata must contain a valid chunk_id"
+                )
+
+            if not isinstance(source, str) or not source.strip():
+                raise ValueError(
+                    "Chunk metadata must contain a valid source"
+                )
+
+            if chunk_id in seen_ids:
+                raise ValueError(
+                    f"Duplicate chunk ID in incoming batch: {chunk_id}"
+                )
+
+            seen_ids.add(chunk_id)
+
+            vector = normalize_embedding(chunk["embedding"])
+
+            if expected_dimension is None:
+                expected_dimension = vector.size
+
+            elif vector.size != expected_dimension:
+                raise ValueError(
+                    "All embeddings in a batch must have the same dimension"
+                )
 
         return True
 
@@ -117,7 +164,7 @@ def validate_embedded_chunks(embedded_chunks):
 
     except Exception as e:
         logger.exception("Embedded chunk validation failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Check whether a chunk already exists in ChromaDB
@@ -127,14 +174,25 @@ def check_existing_duplicate(
     user_id=None
 ):
     try:
-        # Search for the nearest existing vector
+        threshold = validate_threshold(threshold)
+
+        normalized_embedding = normalize_embedding(
+            embedding
+        ).tolist()
+
+        if user_id is not None:
+            if not isinstance(user_id, str) or not user_id.strip():
+                raise ValueError(
+                    "user_id must be a non-empty string"
+                )
+
+        # Retrieve the nearest existing vector
         existing_results = search_similar_chunks(
-            query_embedding=embedding,
+            query_embedding=normalized_embedding,
             top_k=1,
             user_id=user_id
         )
 
-        # No existing vectors means no duplicate
         if not existing_results:
             return {
                 "is_duplicate": False,
@@ -142,17 +200,20 @@ def check_existing_duplicate(
                 "duplicate_of": None
             }
 
-        # Get the closest existing chunk
         nearest_chunk = existing_results[0]
 
-        # ChromaDB cosine distance = 1 - cosine similarity
         distance = float(nearest_chunk["distance"])
 
+        if not math.isfinite(distance):
+            raise ValueError(
+                "ChromaDB returned an invalid distance"
+            )
+
+        # ChromaDB cosine distance = 1 - cosine similarity
         similarity = float(
             np.clip(1.0 - distance, -1.0, 1.0)
         )
 
-        # Identify duplicate chunks using the configured threshold
         if similarity > threshold:
             return {
                 "is_duplicate": True,
@@ -171,7 +232,7 @@ def check_existing_duplicate(
 
     except Exception as e:
         logger.exception("Existing duplicate check failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Check whether a chunk duplicates another chunk in the same batch
@@ -181,15 +242,24 @@ def check_batch_duplicate(
     threshold=DEDUPLICATION_THRESHOLD
 ):
     try:
-        # Compare the incoming chunk with previously accepted chunks
+        threshold = validate_threshold(threshold)
+
+        if not isinstance(accepted_chunks, list):
+            raise ValueError(
+                "Accepted chunks must be provided as a list"
+            )
+
+        normalized_embedding = normalize_embedding(
+            embedding
+        )
+
         for existing_chunk in accepted_chunks:
 
             similarity = calculate_cosine_similarity(
-                embedding,
+                normalized_embedding,
                 existing_chunk["embedding"]
             )
 
-            # Flag the chunk if similarity exceeds the threshold
             if similarity > threshold:
                 return {
                     "is_duplicate": True,
@@ -208,7 +278,7 @@ def check_batch_duplicate(
 
     except Exception as e:
         logger.exception("Batch duplicate check failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Remove duplicate chunks before indexing
@@ -218,35 +288,34 @@ def deduplicate_chunks(
     user_id=None
 ):
     try:
-        # Validate the input chunks
+        # Validate all incoming chunks
         validate_embedded_chunks(embedded_chunks)
 
-        # Validate the similarity threshold
-        if (
-            not isinstance(threshold, (int, float))
-            or isinstance(threshold, bool)
-            or not 0.0 <= threshold <= 1.0
-        ):
-            raise ValueError(
-                "Deduplication threshold must be between 0 and 1"
-            )
+        threshold = validate_threshold(threshold)
+
+        if user_id is not None:
+            if not isinstance(user_id, str) or not user_id.strip():
+                raise ValueError(
+                    "user_id must be a non-empty string"
+                )
 
         if not embedded_chunks:
-            logger.warning("No chunks received for deduplication")
+            logger.warning(
+                "No chunks received for deduplication"
+            )
 
             return {
                 "unique_chunks": [],
                 "duplicate_chunks": []
             }
 
-        # Store unique and duplicate chunks separately
         unique_chunks = []
         duplicate_chunks = []
 
-        # Check every incoming chunk
         for chunk in embedded_chunks:
 
             embedding = chunk["embedding"]
+            chunk_id = chunk["metadata"]["chunk_id"]
 
             # Step 1: Check against existing ChromaDB records
             existing_check = check_existing_duplicate(
@@ -258,6 +327,8 @@ def deduplicate_chunks(
             if existing_check["is_duplicate"]:
 
                 duplicate_info = chunk.copy()
+                duplicate_info["metadata"] = chunk["metadata"].copy()
+
                 duplicate_info["duplicate_reason"] = "existing_document"
                 duplicate_info["similarity"] = existing_check["similarity"]
                 duplicate_info["duplicate_of"] = existing_check["duplicate_of"]
@@ -265,14 +336,13 @@ def deduplicate_chunks(
                 duplicate_chunks.append(duplicate_info)
 
                 logger.info(
-                    f"Duplicate found in ChromaDB: "
-                    f"{chunk['metadata']['chunk_id']} | "
+                    f"Duplicate found in ChromaDB: {chunk_id} | "
                     f"Similarity: {existing_check['similarity']:.4f}"
                 )
 
                 continue
 
-            # Step 2: Check against chunks already accepted in this batch
+            # Step 2: Check against previously accepted batch chunks
             batch_check = check_batch_duplicate(
                 embedding=embedding,
                 accepted_chunks=unique_chunks,
@@ -282,6 +352,8 @@ def deduplicate_chunks(
             if batch_check["is_duplicate"]:
 
                 duplicate_info = chunk.copy()
+                duplicate_info["metadata"] = chunk["metadata"].copy()
+
                 duplicate_info["duplicate_reason"] = "same_batch"
                 duplicate_info["similarity"] = batch_check["similarity"]
                 duplicate_info["duplicate_of"] = batch_check["duplicate_of"]
@@ -289,8 +361,7 @@ def deduplicate_chunks(
                 duplicate_chunks.append(duplicate_info)
 
                 logger.info(
-                    f"Duplicate found in incoming batch: "
-                    f"{chunk['metadata']['chunk_id']} | "
+                    f"Duplicate found in incoming batch: {chunk_id} | "
                     f"Similarity: {batch_check['similarity']:.4f}"
                 )
 
@@ -318,7 +389,7 @@ def deduplicate_chunks(
 
     except Exception as e:
         logger.exception("Document deduplication failed")
-        raise RAGPipelineException(str(e))
+        raise RAGPipelineException(str(e)) from e
 
 
 # Test duplicate detection independently
@@ -330,73 +401,83 @@ def main():
             delete_document
         )
 
-        # Create a sample chunk that already exists in ChromaDB
-        existing_chunks = [
-            {
-                "text": (
-                    "Machine learning allows computers "
-                    "to learn patterns from data."
-                ),
-                "metadata": {
-                    "source": "dedup_test.txt",
-                    "chunk_id": "dedup_existing_001",
-                    "chunk_index": 0
-                }
-            }
+        # Prepare sample document texts
+        existing_text = (
+            "Machine learning allows computers "
+            "to learn patterns from data."
+        )
+
+        incoming_texts = [
+            existing_text,
+            (
+                "The ocean contains diverse marine life "
+                "and many different ecosystems."
+            ),
+            (
+                "The ocean contains diverse marine life "
+                "and many different ecosystems."
+            )
         ]
 
-        # Generate embeddings for the existing sample chunk
-        existing_embedded = generate_embeddings(existing_chunks)
+        # Create sample chunks with required metadata
+        def create_sample_chunk(text, chunk_id, chunk_index):
+            return {
+                "text": text,
+                "metadata": {
+                    "source": "dedup_test.txt",
+                    "chunk_id": chunk_id,
+                    "chunk_index": chunk_index,
+                    "chunking_strategy": "test",
+                    "char_count": len(text),
+                    "start_index": 0,
+                    "end_index": len(text),
+                    "section_heading": None
+                }
+            }
 
-        # Insert the existing chunk into ChromaDB
-        stored_count = store_embeddings(existing_embedded)
+        existing_chunks = [
+            create_sample_chunk(
+                existing_text,
+                "dedup_existing_001",
+                0
+            )
+        ]
+
+        incoming_chunks = [
+            create_sample_chunk(
+                incoming_texts[0],
+                "dedup_candidate_001",
+                0
+            ),
+            create_sample_chunk(
+                incoming_texts[1],
+                "dedup_candidate_002",
+                1
+            ),
+            create_sample_chunk(
+                incoming_texts[2],
+                "dedup_candidate_003",
+                2
+            )
+        ]
+
+        # Generate and store an existing embedding
+        existing_embedded = generate_embeddings(
+            existing_chunks
+        )
+
+        stored_count = store_embeddings(
+            existing_embedded
+        )
 
         print(f"\nExisting chunks stored: {stored_count}")
 
-        # Create incoming chunks
-        incoming_chunks = [
-            {
-                # Same content as the existing ChromaDB chunk
-                "text": (
-                    "Machine learning allows computers "
-                    "to learn patterns from data."
-                ),
-                "metadata": {
-                    "source": "dedup_test.txt",
-                    "chunk_id": "dedup_candidate_001",
-                    "chunk_index": 0
-                }
-            },
-            {
-                # New and unrelated content
-                "text": (
-                    "The ocean contains diverse marine life "
-                    "and many different ecosystems."
-                ),
-                "metadata": {
-                    "source": "dedup_test.txt",
-                    "chunk_id": "dedup_candidate_002",
-                    "chunk_index": 1
-                }
-            },
-            {
-                # Same content as the second incoming chunk
-                "text": (
-                    "The ocean contains diverse marine life "
-                    "and many different ecosystems."
-                ),
-                "metadata": {
-                    "source": "dedup_test.txt",
-                    "chunk_id": "dedup_candidate_003",
-                    "chunk_index": 2
-                }
-            }
-        ]
+        # Generate incoming embeddings
+        incoming_embedded = generate_embeddings(
+            incoming_chunks
+        )
 
-        # Generate embeddings for incoming chunks
-        incoming_embedded = generate_embeddings(incoming_chunks)
-
-        # Execute duplicate detection
+        # Perform duplicate detection
         results = deduplicate_chunks(
             embedded_chunks=incoming_embedded,
             threshold=DEDUPLICATION_THRESHOLD
@@ -424,7 +505,7 @@ def main():
         print("Unique Chunks:", len(results["unique_chunks"]))
         print("Duplicate Chunks:", len(results["duplicate_chunks"]))
 
-        # Remove only the sample test document
+        # Remove only the test document
         deleted_count = delete_document(
             source="dedup_test.txt"
         )
@@ -436,10 +517,12 @@ def main():
         print(f"Deduplication test failed: {e}")
 
     except Exception as e:
-        logger.exception("Unexpected error in deduplication module")
+        logger.exception(
+            "Unexpected error in deduplication module"
+        )
         print(f"Unexpected error: {e}")
 
 
-# Run the test when this file is executed directly
 if __name__ == "__main__":
     main()
+
