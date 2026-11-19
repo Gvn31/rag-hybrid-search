@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 #project directories
 DATA_DIR = BASE_DIR / "data"
-EVALUATION_DIR = BASE_DIR / "evaluation"
+EVALUATION_DIR = DATA_DIR / "evaluation"
 STORAGE_DIR = BASE_DIR / "storage"
 CHROMA_DIR = STORAGE_DIR / "chroma"
 BM25_DIR = STORAGE_DIR / "bm25"
