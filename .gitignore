@@ -17,6 +17,7 @@ data/raw/*
 data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
+data/evaluation/source_documents
 
 # Vector database
 storage/chroma_db/
