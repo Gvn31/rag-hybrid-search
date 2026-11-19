@@ -1,0 +1,929 @@
+[
+    {
+        "id": "42ba51e8ead44a19a995a7767ebd7a1295582312410a948f04fa16e1e4a66ba1",
+        "text": "GIVIN VARGHESE\nData Scientist | AI/ML Developer\nKottayam, Kerala, India\n+91 9778122614 jivin.2201@gmail.com github.com/Gvn31 linkedin.com/in/givin-varghese-802884262\nProfile\nBCA graduate with a strong interest in Data Science, AI and Machine Learning. Possess a solid foundation in Python programming, problem-solving, and analytical thinking through academic projects and continuous learning. Passionate about improving my technical skills, learning new technologies, and gaining experience in a professional environment. Currently Seeking for opportunities to learn, contribute and build a successful career in the field of AI and Data Science\nEducation\nBachelor of Computer Application 2022-2025\nSt. Antony’s College, Peruvanthanam Idukki, Kerala\nMG University\nHigher Secondary 2020-2022\nSt. Joseph’s Central School, Mundakkayam Kottayam, Kerala\nInternship / Experience\nAI & Data Science Intern August 2026 – Present\nExpertzlab Technologies Kochi, Kerala\nSkills",
+        "metadata": {
+            "char_count": 964,
+            "chunk_id": "42ba51e8ead44a19a995a7767ebd7a1295582312410a948f04fa16e1e4a66ba1",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 964,
+            "file_type": ".docx",
+            "section_heading": "",
+            "source": "sample.docx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "1eba337d77304770f2100931e091995c0e3663b8e357c92b936bf9941cd97652",
+        "text": "St. Joseph’s Central School, Mundakkayam Kottayam, Kerala\nInternship / Experience\nAI & Data Science Intern August 2026 – Present\nExpertzlab Technologies Kochi, Kerala\nSkills\nProgramming Languages : Python, SQL, C (Basics), C++ (Basics)\nData Science & Machine Learning : Pandas, NumPy, Scikit-learn, Data Cleaning, Data Visualization, Model Building\nTools : vs code, Anaconda, Jupyter Notebook, Docker, FastAPI, MLflow, Git, GitHub, AWS\nSoft Skills : Quick Learner, Teamwork, Problem Solving, Time Management\nProjects\nCar Design AI\nDeveloped an AI-assisted application capable of generating car design concepts based on user-provided prompts.\nThe system processes user inputs and generates design concepts through an interactive interface, improving the design ideation process.\nTools used: Python, Django, Flutter, Html, CSS\nDuration: 3 Months\nEmployee Attrition MLOps\nBuilt an end-to-end production-grade MLOps pipeline to predict employee attrition using ML classification models",
+        "metadata": {
+            "char_count": 981,
+            "chunk_id": "1eba337d77304770f2100931e091995c0e3663b8e357c92b936bf9941cd97652",
+            "chunk_index": 1,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 1772,
+            "file_type": ".docx",
+            "section_heading": "",
+            "source": "sample.docx",
+            "start_index": 791
+        }
+    },
+    {
+        "id": "b5ad4d12c029e13ecc3d34df29c8374e1b20e998a8c10f1ec94426eed1afdc59",
+        "text": "Duration: 3 Months\nEmployee Attrition MLOps\nBuilt an end-to-end production-grade MLOps pipeline to predict employee attrition using ML classification models\nPerformed data preprocessing, feature engineering, model training, and evaluation using Logistic Regression, Decision Tree, Random Forest, and XGBoost.\nImplemented experiment tracking, model versioning, and model registry using MLflow and automated workflows using DVC.\nDeployed the application using FastAPI, Docker and AWS with momitoring through Grafana\nTools Used: Python, Scikit-Learn, XGBoost, FastAPI, Docker, DVC, MLflow, Prometheus, Grafana, GitHub Actions\nDuration: 1 Month\nTraining / Courses\nAdvanced AI with Data Science 2025-2026\nExpertzlab Technologies Kochi, India\nLanguages\nEnglish (Fluent)\nMalayalam (Native)\nHindi (Intermediate)\nTamil (Beginner)",
+        "metadata": {
+            "char_count": 820,
+            "chunk_id": "b5ad4d12c029e13ecc3d34df29c8374e1b20e998a8c10f1ec94426eed1afdc59",
+            "chunk_index": 2,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 2436,
+            "file_type": ".docx",
+            "section_heading": "",
+            "source": "sample.docx",
+            "start_index": 1616
+        }
+    },
+    {
+        "id": "08f705780fbf9710450dce73a7b0b9b94dabb5162e36e0d839ee0930f61abe82",
+        "text": "Enter a title, displayed at the top of the window.\nEnter the main heading, usually the same as the title.\nBe\nbold\nin stating your key points. Put them in a list:\nThe first item in your list\nThe second item;\nitalicize\nkey words\nImprove your image by including an image.\nAdd a link to your favorite\nWeb site\n.\nBreak up your page with a horizontal rule or two.\nFinally, link to\nanother page\nin your own Web site.\n© Wiley Publishing, 2011\n�",
+        "metadata": {
+            "char_count": 436,
+            "chunk_id": "08f705780fbf9710450dce73a7b0b9b94dabb5162e36e0d839ee0930f61abe82",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 436,
+            "extraction_method": "beautifulsoup",
+            "file_type": ".html",
+            "section_heading": "",
+            "source": "sample.html",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "799db457c40e39abfeed5cbab08a3acaae4f27e0a4f097e9e56aa0ebbd147344",
+        "text": "# rag-hybrid-search\nA production-grade Retrieval-Augmented Generation system that ingests a company’s internal documentation, indexes it with both dense vector and sparse keyword search, retrieves the most relevant context for any question, and generates grounded answers with inline source citations",
+        "metadata": {
+            "char_count": 300,
+            "chunk_id": "799db457c40e39abfeed5cbab08a3acaae4f27e0a4f097e9e56aa0ebbd147344",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 300,
+            "file_type": ".md",
+            "section_heading": "",
+            "source": "sample.md",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "213bcabfc580b743b264f44f32e80e8a894ee5dafc9f98718567dd246a34fec2",
+        "text": "01/08\n\nDOCUMENT INGESTION SERIES\n\nDocument\n\nIngestion\n\nEngineerin\n\nTurn raw documents into structured,\n\nsearchable knowledge for Al systems.\n\nPDF\n\nReports\n\n‘2\n\nManuals\n\nEo ee\n\nWord\n\nPolicies\n\nDocs\n\na“\n\nA\n\nExcel\n\nTables\n\n} -\n\nData\n\n==\n\n——\n\nPowerPoint ae\n\n<_>\n\nee\n\nDecks\n\nPresentations\n\n\"\n\n}\n\nWeb Pages\n\na\n\nVector\n\n|\n\nHTML\n\nDatabase\n\nBlogs\n\nSearchable\n\nImages\n\nKnowledge\n\nScanned files\n\nOCR\n\nZe,\n\n=\n\nNe\n\noO\n\nMultiple\n\nPreserve\n\nSemantic\n\nFaster\n\nFormats\n\nStructure\n\nRepresentation\n\nRetrieval\n\nVANSH\n\nBUDHIRAJA",
+        "metadata": {
+            "char_count": 507,
+            "chunk_id": "213bcabfc580b743b264f44f32e80e8a894ee5dafc9f98718567dd246a34fec2",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 507,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 1,
+            "section_heading": "",
+            "source": "sample.pdf",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "3ee80240a0f30a1b277d6f70da9966b7f6a06997df2ac0d40a30a0dbdbe6ca15",
+        "text": "‘02/08\n\nDOCUMENT INGESTION SERIES\n\nParsing &\n\nExtraction\n\nConvert different document formats into\n\nclean, usable content for downstream processing.\n\n| DOCUMENT SOURCES\n\n| EXTRACTED CONTENT\n\nPDF\n\nReports,\n\nText\n\nmanuals, research\n\npapers\n\nHeadings,\n\nparagraphs,\n\nlists\n\nWord\n\nPolicies, docs,\n\nPARSING ENGINE\n\ncontracts\n\nExtract text\n\nTables\n\nExcel\n\nStructured\n\nTables, financial\n\nDetect structure\n\ntabular data\n\ndata\n\nHandle tables\n\nPowerPoint\n\nPresentations,\n\nImages\n\ndecks\n\nProcess images\n\nExtracted text\n\n(OCR)\n\nusing OCR\n\nWeb Pages\n\nHTML, blogs,\n\nClean & normalize\n\nhelp docs\n\ncontent\n\n</>\n\nCode Blocks\n\nPreserve code\n\nImages (OCR)\n\nScanned files,\n\nand formatting\n\nphotos, PDFs\n\nCOMMON PARSING TECHNIQUES\n\nC1\n\nE\n\nCC\n\nEr\n\nFormat-specific\n\nOCR for\n\nTable detection\n\nContent cleaning\n\nparsers\n\nscanned files\n\nIdentify and extract\n\nRemove noise,\n\nUse dedicated\n\nConvert images\n\ntables with correct\n\nheaders/footers\n\nlibraries for PDFs,\n\nto text using\n\nstructure.\n\nand irrelevant text.",
+        "metadata": {
+            "char_count": 983,
+            "chunk_id": "3ee80240a0f30a1b277d6f70da9966b7f6a06997df2ac0d40a30a0dbdbe6ca15",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 983,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 2,
+            "section_heading": "",
+            "source": "sample.pdf",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "9f59f55e357351a0cfe3c1a464abbe474e6ce21b3fc0f7d65dd30675f8a5946e",
+        "text": "parsers\n\nscanned files\n\nIdentify and extract\n\nRemove noise,\n\nUse dedicated\n\nConvert images\n\ntables with correct\n\nheaders/footers\n\nlibraries for PDFs,\n\nto text using\n\nstructure.\n\nand irrelevant text.\n\nWord, Excel, etc.\n\nOCR models.\n\nVANSH BUDHIRAJA",
+        "metadata": {
+            "char_count": 247,
+            "chunk_id": "9f59f55e357351a0cfe3c1a464abbe474e6ce21b3fc0f7d65dd30675f8a5946e",
+            "chunk_index": 1,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 1032,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 2,
+            "section_heading": "",
+            "source": "sample.pdf",
+            "start_index": 785
+        }
+    },
+    {
+        "id": "cd2c276b4054a1c9116d00dcec3f34e90e44ee46b6b7c19bcbe7418988c6e657",
+        "text": "DOCUMENT INGESTION SERIES\n\n103)/08\n\nWHY IT MATTERS?\n\nFlattening a document\n\nStructure\n\ndestroys context.\n\nPreserving structure\n\nhelps in better\n\nPreservation\n\nchunking, retrieval\n\nand accurate answers.\n\nMaintain the original document layout and\n\nhierarchy to preserve meaning and context.\n\nRAW DOCUMENT\n\nDOCUMENT HIERARCHY\n\nSTRUCTURE PRESERVED\n\nDETECTION\n\nOUTPUT\n\nFi:\n\nAnnual Report 2024\n\nPs f Document\n\nT Heading",
+        "metadata": {
+            "char_count": 413,
+            "chunk_id": "cd2c276b4054a1c9116d00dcec3f34e90e44ee46b6b7c19bcbe7418988c6e657",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 413,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 3,
+            "section_heading": "",
+            "source": "sample.pdf",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "5aa4deeb20e1a69a75d5798847be9d7ef15787126fc529f673d8304c1afd0b09",
+        "text": "# Executive Summary\n\n1. Executive Summary\n\n|\n\nss Paragraph\n\n® Paragraph\n\nas\n\nThe company achieved\n\nstrong growth in 2024 ...\n\n1.1 Key Highlights\n\n® List\n\nFc\n\n®@ Table\n\n| oom\n\nList\n\n>\n\n=\n\n==\n\ne Increased revenue\n\neige\n\nSee\n\n¢ Higher profitability\n\nnue\n\n150\n\n* Expanded to new markets\n\nProfit\n\n20\n\n28\n\n40%\n\n@® Paragraph\n\n—\n\n—\n\nTable\n\n2. Financial Performance\n\n8\n\nImage\n\nr’ Table\n\n[ Metric | 2023 | 2024 | Growth |\n\n25%\n\n| Revenue! 120 | 150\n\ni]\n\n| Profit\n\n20 28 40%\n\n—EE\n\n® Paragraph\n\n| al Chart / Image\n\né\n\n'\n\n@ Chart\n\n| WHAT HAPPENS IF WE DON'T PRESERVE STRUCTURE?\n\n€} riartenen text\n\n@ STRUCTURED CONTENT\n\nAnnual Report 2024 1. Executive\n\nHeading\n\n1. Executive Summary\n\nSummary The company achieved strong\n\nParagraph\n\ngrowth in 2024. 1.1 Key Highlights\n\nThe company achieved strong growth\n\n« Increased revenue « Higher\n\nin 2024.\n\nprofitabillity « Expanded to new markets\n\nTable\n\nMetric 2023 2024 Growth Revenue\n\n[Properly extracted table]\n\n12@ 150 25% Profit 20 28 40%%...\n\n2. Financial Performance",
+        "metadata": {
+            "char_count": 999,
+            "chunk_id": "5aa4deeb20e1a69a75d5798847be9d7ef15787126fc529f673d8304c1afd0b09",
+            "chunk_index": 1,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 1414,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 3,
+            "section_heading": "",
+            "source": "sample.pdf",
+            "start_index": 415
+        }
+    },
+    {
+        "id": "557860d515bb5cc8b6869d69a6c723ff3eda33272508b0be58db6585b3e168dd",
+        "text": "in 2024.\n\nprofitabillity « Expanded to new markets\n\nTable\n\nMetric 2023 2024 Growth Revenue\n\n[Properly extracted table]\n\n12@ 150 25% Profit 20 28 40%%...\n\n2. Financial Performance\n\nChart\n\nal\n\n[Image retained with caption]\n\nVANSH BUDHIRAJA",
+        "metadata": {
+            "char_count": 237,
+            "chunk_id": "557860d515bb5cc8b6869d69a6c723ff3eda33272508b0be58db6585b3e168dd",
+            "chunk_index": 2,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 1473,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 3,
+            "section_heading": "1. Executive Summary",
+            "source": "sample.pdf",
+            "start_index": 1236
+        }
+    },
+    {
+        "id": "43162b8c9f7feaa0e83584fe19038b3796668d05ccfc1bf663f8a2a368b4f22d",
+        "text": "/08\n\nDOCUMENT INGESTION SERIES\n\nWHY IT MATTERS?\n\nGood chunking\n\nimproves retrieval\n\nChunking\n\nrelevance, reduces\n\nnoise and helps the\n\nmodel understand\n\nStrategies\n\ncontext better.\n\nSplit content into meaningful, manageable\n\nchunks while preserving context.\n\nORIGINAL DOCUMENT\n\nDIFFERENT CHUNKING STRATEGIES\n\nize Chunking\n\n: a Fixed-s\n\n|\n\n1\n\n|\n\nSplit text into\n\n— or\n\n|\n\n| |\n\n|\n\n——\n\nequal-sized\n\nAl in Healthcare\n\n— x%€ eee\n\nEET le\n\n+\n\n+\n\n+\n\n——\n\nchunks.\n\n——_\n\n, —_€\n\n—\n\ni =\n\n1. Introduction\n\n1\n\ni\n\n|\n\nBest for:\n\nChunk 17\n\nChunk 2\n\nChunk 3\n\nChunk 4\n\nSimple documents\n\nr -@ Recursive Chunking\n\nSplit using\n\n|\n\n|\n\nhierarchy (headings,\n\n2. Applications\n\n|\n\n—\n\neeeeEnrnmnmee ii\n\nal\n\n———\n\n+\n\nse\n\nparagraphs, etc.).\n\n——i\n\naS\n\nBest for:\n\nChunk 1\n\nChunk 2\n\nChunk 3\n\nMost use cases\n\n|\n\nLalit\n\n3. Challenges\n\nr® & Semantic Chunking\n\nSplit based on\n\nmeaning and\n\n.—\n\nTE\n\n—\n\nsemantic similarity.\n\n[_\n\n=\n\n——\n\nBest for:\n\n1\n\nChunk 1\n\nChunk 2\n\nChunk 3\n\nComplex documents\n\n©\n\nStructure-aware Chunking",
+        "metadata": {
+            "char_count": 982,
+            "chunk_id": "43162b8c9f7feaa0e83584fe19038b3796668d05ccfc1bf663f8a2a368b4f22d",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 982,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 4,
+            "section_heading": "",
+            "source": "sample.pdf",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "d5db11b35eb091fe9676c818bc6d4310d074061e4d8dca2cb4085c9fd24bd156",
+        "text": "r® & Semantic Chunking\n\nSplit based on\n\nmeaning and\n\n.—\n\nTE\n\n—\n\nsemantic similarity.\n\n[_\n\n=\n\n——\n\nBest for:\n\n1\n\nChunk 1\n\nChunk 2\n\nChunk 3\n\nComplex documents\n\n©\n\nStructure-aware Chunking\n\nSplit using document\n\nelements (headings,\n\n—\n\nrt\n\ntables, images, etc.).\n\n——\n\n=.\n\nBest for:\n\nTechnical and\n\nParagraph\n\nTable\n\nImage/Chart\n\nstructured documents\n\n| Heading\n\nCHUNKING BEST PRACTICES\n\n=)\n\noY\n\n=\n\nOF\n\nKeep context\n\nUse overlap\n\nPreserve structure\n\nTune chunk size\n\nAvoid breaking\n\nAdd overlap between\n\nRespect headings,\n\nAdjust based on\n\nimportant information\n\nchunks to maintain\n\ntables and sections.\n\ndocument type and\n\nacross chunks.\n\ncontinuity.\n\nembedding model.\n\nVANSH BUDHIRAJA",
+        "metadata": {
+            "char_count": 681,
+            "chunk_id": "d5db11b35eb091fe9676c818bc6d4310d074061e4d8dca2cb4085c9fd24bd156",
+            "chunk_index": 1,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 1479,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 4,
+            "section_heading": "3. Challenges",
+            "source": "sample.pdf",
+            "start_index": 798
+        }
+    },
+    {
+        "id": "fdedae6ab99d061437a193d312444c940d1befdb9da5b6ec09a9617ca77f3c5a",
+        "text": "(05/08\n\nDOCUMENT\n\nINGESTION SERIES\n\nWHY IT MATTERS?\n\nMetadata gives\n\nMetadata\n\ncontext to each chunk,\n\nimproves search\n\nrelevance, enables\n\nfiltering and helps\n\nEngineering\n\nwith traceability\n\nAdd rich metadata to each chunk to enable\n\nand citations.\n\naccurate retrieval, filtering and citations.\n\nDOCUMENT CHUNKS\n\nTEXT CHUNKS\n\nMETADATA ADDED\n\nsource:\n\npolicy.pdf\n\n“3\n\npage:\n\n5\n\na @ Chunk 1 (Heading)\n\nsection:\n\n3\n\nCompany Policy\n\n\"3. Data Usage Policy\"\n\ntype:\n\nheading\n\ntitle:\n\nData Usage Policy\n\nchunk_id\n\ncl\n\nSource:\n\n-»@ Chunk 2 (Paragraph)\n\npolicy.pcdf\n\nif\n\npage:\n\n5\n\n“We collect user data\n\nsection:\n\n3.1\n\nto improve our services\n\ntype:\n\nparagraph\n\nand ensure ...”\n\nheading:\n\nData Usage Policy\n\nchunk_id\n\nc2\n\nsource:\n\n-> © Chunk 3 (Table)\n\npolicy.pdf\n\n=\n\n!\n\nRetention\n\npage:\n\n6\n\nData Type\n\nsection:\n\n3:2\n\n| User Data\n\n12 months\n\n—\n\ntype:\n\ntable\n\n6 months\n\ncaption:\n\nData Retention Period\n\nLogs\n\nchunk_id\n\ncs\n\n—_\n\nsource:\n\npolicy.odf\n\n—_—\n\npage:\n\n7\n\n—_—\n\nsection:\n\n4\n\n« Data access is restricted",
+        "metadata": {
+            "char_count": 999,
+            "chunk_id": "fdedae6ab99d061437a193d312444c940d1befdb9da5b6ec09a9617ca77f3c5a",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 999,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 5,
+            "section_heading": "",
+            "source": "sample.pdf",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "700007f10c11b8760af1f0b4c77cc3aeec113680ac88a710a70492459ac3626a",
+        "text": "3:2\n\n| User Data\n\n12 months\n\n—\n\ntype:\n\ntable\n\n6 months\n\ncaption:\n\nData Retention Period\n\nLogs\n\nchunk_id\n\ncs\n\n—_\n\nsource:\n\npolicy.odf\n\n—_—\n\npage:\n\n7\n\n—_—\n\nsection:\n\n4\n\n« Data access is restricted\n\n>\n\n« Encryption is mandatory\n\ntype:\n\nlist\n\nheading:\n\nSecurity Measures\n\n« Regular audits are conducted\n\nchunk_id\n\nc4\n\nCOMMON METADATA FIELDS\n\nEames\n\nA | Y | ©\n\nY\n\nSource\n\nLocation\n\nPermissions\n\nContent Type\n\nCustom Tags\n\nTimestamps\n\nFile name,\n\nPage number,\n\nParagraph, table,\n\nDepartment,\n\nIngestion time,\n\nAccess control\n\nURL, database\n\nsection, heading\n\nlist, image, code\n\ntopic, access level\n\nlast updated\n\nand sensitivity\n\nVANSH BUDHIRAJA",
+        "metadata": {
+            "char_count": 639,
+            "chunk_id": "700007f10c11b8760af1f0b4c77cc3aeec113680ac88a710a70492459ac3626a",
+            "chunk_index": 1,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 1444,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 5,
+            "section_heading": "6\n\nData Type",
+            "source": "sample.pdf",
+            "start_index": 805
+        }
+    },
+    {
+        "id": "cd5860b6831baadc1ca35cd2238754538f3adb63613b4690ce5f39e7f015105b",
+        "text": "106/08\n\nDOCUMENT INGESTION SERIES\n\nWHY IT MATTERS?\n\nEmbeddings allow\n\nsemantically similar\n\nEmbedding\n\ncontent to be retrieved\n\neven when the exact\n\nGeneration\n\nwords don't match,\n\nenabling more accurate\n\nConvert text chunks into dense vectors\n\nand flexible search.\n\nthat capture meaning and context.\n\nTEXT CHUNKS\n\n{\n\nEMBEDDING MODEL\n\nai\n\nVECTOR REPRESENTATION\n\nChunk 1\n\nChunk 1 Vector (768 dimensions)\n\n“Our revenue grew\n\nby 25% in 2024 ..\"\n\neas\n\n0.12\n\n-0.34 0.56\n\n0.03\n\nEmbedding\n\nChunk 2\n\nModel\n\nChunk 2 Vector (768 dimensions)\n\n(e.g., OpenAl,\n\n\"We expanded to\n\nBGE, E5, etc.)\n\n—?\n\n-0.22 0.18\n\n0.41\n\n-0.11\n\nnew markets ...”\n\nI\n\nChunk 3\n\nTokenize text\n\nChunk 3 Vector (768 dimensions)\n\n“User data is\n\nv\n\naf\n\n0.07 0.63\n\n-0.29\n\n0.24\n\nencrypted ...”\n\nGenerate vector\n\nrepresentation\n\nChunk 4\n\nv\n\nChunk 4 Vector (768 dimensions)\n\n“Our sustainability\n\nNormalize\n\n-0.15 || 0.27 || 0.33\n\n-0.08\n\ngoals for 2030 ..”\n\nembeddings\n\n‘VECTOR SPACE VISUALIZATION (2D PROJECTION)\n\nSIMILARITY SEARCH\n\n_—\n\n—\n\n——",
+        "metadata": {
+            "char_count": 995,
+            "chunk_id": "cd5860b6831baadc1ca35cd2238754538f3adb63613b4690ce5f39e7f015105b",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 995,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 6,
+            "section_heading": "",
+            "source": "sample.pdf",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "aec3a40fb290e9a77dec1b0b419ae354478fa243e746c85f80bc328eff8eae50",
+        "text": "“Our sustainability\n\nNormalize\n\n-0.15 || 0.27 || 0.33\n\n-0.08\n\ngoals for 2030 ..”\n\nembeddings\n\n‘VECTOR SPACE VISUALIZATION (2D PROJECTION)\n\nSIMILARITY SEARCH\n\n_—\n\n—\n\n——\n\n| Q_ “revenue growth in 2024\"\n\n‘eee\n\n@e°*\n\n@ Financial Reperts\n\n2\n\n——\n\n=.\n\n=\n\ner\n\nae *#@\n\n(similar chunks)\n\nConvert query to embedding\n\n|\n\n| o%*%e”\n\n‘@ 6\n\nSS\n\nes\n\noe\n\nas\n\n® Company Strategy\n\n¥\n\n=\n\nFind nearest vectors\n\n- =\n\n) Security & Compliance\n\n(cosine similarity)\n\n‘@ ete\n\n® ee.\n\n‘oe\n\ne's!\n\n® Sustainability\n\nTop Relevant Gnd\n\n—\n\n0.88\n\nay\n\n@ Chunk\n\n@ chunk2\n\n0.76\n\nDimension 1\n\n@ chunk4\n\n0.48\n\n|\n\n‘ KEY CONSIDERATIONS\n\n{0}\n\n=\n\n=\n\nee\n\nChoose the right model\n\nEmbedding dimensions\n\nKeep model versioning\n\nMonitor quality\n\nConsider domain, language\n\nCommon sizes: 384, 768,\n\nRe-embed when model\n\nCheck for drift, outliers\n\nsupport and performance.\n\n1024, 1536.\n\nversions change.\n\nand low-quality chunks.\n\nVANSH BUDHIRAJA",
+        "metadata": {
+            "char_count": 891,
+            "chunk_id": "aec3a40fb290e9a77dec1b0b419ae354478fa243e746c85f80bc328eff8eae50",
+            "chunk_index": 1,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 1719,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 6,
+            "section_heading": "0.24\n\nencrypted ...”",
+            "source": "sample.pdf",
+            "start_index": 828
+        }
+    },
+    {
+        "id": "51681be9ff1b2b78dd89b94ea478ff30e22773aa86002595c3c36f118269ee8a",
+        "text": "07/08\n\nDOCUMENT INGESTION SERIES\n\nWHY IT MATTERS?\n\nA good indexing strategy\n\nenables fast retrieval,\n\nIndexing &\n\nsupports scaling, handles\n\nupdates efficiently and\n\ndirectly impacts the\n\nRetrieval\n\nquality of responses in\n\nAl applications.\n\nStore embeddings in a scalable index to enable\n\nfast, accurate and relevant search.\n\n—\n\n———\n\nINGESTED CHUNKS\n\nRETRIEVAL FLOW\n\n—\n\n=\n\nVEGTOR INDEX\n\n—\n\n—\n\nChunk 1\n\nEmbedding Vectors\n\n@ User oe\n\ncs\n\n“Our revenue grew\n\nby 25% in 2024 ...”\n\n[ 0.12, -0.34, 0.56, ... J]\n\nQ “revenue growth in 2024\"\n\nMetadata:\n\npage: 5 | section: 3.1\n\nv\n\n® Query Embedding\n\nChunk 2\n\n[ 0.10, -0.28, 0.61, ... ]\n\n\"We expanded to\n\n=\n\nnew markets ...”\n\nB\n\nVector Index\n\nv\n\nMetadata:\n\nTG\n\npage: 5 | section: 3.2\n\n(e.g., FAISS, Pinecone,\n\nWeaviate, OpenSearch)\n\n© Similarity Search\n\nFind nearest vectors\n\nChunk 3\n\nusing cosine similarity\n\na\n\nSs\n\nStore high-dimensional\n\n“User data is\n\nvectors\n\nS\n\n(or other metric)\n\nencrypted ...”\n\nMetadata:\n\nEfficient similarity\n\nv\n\nsearch (ANN)",
+        "metadata": {
+            "char_count": 991,
+            "chunk_id": "51681be9ff1b2b78dd89b94ea478ff30e22773aa86002595c3c36f118269ee8a",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 991,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 7,
+            "section_heading": "",
+            "source": "sample.pdf",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "60f4afa473e603eb828793771869b9250bc40f29a918fa725f937a8ebc3ed5cc",
+        "text": "Find nearest vectors\n\nChunk 3\n\nusing cosine similarity\n\na\n\nSs\n\nStore high-dimensional\n\n“User data is\n\nvectors\n\nS\n\n(or other metric)\n\nencrypted ...”\n\nMetadata:\n\nEfficient similarity\n\nv\n\nsearch (ANN)\n\npage: 6 | section: 4\n\n4 Top Relevant Chunks\n\nSupport metadata\n\n@ Chunk)\n\n0.88\n\nChunk 4\n\nfiltering\n\n© Chunk 2\n\n0.76\n\n“Our sustainability\n\n@ Chunk4\n\n0.51\n\ngoals for 2030...\"\n\nScalable for large\n\nMetadata:\n\ndocument collections\n\nMetadata is returned along\n\npage: 7 | section: 5\n\nwith the content for accurate\n\nEE)\n\nand traceable results.\n\nINDEXING TECHNIQUES\n\nSUPPORTS ADVANCED RETRIEVAL\n\nMetadata Filtering\n\noy |\n\n=\n\n%\n\nVY\n\né.g., section = ‘Finance’\n\nHNSW\n\nIVF\n\nPQ / Quantization\n\nHybrid Indexing\n\nHybrid Search\n\nFast and accurate\n\nPartitions vectors\n\nCombines vector\n\n[=]\n\nReduces memory\n\nCombine keyword + vector\n\napproximate\n\ninto clusters,\n\nusage by\n\nsearch with\n\nsearch.\n\nEfficient for\n\ncompressing\n\nkeyword/metadata\n\nvectors.\n\nfilters.\n\nRe-ranking\n\nWidely used\n\nlarge datasets.\n\n3",
+        "metadata": {
+            "char_count": 983,
+            "chunk_id": "60f4afa473e603eb828793771869b9250bc40f29a918fa725f937a8ebc3ed5cc",
+            "chunk_index": 1,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 1777,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 7,
+            "section_heading": "",
+            "source": "sample.pdf",
+            "start_index": 794
+        }
+    },
+    {
+        "id": "f2c26f6ead8826900d7e4abff7c29f3f8581cb2c2b42012810949743d0e69ab3",
+        "text": "Combine keyword + vector\n\napproximate\n\ninto clusters,\n\nusage by\n\nsearch with\n\nsearch.\n\nEfficient for\n\ncompressing\n\nkeyword/metadata\n\nvectors.\n\nfilters.\n\nRe-ranking\n\nWidely used\n\nlarge datasets.\n\n3\n\nimprove final results using\n\nin production.\n\ncross-encoders or LLMs\n\nVANSH\n\nBUDHIRAJA",
+        "metadata": {
+            "char_count": 283,
+            "chunk_id": "f2c26f6ead8826900d7e4abff7c29f3f8581cb2c2b42012810949743d0e69ab3",
+            "chunk_index": 2,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 1864,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 7,
+            "section_heading": "0.51\n\ngoals for 2030...\"",
+            "source": "sample.pdf",
+            "start_index": 1581
+        }
+    },
+    {
+        "id": "664fe891aa9744592456e048c0613b512344d6d238b9de0b1586de8e11688dc7",
+        "text": "DOCUMENT INGESTION SERIES\n\n108) /08\n\nKEY TAKEAWAYS\n\nHandle multiple\n\nProduction\n\nE\n\ndocument types\n\nPreserve structure\n\n{Q\n\nand metadata\n\nIngestion\n\nGenerate high-quality\n\n=\n\nembeddings\n\nKeep the index updated\n\nArchitecture\n\nQ\n\nand reliable\n\nA complete, scalable and reliable pipeline\n\nMonitor and ensure\n\nal\n\ndata quality\n\nto turn raw documents into searchable knowledge.\n\n=\n\n®\n\n2)\n\n©\n\n@\n\n5\n\nLy\n\n©\n\nDocument\n\nStructure\n\nMetadata\n\nParsing &\n\n}\n\nChunking\n\nEmbedding\n\nIndexing &\n\nSources\n\nExtraction\n\nPreservation\n\nEngineering\n\nGeneration\n\nStorage\n\naa |\n\noon\n\neon\n\nete\n\nB-(\n\n|>\n\nZz +%-S.\n\n=O >\n\nfi ©\n\n-\n\nText extraction\n\nHeadings\n\nFixed-size\n\nSource info\n\nChoose model\n\nVector index\n\na\n\n(FAISS, Pinecone,\n\n(e.g., Opendl, BGE)\n\nPDFs\n\nOCR (scanned)\n\nParagraphs\n\nRecursive\n\nPage number\n\nWeaviate, etc.)\n\nGenerate vectors\n\nWord / Docs\n\nMetadata indexing\n\nTable extraction\n\nTables\n\nSemantic\n\nSection / heading\n\nSpreadsheets\n\nNormalize\n\nLists\n\nContent type\n\nDeduplication\n\nHTML / Web pages\n\nLayout analysis",
+        "metadata": {
+            "char_count": 998,
+            "chunk_id": "664fe891aa9744592456e048c0613b512344d6d238b9de0b1586de8e11688dc7",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 998,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 8,
+            "section_heading": "",
+            "source": "sample.pdf",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "d4b41f30a7e7b825f38e91ef2f9fa9a95578bb60fb6985b97b1ad3b6ff4e2743",
+        "text": "Word / Docs\n\nMetadata indexing\n\nTable extraction\n\nTables\n\nSemantic\n\nSection / heading\n\nSpreadsheets\n\nNormalize\n\nLists\n\nContent type\n\nDeduplication\n\nHTML / Web pages\n\nLayout analysis\n\nStructure-aware\n\nStore metadata\n\nImages (scanned)\n\nPage numbers\n\nTimestamps\n\nwith vectors\n\nIncremental updates\n\nLanguage\n\nOverlap\n\nEmails\n\ndetection\n\nCustom tags\n\nDelete / re-index\n\nDocument\n\nContext\n\nHandle model\n\nAPIs / Databases\n\nhierarchy\n\npreservation\n\nPermissions\n\nversioning\n\nScalable storage\n\nRaw Documents\n\nProcessed Chunks\n\nVector Index\n\nSTORAGE\n\n09\n\n=\n\nLAYER\n\n=\n\nOriginal files stored for\n\nE\n\nClean text + metadata\n\noo\n\nEmbeddings + metadata\n\ntraceability and reprocessing\n\nstored in structured format\n\nfor fast retrieval\n\n_ PRODUCTION CONSIDERATIONS\n\nMONITORING & EVALUATION\n\nIngestion Metrics\n\nDocuments processed, success/failure rate,\n\n(o}\n\nY\n\n=)\n\n5)\n\nprocessing time.\n\nScalability\n\nReliability\n\nVersioning\n\nHandle large document\n\nRetries, failure handling\n\nTrack document and\n\nQuality Checks",
+        "metadata": {
+            "char_count": 990,
+            "chunk_id": "d4b41f30a7e7b825f38e91ef2f9fa9a95578bb60fb6985b97b1ad3b6ff4e2743",
+            "chunk_index": 1,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 1807,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 8,
+            "section_heading": "5\n\nLy",
+            "source": "sample.pdf",
+            "start_index": 817
+        }
+    },
+    {
+        "id": "6f2b40554219ce09c7477b1d3f099150675ad237e4c073766fe208257ddeaa64",
+        "text": "(o}\n\nY\n\n=)\n\n5)\n\nprocessing time.\n\nScalability\n\nReliability\n\nVersioning\n\nHandle large document\n\nRetries, failure handling\n\nTrack document and\n\nQuality Checks\n\nvolumes efficiently.\n\nand idempotency.\n\nembedding versions.\n\nMissing content, OCR errors, chunk size\n\n=\n\nvalidation,\n\nx Y\n\nIndex Health\n\nY\n\nail\n\nXS\n\nA\n\nIndex size, update latency, query performance.\n\nSecurity\n\nData Quality\n\nIncremental Updates\n\nValidate extracted\n\nAccess control,\n\nAdd, update or delete\n\nAlerts & Logging\n\ndata masking and\n\ncontent and metadata.\n\ndocuments without\n\nFailures, data drifts, low-quality chunks,\n\ncompliance.\n\nfull re-indexing.\n\nsystem errors.\n\nVANSH BUDHIRAJA",
+        "metadata": {
+            "char_count": 648,
+            "chunk_id": "6f2b40554219ce09c7477b1d3f099150675ad237e4c073766fe208257ddeaa64",
+            "chunk_index": 2,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 2299,
+            "extraction_method": "ocr",
+            "file_type": ".pdf",
+            "page_number": 8,
+            "section_heading": "09\n\n=",
+            "source": "sample.pdf",
+            "start_index": 1651
+        }
+    },
+    {
+        "id": "5a28d80b15eec98a7daf1f4875a9fdd5cae5118bea3cfb5700e042146f9d5298",
+        "text": "Discoverability and Analytics",
+        "metadata": {
+            "char_count": 29,
+            "chunk_id": "5a28d80b15eec98a7daf1f4875a9fdd5cae5118bea3cfb5700e042146f9d5298",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 29,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 1,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "4cd167606f0a3fcf9a849346d141784f657a2b0621b8ef4284cc95ad4f56d0e1",
+        "text": "Progressive Enhancement\nDiscoverability and PWA’s\n\nProgressive enhancement = content available to all users\nJS sites are indexed by Google**\nTest your site with Fetch as Google tool\n\n**Follow these best practices",
+        "metadata": {
+            "char_count": 212,
+            "chunk_id": "4cd167606f0a3fcf9a849346d141784f657a2b0621b8ef4284cc95ad4f56d0e1",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 212,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 2,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "c06469856c6fd86c934c32b85ebf7fda68c48b617321dfa6a94aa58e4a76e12e",
+        "text": "What is Google Analytics?\nData is generated from user behavior\nData is processed by Google Analytics back end\nReports are generated",
+        "metadata": {
+            "char_count": 131,
+            "chunk_id": "c06469856c6fd86c934c32b85ebf7fda68c48b617321dfa6a94aa58e4a76e12e",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 131,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 3,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "0b848e00bc4deeb892906cb33814387ebe1cad4ca0895b60a75ff884a06f5b74",
+        "text": "Integration process overview\nCreate account and “property”\nPaste tracking snippet\n(Optional) Add custom analytics",
+        "metadata": {
+            "char_count": 113,
+            "chunk_id": "0b848e00bc4deeb892906cb33814387ebe1cad4ca0895b60a75ff884a06f5b74",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 113,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 4,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "b5bd6fa23fa4992c111b62ad2cc5dfe59dcb78beefb9b291b016df84546971da",
+        "text": "Accounts and properties\nProperty #1:\niOS app\n\nProperty ID: 12345-6\nAccount:\nMy Company\nProperty #2:\nAndroid app\n\nProperty ID: 23456-7\nProperty #3:\nWeb app\n\nProperty ID: 34567-8",
+        "metadata": {
+            "char_count": 176,
+            "chunk_id": "b5bd6fa23fa4992c111b62ad2cc5dfe59dcb78beefb9b291b016df84546971da",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 176,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 5,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "549fbb556176dfe74b70882936f2345ad8654993b0675989214e2765ff079be3",
+        "text": "Adding analytics to your app\n<script>\n\n// [a bunch of uglified JS]\nga('create', 'UA-XXXXXXXX-Y', 'auto');\nga('send', 'pageview');\n\n</script>",
+        "metadata": {
+            "char_count": 140,
+            "chunk_id": "549fbb556176dfe74b70882936f2345ad8654993b0675989214e2765ff079be3",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 140,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 6,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "59e67329d68b31417498516a1ed18026ccce3fc7271c3d3961dcf43907576502",
+        "text": "The Google Analytics dashboard",
+        "metadata": {
+            "char_count": 30,
+            "chunk_id": "59e67329d68b31417498516a1ed18026ccce3fc7271c3d3961dcf43907576502",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 30,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 7,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "5f204a17cdbdf149d5d6950c13de25c99f2d23fc615b9594f6fd3f1907394fc5",
+        "text": "The Google Analytics dashboard (cont.)",
+        "metadata": {
+            "char_count": 38,
+            "chunk_id": "5f204a17cdbdf149d5d6950c13de25c99f2d23fc615b9594f6fd3f1907394fc5",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 38,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 8,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "e23b949f9582535c8c01ad29b453c3c72288f5b0554dfa17b2c6606c9d075a56",
+        "text": "Real-time analytics",
+        "metadata": {
+            "char_count": 19,
+            "chunk_id": "e23b949f9582535c8c01ad29b453c3c72288f5b0554dfa17b2c6606c9d075a56",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 19,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 9,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "e2f8031222dbb2cd1fd729c268739189c671c46ff6715c98a74a3fb56e316c92",
+        "text": "Custom events\nga('send', {\nhitType: 'event',\neventCategory: 'products',\neventAction: 'view more',\neventLabel: 'premium'\n});\n// Alternative syntax\nga('send', 'event', 'products', 'view more', 'premium');",
+        "metadata": {
+            "char_count": 202,
+            "chunk_id": "e2f8031222dbb2cd1fd729c268739189c671c46ff6715c98a74a3fb56e316c92",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 202,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 10,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "cc762a02df0d5f262d75f42dfc51efb129e00442b8ec8afbb97f67ba9ac52c0d",
+        "text": "Example: Push notifications\nregistration.pushManager.subscribe({\nuserVisibleOnly: true\n})\n.then(function(pushSubscription) {\nga('send', 'event', 'push', 'subscribe');\n});",
+        "metadata": {
+            "char_count": 170,
+            "chunk_id": "cc762a02df0d5f262d75f42dfc51efb129e00442b8ec8afbb97f67ba9ac52c0d",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 170,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 11,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "618b35610bda2fd469359a7f6698ed8b99c970c44c7fa3d11e534da756f5caa9",
+        "text": "Analytics and service workers\nThe Analytics ga function requires Window\nService worker hits use the Measurement Protocol API:\n\nPOST /collect HTTP/1.1Host: www.google-analytics.comv=1&tid=UA-XXXXX-Y&cid=555&t=pageview&dp=%2Fhome",
+        "metadata": {
+            "char_count": 227,
+            "chunk_id": "618b35610bda2fd469359a7f6698ed8b99c970c44c7fa3d11e534da756f5caa9",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 227,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 12,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "526813b9c18a9231a66275a2d56fe0f9e7bd455c540fadc8418a389a1e28c978",
+        "text": "Measurement Protocol example\nself.addEventListener('notificationclose', function(event) {\nevent.waitUntil(\nfetch('https://www.google-analytics.com/collect', {\nmethod: 'post',\nbody: 'v=1&cid=...&tid=UA-XXXXXXXX-Y&t=event&' +\n'ec=notification&ea=delay&el=serviceworker'\n});\n);\n});\nservice-worker.js",
+        "metadata": {
+            "char_count": 296,
+            "chunk_id": "526813b9c18a9231a66275a2d56fe0f9e7bd455c540fadc8418a389a1e28c978",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 296,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 13,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "754a9adee8291709e7a8364a0c4204bab650d4a629d97e3ec9bee7f4282a9ef6",
+        "text": "What about when users are offline?\nInstall\n$ npm install --save-dev sw-offline-google-analytics\n\nService worker\nimportScripts('path/to/offline-google-analytics-import.js');\ngoog.offlineGoogleAnalytics.initialize();",
+        "metadata": {
+            "char_count": 214,
+            "chunk_id": "754a9adee8291709e7a8364a0c4204bab650d4a629d97e3ec9bee7f4282a9ef6",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 214,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 14,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "c782e0d78a045b832201af1825c1ecf6531ab4bd3a5b7e482a7dc79cc5ace023",
+        "text": "Analytics stored in IndexedDB",
+        "metadata": {
+            "char_count": 29,
+            "chunk_id": "c782e0d78a045b832201af1825c1ecf6531ab4bd3a5b7e482a7dc79cc5ace023",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 29,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 15,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "61b41c2cece4b48b9ced03391de4b3be9bb9d787d945809ba22f41c057f396b7",
+        "text": "Lab Overview\nCreate a Google Analytics & Firebase account\nAdd analytics to an app\nView analytics data\nAdd custom events to understand user behavior\nUse analytics with service workers (& push notifications)\nUse the Measurement Protocol API\nAdd offline analytics to an app",
+        "metadata": {
+            "char_count": 270,
+            "chunk_id": "61b41c2cece4b48b9ced03391de4b3be9bb9d787d945809ba22f41c057f396b7",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 270,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 16,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "0ab26dbab876c56530711b54b64af95555c679fc189a31a72a8baca6495b03fb",
+        "text": "Resources\nanalytics.js\nReporting API\nGoogle Analytics Academy\nAccount signup\nAnalytics for mobile applications\nChrome debugger extension\n\nImportScripts\nOffline Google Analytics\nIndexedDB\nMeasuring Critical Performance Metrics with Google Analytics\nMeasurement Protocol\nGoogle I/O offline example\nResources",
+        "metadata": {
+            "char_count": 305,
+            "chunk_id": "0ab26dbab876c56530711b54b64af95555c679fc189a31a72a8baca6495b03fb",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 305,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 17,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "b4c54b65ef4ac677cbac97813283254dac9442e8c232ebec55853a402f84e022",
+        "text": "UI reference slides",
+        "metadata": {
+            "char_count": 19,
+            "chunk_id": "b4c54b65ef4ac677cbac97813283254dac9442e8c232ebec55853a402f84e022",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 19,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 18,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "39fe8c137aa4a4b72eae163b66b7add6022c531735846e5b7a5dc049fcfb272f",
+        "text": "Finding your tracking snippet & ID\nSelect the Admin tab\nUnder “account”, select your account from the drop down list.\nThen under “properties”, select your property from the down list.\nNow choose “tracking info”, followed by “tracking code”.",
+        "metadata": {
+            "char_count": 240,
+            "chunk_id": "39fe8c137aa4a4b72eae163b66b7add6022c531735846e5b7a5dc049fcfb272f",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 240,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 19,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "d993a8463d611b74917c01179d44aff65a6b6ae00338935b0d0487f6ea899136",
+        "text": "Finding the Audience Overview interface\nSelect the Reporting tab\n\nSelect Audience in the side panel\n\nSelect Overview",
+        "metadata": {
+            "char_count": 116,
+            "chunk_id": "d993a8463d611b74917c01179d44aff65a6b6ae00338935b0d0487f6ea899136",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 116,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 20,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "f546f09ef752d74035998901d26b7a6a9b8181970bd33063442ef503ba8f9535",
+        "text": "Finding the Real-time Overview interface\nSelect the Reporting tab\n\nSelect Real-time in the side panel\n\nSelect Overview",
+        "metadata": {
+            "char_count": 118,
+            "chunk_id": "f546f09ef752d74035998901d26b7a6a9b8181970bd33063442ef503ba8f9535",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 118,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 21,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "7436aa8e5326e9aaeafbdc754e156c05951253b5aed569e5d8faaf6a0b4dd054",
+        "text": "Finding the Real-time Events interface\nSelect the Reporting tab\n\nSelect Real-time in the side panel\n\nSelect Events",
+        "metadata": {
+            "char_count": 114,
+            "chunk_id": "7436aa8e5326e9aaeafbdc754e156c05951253b5aed569e5d8faaf6a0b4dd054",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 114,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 22,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "3a8bcc783a5d955c530300945841360d673fa715e4b8bbe6a33677641dbf8fbe",
+        "text": "Finding the Events Overview interface\nSelect the Reporting tab\n\nSelect Behavior in the side panel\n\nSelect Events\n\nSelect Overview",
+        "metadata": {
+            "char_count": 129,
+            "chunk_id": "3a8bcc783a5d955c530300945841360d673fa715e4b8bbe6a33677641dbf8fbe",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 129,
+            "file_type": ".pptx",
+            "section_heading": "",
+            "slide_number": 23,
+            "source": "sample.pptx",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "8bc3c3b419f2f64ec8ece7cdbba58a75017f8f2fe704f31e100cc1853e280ed0",
+        "text": "Quod equidem non reprehendo;\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Quibus natura iure responderit non esse verum aliunde finem beate vivendi, a se principia rei gerendae peti; Quae enim adhuc protulisti, popularia sunt, ego autem a te elegantiora desidero. Duo Reges: constructio interrete. Tum Lucius: Mihi vero ista valde probata sunt, quod item fratri puto. Bestiarum vero nullum iudicium puto. Nihil enim iam habes, quod ad corpus referas; Deinde prima illa, quae in congressu solemus: Quid tu, inquit, huc? Et homini, qui ceteris animantibus plurimum praestat, praecipue a natura nihil datum esse dicemus?",
+        "metadata": {
+            "char_count": 629,
+            "chunk_id": "8bc3c3b419f2f64ec8ece7cdbba58a75017f8f2fe704f31e100cc1853e280ed0",
+            "chunk_index": 0,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 629,
+            "file_type": ".txt",
+            "section_heading": "",
+            "source": "sample.txt",
+            "start_index": 0
+        }
+    },
+    {
+        "id": "3b9957488a6fdc5eaf2eb6171ca13ffe1bf911897cac76e22557a9d28e88b15f",
+        "text": "Iam id ipsum absurdum, maximum malum neglegi. Quod ea non occurrentia fingunt, vincunt Aristonem; Atqui perspicuum est hominem e corpore animoque constare, cum primae sint animi partes, secundae corporis. Fieri, inquam, Triari, nullo pacto potest, ut non dicas, quid non probes eius, a quo dissentias. Equidem e Cn. An dubium est, quin virtus ita maximam partem optineat in rebus humanis, ut reliquas obruat?\n\nQuis istum dolorem timet?\nSummus dolor plures dies manere non potest? Dicet pro me ipsa virtus nec dubitabit isti vestro beato M. Tubulum fuisse, qua illum, cuius is condemnatus est rogatione, P. Quod si ita sit, cur opera philosophiae sit danda nescio.",
+        "metadata": {
+            "char_count": 663,
+            "chunk_id": "3b9957488a6fdc5eaf2eb6171ca13ffe1bf911897cac76e22557a9d28e88b15f",
+            "chunk_index": 1,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 1294,
+            "file_type": ".txt",
+            "section_heading": "",
+            "source": "sample.txt",
+            "start_index": 631
+        }
+    },
+    {
+        "id": "e2a630a1b5f9b9510ea4f6e9fe832425addd0dfcd39ed748a82e25acd700d3e5",
+        "text": "Ex eorum enim scriptis et institutis cum omnis doctrina liberalis, omnis historia.\nQuod si ita est, sequitur id ipsum, quod te velle video, omnes semper beatos esse sapientes. Cum enim fertur quasi torrens oratio, quamvis multa cuiusque modi rapiat, nihil tamen teneas, nihil apprehendas, nusquam orationem rapidam coerceas. Ita redarguitur ipse a sese, convincunturque scripta eius probitate ipsius ac moribus. At quanta conantur! Mundum hunc omnem oppidum esse nostrum! Incendi igitur eos, qui audiunt, vides. Vide, ne magis, inquam, tuum fuerit, cum re idem tibi, quod mihi, videretur, non nova te rebus nomina inponere. Qui-vere falsone, quaerere mittimus-dicitur oculis se privasse; Si ista mala sunt, in quae potest incidere sapiens, sapientem esse non esse ad beate vivendum satis. At vero si ad vitem sensus accesserit, ut appetitum quendam habeat et per se ipsa moveatur, quid facturam putas?",
+        "metadata": {
+            "char_count": 901,
+            "chunk_id": "e2a630a1b5f9b9510ea4f6e9fe832425addd0dfcd39ed748a82e25acd700d3e5",
+            "chunk_index": 2,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 2197,
+            "file_type": ".txt",
+            "section_heading": "",
+            "source": "sample.txt",
+            "start_index": 1296
+        }
+    },
+    {
+        "id": "1b7b9b3a8d60d0c8a20fd81aa288e76312164f2e7884cf0d4f0f6df1dbcff0eb",
+        "text": "Quem si tenueris, non modo meum Ciceronem, sed etiam me ipsum abducas licebit.\nStulti autem malorum memoria torquentur, sapientes bona praeterita grata recordatione renovata delectant.\nEsse enim quam vellet iniquus iustus poterat inpune.\nQuae autem natura suae primae institutionis oblita est?\nVerum tamen cum de rebus grandioribus dicas, ipsae res verba rapiunt;\nHoc est non modo cor non habere, sed ne palatum quidem.\nVoluptatem cum summum bonum diceret, primum in eo ipso parum vidit, deinde hoc quoque alienum; Sed tu istuc dixti bene Latine, parum plane. Nam haec ipsa mihi erunt in promptu, quae modo audivi, nec ante aggrediar, quam te ab istis, quos dicis, instructum videro. Fatebuntur Stoici haec omnia dicta esse praeclare, neque eam causam Zenoni desciscendi fuisse. Non autem hoc: igitur ne illud quidem. Ratio quidem vestra sic cogit. Cum audissem Antiochum, Brute, ut solebam, cum M. An quod ita callida est, ut optime possit architectari voluptates?",
+        "metadata": {
+            "char_count": 965,
+            "chunk_id": "1b7b9b3a8d60d0c8a20fd81aa288e76312164f2e7884cf0d4f0f6df1dbcff0eb",
+            "chunk_index": 3,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 3164,
+            "file_type": ".txt",
+            "section_heading": "",
+            "source": "sample.txt",
+            "start_index": 2199
+        }
+    },
+    {
+        "id": "4c11670e1c612d4c0e03c2f304fb74996403e0fd15e787f73c373387b51b0772",
+        "text": "Idemne, quod iucunde?\nHaec mihi videtur delicatior, ut ita dicam, molliorque ratio, quam virtutis vis gravitasque postulat. Sed quoniam et advesperascit et mihi ad villam revertendum est, nunc quidem hactenus; Cuius ad naturam apta ratio vera illa et summa lex a philosophis dicitur. Neque solum ea communia, verum etiam paria esse dixerunt. Sed nunc, quod agimus; A mene tu?",
+        "metadata": {
+            "char_count": 375,
+            "chunk_id": "4c11670e1c612d4c0e03c2f304fb74996403e0fd15e787f73c373387b51b0772",
+            "chunk_index": 4,
+            "chunking_strategy": "recursive",
+            "embedding_dimension": 384,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "end_index": 3541,
+            "file_type": ".txt",
+            "section_heading": "",
+            "source": "sample.txt",
+            "start_index": 3166
+        }
+    }
+]
