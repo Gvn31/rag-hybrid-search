@@ -60,3 +60,5 @@ logs/
 
 # Temporary files
 *.tmp
+src/test.py
+
