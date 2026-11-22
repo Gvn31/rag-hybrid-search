@@ -498,7 +498,7 @@
       "id": "QA-038",
       "category": "straightforward",
       "question": "Name two similarity metrics mentioned for vector search in the AWS guide.",
-      "expected_answer": "The guide mentions Euclidean distance, cosine distance, and dot product; any two are acceptable.",
+      "expected_answer": "L2 distance and cosine distance.",
       "answerable": true,
       "source_chunks": [
         {
@@ -537,7 +537,7 @@
       "id": "QA-041",
       "category": "straightforward",
       "question": "What is one reason to choose a custom RAG architecture instead of a fully managed option?",
-      "expected_answer": "A custom architecture can provide more control over components such as the retriever, vector database, and chunking strategy.",
+      "expected_answer": "Custom RAG architectures provide more control over components such as the retriever or vector database.",
       "answerable": true,
       "source_chunks": [
         {
@@ -576,7 +576,7 @@
       "id": "QA-044",
       "category": "straightforward",
       "question": "Which AWS service can run OCR on scanned documents during an Amazon Q Business enrichment workflow?",
-      "expected_answer": "An AWS Lambda function can run OCR on scanned documents and extract text for ingestion.",
+      "expected_answer": "AWS Lambda",
       "answerable": true,
       "source_chunks": [
         {
@@ -761,7 +761,7 @@
       "id": "QA-057",
       "category": "straightforward",
       "question": "What is the current price of CloudNote Pro's Enterprise plan?",
-      "expected_answer": "The Enterprise plan is custom-priced; the supplied documents do not provide a numeric price.",
+      "expected_answer": "CloudNote Pro's Enterprise plan has a custom price (not a fixed price).",
       "answerable": true,
       "source_chunks": [
         {

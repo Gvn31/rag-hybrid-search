@@ -1,5 +1,5 @@
 {
-    "evaluation_timestamp": "2026-11-19T19:01:33.478386+00:00",
+    "evaluation_timestamp": "2026-11-22T20:10:28.155088+00:00",
     "evaluation_configuration": {
         "top_k": 5,
         "retrieval_top_k": 10,
@@ -20,28 +20,28 @@
         "answerable_questions": 51,
         "ambiguous_questions": 6,
         "unanswerable_questions": 6,
-        "exact_match": 0.0,
-        "answer_token_precision": 0.447,
-        "answer_token_recall": 0.7593,
-        "answer_token_f1": 0.5271,
+        "exact_match": 0.1765,
+        "answer_token_precision": 0.6725,
+        "answer_token_recall": 0.71,
+        "answer_token_f1": 0.6538,
         "retrieval_recall_at_k": 0.9561,
         "retrieval_metric_question_count": 57,
         "mean_reciprocal_rank": 0.8582,
         "citation_accuracy": 1.0,
-        "total_citations": 58,
-        "verified_citations": 58,
-        "citation_coverage": 0.8413,
-        "faithfulness_lexical_proxy": 0.8691,
-        "average_confidence_indicator": 0.6432,
-        "unanswerable_abstention_accuracy": 0.6667,
-        "ambiguous_clarification_accuracy": 0.5
+        "total_citations": 59,
+        "verified_citations": 59,
+        "citation_coverage": 0.7937,
+        "faithfulness_lexical_proxy": 0.8626,
+        "average_confidence_indicator": 0.6147,
+        "unanswerable_abstention_accuracy": 1.0,
+        "ambiguous_clarification_accuracy": 0.6667
     },
     "individual_results": [
         {
             "question_id": "QA-001",
             "question_type": "direct",
             "question": "What authentication mechanism must CloudScale Vector API requests use?",
-            "predicted_answer": "CloudScale Vector API requests must use a Bearer token in the Authorization HTTP header. [0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50]",
+            "predicted_answer": "CloudScale Vector API requests must use a Bearer token in the Authorization HTTP header [0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50].",
             "expected_answer": "A valid Bearer token must be included in the Authorization HTTP header.",
             "answer_correctness": {
                 "exact_match": 0,
@@ -80,13 +80,13 @@
             "question_id": "QA-002",
             "question_type": "direct",
             "question": "Which endpoint inserts or updates vector embeddings and their metadata?",
-            "predicted_answer": "The endpoint that inserts or updates vector embeddings and their metadata is POST /v2/vectors/upsert [0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50].",
+            "predicted_answer": "POST /v2/vectors/upsert [0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50]",
             "expected_answer": "POST /v2/vectors/upsert.",
             "answer_correctness": {
-                "exact_match": 0,
-                "token_precision": 0.25,
+                "exact_match": 1,
+                "token_precision": 1.0,
                 "token_recall": 1.0,
-                "token_f1": 0.4
+                "token_f1": 1.0
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -97,7 +97,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.875,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.7442,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -119,13 +119,13 @@
             "question_id": "QA-003",
             "question_type": "direct",
             "question": "What is the maximum batch size supported by the CloudScale upsert endpoint?",
-            "predicted_answer": "The maximum batch size supported by the CloudScale upsert endpoint is 1,000 vectors per request [0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50].",
+            "predicted_answer": "1,000 vectors per request [0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50]",
             "expected_answer": "Up to 1,000 vectors per request.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.3125,
+                "token_precision": 1.0,
                 "token_recall": 0.7143,
-                "token_f1": 0.4348
+                "token_f1": 0.8333
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -136,7 +136,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.75,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.6245,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -158,7 +158,7 @@
             "question_id": "QA-004",
             "question_type": "direct",
             "question": "What is the default top_k value for a CloudScale vector query?",
-            "predicted_answer": "The default top_k value for a CloudScale vector query is 10. [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc]",
+            "predicted_answer": "The default top_k value for a CloudScale vector query is 10 [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc].",
             "expected_answer": "The default top_k is 10.",
             "answer_correctness": {
                 "exact_match": 0,
@@ -236,7 +236,7 @@
             "question_id": "QA-006",
             "question_type": "direct",
             "question": "Which metadata filter operators are listed in the CloudScale API guide?",
-            "predicted_answer": "The CloudScale API guide lists the metadata filter operators $eq, $in, and $gte [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc].",
+            "predicted_answer": "The CloudScale API guide lists $eq, $in, and $gte as metadata filter operators [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc].",
             "expected_answer": "The guide lists $eq, $in, and $gte.",
             "answer_correctness": {
                 "exact_match": 0,
@@ -253,7 +253,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9231,
+            "faithfulness_lexical_proxy": 0.8462,
             "confidence_indicator": 0.6874,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -275,13 +275,13 @@
             "question_id": "QA-007",
             "question_type": "direct",
             "question": "What does HTTP 401 mean according to the CloudScale API guide?",
-            "predicted_answer": "HTTP 401 means \"Missing, expired, or revoked API Bearer token\" [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc]",
+            "predicted_answer": "Missing, expired, or revoked API Bearer token [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc]",
             "expected_answer": "It means the Bearer token is missing, expired, or revoked.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.7,
-                "token_recall": 0.7,
-                "token_f1": 0.7
+                "token_precision": 0.8571,
+                "token_recall": 0.6,
+                "token_f1": 0.7059
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -292,7 +292,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.6436,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -314,13 +314,13 @@
             "question_id": "QA-008",
             "question_type": "direct",
             "question": "What vector normalization practice is recommended for dot-product similarity?",
-            "predicted_answer": "The recommended vector normalization practice for dot-product similarity is to normalize dense vectors to unit L2 length before upserting. [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc]",
+            "predicted_answer": "Normalize dense vectors to unit L2 length before upserting [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc]",
             "expected_answer": "Normalize dense vectors to unit L2 length before upserting.",
             "answer_correctness": {
-                "exact_match": 0,
-                "token_precision": 0.45,
+                "exact_match": 1,
+                "token_precision": 1.0,
                 "token_recall": 1.0,
-                "token_f1": 0.6207
+                "token_f1": 1.0
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -331,7 +331,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.6883,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -353,13 +353,13 @@
             "question_id": "QA-009",
             "question_type": "direct",
             "question": "How often must API keys, database passwords, and TLS certificates be rotated?",
-            "predicted_answer": "API keys, database passwords, and TLS certificates must rotate every 90 days via automated secrets management [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583].",
+            "predicted_answer": "API keys, database passwords, and TLS certificates must rotate every 90 days [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583]",
             "expected_answer": "They must be rotated every 90 days through automated secrets management.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.4375,
-                "token_recall": 0.6364,
-                "token_f1": 0.5185
+                "token_precision": 0.3333,
+                "token_recall": 0.3636,
+                "token_f1": 0.3478
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -392,13 +392,13 @@
             "question_id": "QA-010",
             "question_type": "direct",
             "question": "How long can an interactive administrative session remain inactive before it terminates?",
-            "predicted_answer": "According to the document context, interactive administrative sessions automatically terminate after 15 minutes of inactivity [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583].",
+            "predicted_answer": "15 minutes [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583]",
             "expected_answer": "It automatically terminates after 15 minutes of inactivity.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.4,
-                "token_recall": 0.75,
-                "token_f1": 0.5217
+                "token_precision": 1.0,
+                "token_recall": 0.25,
+                "token_f1": 0.4
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -409,7 +409,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9333,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.6797,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -431,13 +431,13 @@
             "question_id": "QA-011",
             "question_type": "direct",
             "question": "Which authentication methods are mandatory for administrative consoles and VPN endpoints?",
-            "predicted_answer": "Hardware security keys or time-based one-time passwords (TOTP) are mandatory for all administrative consoles and VPN endpoints. [b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf]",
+            "predicted_answer": "Hardware security keys or time-based one-time passwords (TOTP) [b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf]",
             "expected_answer": "Hardware security keys or time-based one-time passwords (TOTP) are mandatory.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.6316,
-                "token_recall": 1.0,
-                "token_f1": 0.7742
+                "token_precision": 1.0,
+                "token_recall": 0.8333,
+                "token_f1": 0.9091
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -470,13 +470,13 @@
             "question_id": "QA-012",
             "question_type": "direct",
             "question": "What is the required containment start time for a Severity 2 high-risk incident?",
-            "predicted_answer": "The required containment start time for a Severity 2 high-risk incident is that containment actions must begin within 1 hour of detection [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549].",
+            "predicted_answer": "1 hour of detection [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
             "expected_answer": "Containment actions must begin within 1 hour of detection.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.3913,
-                "token_recall": 1.0,
-                "token_f1": 0.5625
+                "token_precision": 1.0,
+                "token_recall": 0.4444,
+                "token_f1": 0.6154
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -487,7 +487,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8261,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.7107,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -509,13 +509,13 @@
             "question_id": "QA-013",
             "question_type": "direct",
             "question": "When must the full root-cause analysis for a Severity 2 incident be delivered?",
-            "predicted_answer": "The full root-cause analysis for a Severity 2 incident must be delivered within 48 hours [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549].",
+            "predicted_answer": "within 48 hours [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
             "expected_answer": "Within 48 hours.",
             "answer_correctness": {
-                "exact_match": 0,
-                "token_precision": 0.1875,
+                "exact_match": 1,
+                "token_precision": 1.0,
                 "token_recall": 1.0,
-                "token_f1": 0.3158
+                "token_f1": 1.0
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -548,13 +548,13 @@
             "question_id": "QA-014",
             "question_type": "direct",
             "question": "What encryption and retention rules apply to Tier 1 Restricted data?",
-            "predicted_answer": "Based on the document context, Tier 1 Restricted data (which includes PII, Payment Cards, Auth Secrets) has the following encryption and retention rules:\n\nEncryption Standard: AES-256-GCM + Customer Managed Keys [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]\n\nRetention Period: 7 Years (Audit Regulated) [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
+            "predicted_answer": "AES-256-GCM with Customer Managed Keys and 7 Years (Audit Regulated) [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
             "expected_answer": "Tier 1 data (including PII, payment cards, and authentication secrets) uses AES-256-GCM with customer-managed keys and has a 7-year retention period for audit-regulated data.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.5405,
-                "token_recall": 0.6897,
-                "token_f1": 0.6061
+                "token_precision": 0.9167,
+                "token_recall": 0.3793,
+                "token_f1": 0.5366
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -565,7 +565,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9189,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.7592,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -587,13 +587,13 @@
             "question_id": "QA-015",
             "question_type": "direct",
             "question": "What is the retention period for Tier 3 Internal data?",
-            "predicted_answer": "The retention period for Tier 3 Internal data is 2 Years [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549].",
+            "predicted_answer": "2 Years [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
             "expected_answer": "Two years.",
             "answer_correctness": {
-                "exact_match": 0,
-                "token_precision": 0.1818,
+                "exact_match": 1,
+                "token_precision": 1.0,
                 "token_recall": 1.0,
-                "token_f1": 0.3077
+                "token_f1": 1.0
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -604,7 +604,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9091,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.6917,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -626,13 +626,13 @@
             "question_id": "QA-016",
             "question_type": "direct",
             "question": "What must happen during a Severity 1 critical breach?",
-            "predicted_answer": "During a Severity 1 critical breach, the Incident Commander must be paged within 15 minutes, and executive leadership must be notified within 1 hour. [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583]",
+            "predicted_answer": "The Incident Commander must be paged within 15 minutes, and executive leadership must be notified within 1 hour [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583]",
             "expected_answer": "The Incident Commander must be paged within 15 minutes, and executive leadership must be notified within 1 hour.",
             "answer_correctness": {
-                "exact_match": 0,
-                "token_precision": 0.75,
+                "exact_match": 1,
+                "token_precision": 1.0,
                 "token_recall": 1.0,
-                "token_f1": 0.8571
+                "token_f1": 1.0
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -643,7 +643,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9583,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.6769,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -665,13 +665,13 @@
             "question_id": "QA-017",
             "question_type": "direct",
             "question": "Which technologies are named for CloudNote Pro's client applications?",
-            "predicted_answer": "CloudNote Pro's client applications are built with Electron (macOS, Windows), React (Web), and Swift/Kotlin (iOS, Android) [57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2].",
+            "predicted_answer": "Electron, React, Swift, and Kotlin [57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2]",
             "expected_answer": "Electron for macOS and Windows, React for the web, and Swift/Kotlin for iOS and Android.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.5556,
-                "token_recall": 0.625,
-                "token_f1": 0.5882
+                "token_precision": 1.0,
+                "token_recall": 0.3125,
+                "token_f1": 0.4762
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -682,7 +682,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8889,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.7398,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -704,13 +704,13 @@
             "question_id": "QA-018",
             "question_type": "direct",
             "question": "Which database stores CloudNote Pro metadata and permissions?",
-            "predicted_answer": "CloudNote Pro metadata and permissions are stored in a PostgreSQL cluster with row-level security [57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2].",
+            "predicted_answer": "PostgreSQL cluster with row-level security [57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2]",
             "expected_answer": "A PostgreSQL cluster with row-level security.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.4667,
-                "token_recall": 1.0,
-                "token_f1": 0.6364
+                "token_precision": 1.0,
+                "token_recall": 0.8571,
+                "token_f1": 0.9231
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -743,7 +743,7 @@
             "question_id": "QA-019",
             "question_type": "direct",
             "question": "How quickly does the CloudNote Pro CRDT synchronization service merge concurrent edits?",
-            "predicted_answer": "The CloudNote Pro CRDT synchronization service merges concurrent edits with sub-50ms latency [57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2].",
+            "predicted_answer": "CloudNote Pro's CRDT synchronization service merges concurrent edits with sub-50ms latency [57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2].",
             "expected_answer": "It is described as operating with sub-50-millisecond latency.",
             "answer_correctness": {
                 "exact_match": 0,
@@ -760,7 +760,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 1.0,
+            "faithfulness_lexical_proxy": 0.9231,
             "confidence_indicator": 0.6977,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -821,13 +821,13 @@
             "question_id": "QA-021",
             "question_type": "direct",
             "question": "What is the Team Plan's REST API rate limit?",
-            "predicted_answer": "The Team Plan's REST API rate limit is 1,000 requests per minute [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb].",
+            "predicted_answer": "The Team Plan's REST API rate limit is 1,000 req/min [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb].",
             "expected_answer": "1,000 requests per minute.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.3571,
-                "token_recall": 1.0,
-                "token_f1": 0.5263
+                "token_precision": 0.1538,
+                "token_recall": 0.4,
+                "token_f1": 0.2222
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -838,7 +838,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9286,
+            "faithfulness_lexical_proxy": 0.9231,
             "confidence_indicator": 0.7239,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -860,13 +860,13 @@
             "question_id": "QA-022",
             "question_type": "direct",
             "question": "How long is version history retained on the Starter plan?",
-            "predicted_answer": "According to the knowledge base document, the Starter (Free) plan retains version history for 7 days [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb].",
+            "predicted_answer": "7 days [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb]",
             "expected_answer": "Seven days.",
             "answer_correctness": {
-                "exact_match": 0,
-                "token_precision": 0.125,
+                "exact_match": 1,
+                "token_precision": 1.0,
                 "token_recall": 1.0,
-                "token_f1": 0.2222
+                "token_f1": 1.0
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -877,7 +877,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8125,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.6571,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -899,47 +899,13 @@
             "question_id": "QA-023",
             "question_type": "direct",
             "question": "Which encryption and compliance standards are stated in the CloudNote Pro guide?",
-            "predicted_answer": "The CloudNote Pro guide states the following encryption and compliance standards, as detailed in the \"Security & Compliance Standards\" section (citation ID: `a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84`):\n\n- **Encryption in transit**: TLS 1.3 with strict certificate pinning on mobile clients  \n- **Encryption at rest**: AES-256-GCM with customer-managed keys (CMK) available for Enterprise plans  \n- **Compliance**: SOC 2 Type II audited annually, GDPR compliance, and HIPAA Business Associate Agreements (BAA) available upon request  \n\nThese standards ensure robust security and regulatory adherence for CloudNote Pro services. The documentation is part of the official CloudNote Pro knowledge base, which integrates these specifications into the platform's architecture and operational practices.",
+            "predicted_answer": "CloudNote Pro states encryption in transit uses TLS 1.3 with strict certificate pinning [a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84] and encryption at rest uses AES-256-GCM with customer-managed keys for Enterprise plans [a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84]. Compliance standards include SOC 2 Type II annual audits, GDPR compliance, and HIPAA Business Associate Agreements available upon request [a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84].",
             "expected_answer": "It states TLS 1.3 with strict certificate pinning on mobile clients, AES-256-GCM encryption at rest with customer-managed keys available on Enterprise plans, annual SOC 2 Type II audits, GDPR compliance, and HIPAA BAAs available upon request.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.3398,
-                "token_recall": 0.875,
-                "token_f1": 0.4895
-            },
-            "abstention_correct": null,
-            "clarification_correct": null,
-            "is_abstention": false,
-            "retrieval_recall_at_k": 1.0,
-            "mean_reciprocal_rank": 1.0,
-            "citation_accuracy": null,
-            "citation_count": 0,
-            "verified_citation_count": 0,
-            "has_citations": false,
-            "faithfulness_lexical_proxy": 0.8447,
-            "confidence_indicator": 0.1242,
-            "is_supported": false,
-            "retrieved_chunk_ids": [
-                "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
-                "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936",
-                "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
-                "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf",
-                "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549"
-            ],
-            "citation_verification": [],
-            "status": "success"
-        },
-        {
-            "question_id": "QA-024",
-            "question_type": "direct",
-            "question": "What should a user do when a sync conflict occurs because a parent folder was deleted while another user added documents offline?",
-            "predicted_answer": "When a sync conflict occurs because a user deleted a parent folder while another user added documents offline, the user should:\n\n1. Open the **Conflict Resolution Drawer** from the left sidebar\n2. Compare the **Local Version** timestamp against the **Cloud Version** timestamp\n3. Select **Keep Both** to restore the deleted folder structure alongside your offline notes, or **Merge into Active Workspace** to relocate the orphaned notes to your root directory [90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6]",
-            "expected_answer": "Open the Conflict Resolution Drawer, compare the Local Version and Cloud Version timestamps, then choose Keep Both or Merge into Active Workspace.",
-            "answer_correctness": {
-                "exact_match": 0,
-                "token_precision": 0.2571,
-                "token_recall": 0.8182,
-                "token_f1": 0.3913
+                "token_precision": 0.6875,
+                "token_recall": 0.825,
+                "token_f1": 0.75
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -950,7 +916,46 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9429,
+            "faithfulness_lexical_proxy": 0.875,
+            "confidence_indicator": 0.7242,
+            "is_supported": true,
+            "retrieved_chunk_ids": [
+                "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
+                "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936",
+                "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
+                "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf",
+                "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549"
+            ],
+            "citation_verification": [
+                {
+                    "chunk_id": "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
+                    "verified": true
+                }
+            ],
+            "status": "success"
+        },
+        {
+            "question_id": "QA-024",
+            "question_type": "direct",
+            "question": "What should a user do when a sync conflict occurs because a parent folder was deleted while another user added documents offline?",
+            "predicted_answer": "Open the Conflict Resolution Drawer from the left sidebar, compare the Local Version timestamp against the Cloud Version timestamp, and select either \"Keep Both\" to restore the deleted folder structure alongside offline notes or \"Merge into Active Workspace\" to relocate the orphaned notes to the root directory [90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6].",
+            "expected_answer": "Open the Conflict Resolution Drawer, compare the Local Version and Cloud Version timestamps, then choose Keep Both or Merge into Active Workspace.",
+            "answer_correctness": {
+                "exact_match": 0,
+                "token_precision": 0.4043,
+                "token_recall": 0.8636,
+                "token_f1": 0.5507
+            },
+            "abstention_correct": null,
+            "clarification_correct": null,
+            "is_abstention": false,
+            "retrieval_recall_at_k": 1.0,
+            "mean_reciprocal_rank": 1.0,
+            "citation_accuracy": 1.0,
+            "citation_count": 1,
+            "verified_citation_count": 1,
+            "has_citations": true,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.68,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -972,13 +977,13 @@
             "question_id": "QA-025",
             "question_type": "direct",
             "question": "Why did the customer's monthly invoice increase from $15 to $24 in support ticket TKT-88412?",
-            "predicted_answer": "The customer's monthly invoice increased from $15 to $24 in support ticket TKT-88412 because two additional team members accepted workspace invitations on October 14, which automatically added two seats at $4.50 each under their Team Plan terms [0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad].",
+            "predicted_answer": "The customer's monthly invoice increased from $15 to $24 because two additional team members accepted workspace invitations on October 14, which automatically added two seats at $4.50 each under the Team Plan terms [0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad].",
             "expected_answer": "Two additional team members accepted workspace invitations, adding two seats at $4.50 each under the Team Plan.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.425,
+                "token_precision": 0.4857,
                 "token_recall": 0.9444,
-                "token_f1": 0.5862
+                "token_f1": 0.6415
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -989,7 +994,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.925,
+            "faithfulness_lexical_proxy": 0.9429,
             "confidence_indicator": 0.6805,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1011,13 +1016,13 @@
             "question_id": "QA-026",
             "question_type": "direct",
             "question": "What problem did the customer report in ticket TKT-88419?",
-            "predicted_answer": "The desktop app on macOS keeps freezing every time I try to export a notebook larger than 50 pages to PDF [5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd].",
+            "predicted_answer": "The customer reported that the desktop app on macOS freezes when trying to export notebooks larger than 50 pages to PDF, crashing at 80% progress. [5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd]",
             "expected_answer": "The macOS desktop app freezes while exporting a notebook larger than 50 pages to PDF and crashes at 80% progress.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.5714,
-                "token_recall": 0.6,
-                "token_f1": 0.5854
+                "token_precision": 0.56,
+                "token_recall": 0.7,
+                "token_f1": 0.6222
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1028,7 +1033,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 1.0,
+            "faithfulness_lexical_proxy": 0.8,
             "confidence_indicator": 0.8897,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1050,13 +1055,13 @@
             "question_id": "QA-027",
             "question_type": "direct",
             "question": "What security concern was raised in ticket TKT-88430?",
-            "predicted_answer": "The security concern raised in ticket TKT-88430 was a new login occurring from an unrecognized browser in Frankfurt, Germany. [53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511]",
+            "predicted_answer": "The security concern raised in ticket TKT-88430 was an unrecognized login attempt from Frankfurt, Germany. [53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511]",
             "expected_answer": "The customer received an alert about a login from an unrecognized browser in Frankfurt, Germany, despite being based in Bengaluru and not having travelled recently.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.55,
-                "token_recall": 0.44,
-                "token_f1": 0.4889
+                "token_precision": 0.5,
+                "token_recall": 0.32,
+                "token_f1": 0.3902
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1067,7 +1072,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8,
+            "faithfulness_lexical_proxy": 0.75,
             "confidence_indicator": 0.694,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1089,7 +1094,7 @@
             "question_id": "QA-028",
             "question_type": "direct",
             "question": "What feature did the customer request in ticket TKT-88425?",
-            "predicted_answer": "The customer requested the ability to export action items directly into Jira or Linear tasks with one click instead of copying and pasting them manually [f5e927c29bada8d088be3fd3a36b403f48cd417b8f9095c5086fdcfbf0a5c8d3]",
+            "predicted_answer": "The customer requested the ability to export action items directly into Jira or Linear tasks with one click instead of copying and pasting them manually [f5e927c29bada8d088be3fd3a36b403f48cd417b8f9095c5086fdcfbf0a5c8d3].",
             "expected_answer": "They requested a one-click way to export AI meeting-summary action items directly into Jira or Linear tasks.",
             "answer_correctness": {
                 "exact_match": 0,
@@ -1128,13 +1133,13 @@
             "question_id": "QA-029",
             "question_type": "direct",
             "question": "What HTTP error did the customer report in ticket TKT-88438?",
-            "predicted_answer": "The customer reported a 429 Too Many Requests error in ticket TKT-88438 [71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59].",
+            "predicted_answer": "429 Too Many Requests [71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59]",
             "expected_answer": "HTTP 429 Too Many Requests.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.3077,
+                "token_precision": 1.0,
                 "token_recall": 0.8,
-                "token_f1": 0.4444
+                "token_f1": 0.8889
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1145,7 +1150,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9231,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.8662,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1167,13 +1172,13 @@
             "question_id": "QA-030",
             "question_type": "direct",
             "question": "Which special text characters does the sample document recommend checking during document-processing tests?",
-            "predicted_answer": "The sample document recommends checking non-ASCII characters such as café, naïve, and Zürich; smart quotes like “this” and 'that'; and currency symbols (€, £, ¥) during document-processing tests [7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a].",
+            "predicted_answer": "non-ASCII characters (e.g., café, naïve, Zürich), smart quotes (e.g., “this”, 'that'), and currency symbols (€, £, ¥) [7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a, 9b15dc328a3c9043824d7e90e48071946badddc96822e815400bee41673bfc02, 077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2]",
             "expected_answer": "It recommends checking non-ASCII characters such as café, naïve, and Zürich; smart quotes; currency symbols such as €, £, and ¥; and long words that force line wrapping.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.6667,
-                "token_recall": 0.6923,
-                "token_f1": 0.6792
+                "token_precision": 0.7059,
+                "token_recall": 0.4615,
+                "token_f1": 0.5581
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1181,10 +1186,10 @@
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
+            "citation_count": 3,
+            "verified_citation_count": 3,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8889,
+            "faithfulness_lexical_proxy": 0.7647,
             "confidence_indicator": 0.7962,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1198,6 +1203,14 @@
                 {
                     "chunk_id": "7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a",
                     "verified": true
+                },
+                {
+                    "chunk_id": "9b15dc328a3c9043824d7e90e48071946badddc96822e815400bee41673bfc02",
+                    "verified": true
+                },
+                {
+                    "chunk_id": "077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2",
+                    "verified": true
                 }
             ],
             "status": "success"
@@ -1206,13 +1219,13 @@
             "question_id": "QA-031",
             "question_type": "direct",
             "question": "What kinds of structures does the sample document say a good test document should contain?",
-            "predicted_answer": "A good test document should contain headings at several levels, ordinary paragraphs, bulleted and numbered lists, a data table, an embedded image, and page breaks [f77c0bcb275643ce9e6bba706cf556dba17b7e949eef93b59cfc292bda333dbe].",
+            "predicted_answer": "headings at several levels, ordinary paragraphs, bulleted and numbered lists, a data table, an embedded image, and page breaks [f77c0bcb275643ce9e6bba706cf556dba17b7e949eef93b59cfc292bda333dbe, 5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb]",
             "expected_answer": "Headings at several levels, ordinary paragraphs, bulleted and numbered lists, a data table, an embedded image, and page breaks.",
             "answer_correctness": {
-                "exact_match": 0,
-                "token_precision": 0.76,
+                "exact_match": 1,
+                "token_precision": 1.0,
                 "token_recall": 1.0,
-                "token_f1": 0.8636
+                "token_f1": 1.0
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1220,10 +1233,10 @@
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
+            "citation_count": 2,
+            "verified_citation_count": 2,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.96,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.8861,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1237,6 +1250,10 @@
                 {
                     "chunk_id": "f77c0bcb275643ce9e6bba706cf556dba17b7e949eef93b59cfc292bda333dbe",
                     "verified": true
+                },
+                {
+                    "chunk_id": "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
+                    "verified": true
                 }
             ],
             "status": "success"
@@ -1245,7 +1262,7 @@
             "question_id": "QA-032",
             "question_type": "direct",
             "question": "Does the sample document contain macros, scripts, or tracking?",
-            "predicted_answer": "No, the sample document does not contain macros, scripts, or tracking. [5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb]",
+            "predicted_answer": "No, the sample document does not contain macros, scripts, or tracking [5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb, 077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2, 924b3c4493dd527a4270252f94c5246e2d2f42bb50e8985f946113dd63179c03, f77c0bcb275643ce9e6bba706cf556dba17b7e949eef93b59cfc292bda333dbe].",
             "expected_answer": "No. It states that it has no macros, no scripts, and no tracking of any kind.",
             "answer_correctness": {
                 "exact_match": 0,
@@ -1255,12 +1272,12 @@
             },
             "abstention_correct": null,
             "clarification_correct": null,
-            "is_abstention": false,
+            "is_abstention": true,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.5,
             "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
+            "citation_count": 4,
+            "verified_citation_count": 4,
             "has_citations": true,
             "faithfulness_lexical_proxy": 0.8182,
             "confidence_indicator": 0.8606,
@@ -1276,6 +1293,18 @@
                 {
                     "chunk_id": "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
                     "verified": true
+                },
+                {
+                    "chunk_id": "077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2",
+                    "verified": true
+                },
+                {
+                    "chunk_id": "924b3c4493dd527a4270252f94c5246e2d2f42bb50e8985f946113dd63179c03",
+                    "verified": true
+                },
+                {
+                    "chunk_id": "f77c0bcb275643ce9e6bba706cf556dba17b7e949eef93b59cfc292bda333dbe",
+                    "verified": true
                 }
             ],
             "status": "success"
@@ -1284,13 +1313,13 @@
             "question_id": "QA-033",
             "question_type": "direct",
             "question": "What is the sample document's stated purpose?",
-            "predicted_answer": "The sample document's stated purpose is to provide developers, QA testers, and product teams with a realistic file to use when testing uploads, previews, conversions, and integrations [5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb].",
+            "predicted_answer": "The sample document's stated purpose is to provide a realistic file for developers, QA testers, and product teams to test uploads, previews, conversions, and integrations [5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb].",
             "expected_answer": "It is a stable fixture for developers, QA testers, and product teams to test uploads, previews, conversions, and integrations.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.5,
-                "token_recall": 0.7368,
-                "token_f1": 0.5957
+                "token_precision": 0.6154,
+                "token_recall": 0.8421,
+                "token_f1": 0.7111
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1301,7 +1330,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8929,
+            "faithfulness_lexical_proxy": 0.8846,
             "confidence_indicator": 0.7798,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1323,13 +1352,13 @@
             "question_id": "QA-034",
             "question_type": "direct",
             "question": "What does the sample document say about using it as a legal, financial, or medical template?",
-            "predicted_answer": "The sample document explicitly states that \"Nothing here should be treated as a template for legal, financial, or medical documents\" [ae01ca330e59b51eb03053e908474f2b70c8004e8fd16f45fa282500fbe89ddf]. This statement appears consistently across multiple document chunks, emphasizing that the file is designed as a fixture for system testing rather than as a template for sensitive professional domains.",
+            "predicted_answer": "The sample document states that it should not be treated as a template for legal, financial, or medical documents [ae01ca330e59b51eb03053e908474f2b70c8004e8fd16f45fa282500fbe89ddf, 2a9b7e9a8feb16b83201ee917ce8d17024a929479934b160894a3514a678d147, 7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a]",
             "expected_answer": "It explicitly says it should not be treated as a template for legal, financial, or medical documents.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.2653,
-                "token_recall": 0.7647,
-                "token_f1": 0.3939
+                "token_precision": 0.7368,
+                "token_recall": 0.8235,
+                "token_f1": 0.7778
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1337,10 +1366,10 @@
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.5,
             "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
+            "citation_count": 3,
+            "verified_citation_count": 3,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.7347,
+            "faithfulness_lexical_proxy": 0.9474,
             "confidence_indicator": 0.8394,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1354,6 +1383,14 @@
                 {
                     "chunk_id": "ae01ca330e59b51eb03053e908474f2b70c8004e8fd16f45fa282500fbe89ddf",
                     "verified": true
+                },
+                {
+                    "chunk_id": "2a9b7e9a8feb16b83201ee917ce8d17024a929479934b160894a3514a678d147",
+                    "verified": true
+                },
+                {
+                    "chunk_id": "7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a",
+                    "verified": true
                 }
             ],
             "status": "success"
@@ -1362,13 +1399,13 @@
             "question_id": "QA-035",
             "question_type": "direct",
             "question": "What are the four broad steps in the RAG process described in the AWS guide?",
-            "predicted_answer": "The AWS guide describes the RAG process as four broad steps:\n\n1. You create embeddings to ingest the internal documents into a vector database [d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45]\n\n2. A human submits a query in natural language [d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45]\n\n3. An orchestrator performs a similarity search in the vector database and retrieves the relevant data. The orchestrator adds the retrieved data (also known as context) to the prompt that contains the query [d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45]\n\n4. The orchestrator sends the query and the context to the LLM. The LLM generates a response to the query by using the additional context [8bec805348c85e7050f75c50010c68b04c344d62e7b5fb92616e598b30446ca5]",
+            "predicted_answer": "The four broad steps in the RAG process described in the AWS guide are:\n1. You create embeddings to ingest internal documents into a vector database\n2. A human submits a query in natural language\n3. An orchestrator performs similarity search in the vector database and retrieves relevant data\n4. The orchestrator sends the query and context to the LLM which generates a response [d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45]",
             "expected_answer": "Create embeddings to ingest internal documents into a vector database; convert the user query into a vector and retrieve similar vectors; pass retrieved context with the query to the foundation model; and return the generated response to the user.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.2857,
-                "token_recall": 0.6667,
-                "token_f1": 0.4
+                "token_precision": 0.375,
+                "token_recall": 0.6154,
+                "token_f1": 0.466
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1376,10 +1413,10 @@
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
-            "citation_count": 2,
-            "verified_citation_count": 2,
+            "citation_count": 1,
+            "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.989,
+            "faithfulness_lexical_proxy": 0.9688,
             "confidence_indicator": 0.9072,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1393,10 +1430,6 @@
                 {
                     "chunk_id": "d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45",
                     "verified": true
-                },
-                {
-                    "chunk_id": "8bec805348c85e7050f75c50010c68b04c344d62e7b5fb92616e598b30446ca5",
-                    "verified": true
                 }
             ],
             "status": "success"
@@ -1405,13 +1438,13 @@
             "question_id": "QA-036",
             "question_type": "direct",
             "question": "What is the role of a vector database in a production-level RAG system?",
-            "predicted_answer": "The vector database in a production-level RAG system serves as an index of the embeddings, associated text, and metadata, and is optimized for search and retrieval operations. [398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2]",
+            "predicted_answer": "The vector database serves as an index of the embeddings, associated text, and metadata, optimized for search and retrieval in a production-level RAG system [398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2].",
             "expected_answer": "It stores an index of embeddings together with associated text and metadata, optimized for search and retrieval.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.4643,
+                "token_precision": 0.52,
                 "token_recall": 0.7647,
-                "token_f1": 0.5778
+                "token_f1": 0.619
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1422,7 +1455,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9286,
+            "faithfulness_lexical_proxy": 0.96,
             "confidence_indicator": 0.9041,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1444,7 +1477,7 @@
             "question_id": "QA-037",
             "question_type": "direct",
             "question": "What does the retriever do in a RAG system?",
-            "predicted_answer": "The retriever fetches the relevant context from the vector database and ranks the responses based on business requirements [398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2].",
+            "predicted_answer": "The retriever fetches the relevant context from the vector database and ranks the responses based on business requirements [398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2]",
             "expected_answer": "For a user query, it fetches relevant context from the vector database and ranks the retrieved results according to the system's requirements.",
             "answer_correctness": {
                 "exact_match": 0,
@@ -1483,13 +1516,13 @@
             "question_id": "QA-038",
             "question_type": "direct",
             "question": "Name two similarity metrics mentioned for vector search in the AWS guide.",
-            "predicted_answer": "The AWS guide mentions L2 distance and cosine distance as two similarity metrics for vector search [03972aede5c92c13cf1b6f0cf7d3fe20c446f78e27d7a8d64c879f368f07f7b0].",
-            "expected_answer": "The guide mentions Euclidean distance, cosine distance, and dot product; any two are acceptable.",
+            "predicted_answer": "L2 distance and cosine distance [03972aede5c92c13cf1b6f0cf7d3fe20c446f78e27d7a8d64c879f368f07f7b0]",
+            "expected_answer": "L2 distance and cosine distance.",
             "answer_correctness": {
-                "exact_match": 0,
-                "token_precision": 0.5,
-                "token_recall": 0.5714,
-                "token_f1": 0.5333
+                "exact_match": 1,
+                "token_precision": 1.0,
+                "token_recall": 1.0,
+                "token_f1": 1.0
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1500,7 +1533,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8125,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.8595,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1522,13 +1555,13 @@
             "question_id": "QA-039",
             "question_type": "direct",
             "question": "Which vector database options are listed as supported by Amazon Bedrock Knowledge Bases in the cited chunk?",
-            "predicted_answer": "Amazon Bedrock knowledge bases support the following vector databases: Amazon OpenSearch Serverless, Amazon Aurora PostgreSQL-Compatible Edition, Pinecone (Pinecone documentation), Redis Enterprise Cloud (Redis documentation), and MongoDB Atlas (MongoDB documentation) [74b9512345f6a18ad1f760f4d10f066a0dfadb0865ebc787fee4b43458b80eb9]",
+            "predicted_answer": "Amazon OpenSearch Serverless, Amazon Aurora PostgreSQL-Compatible Edition, Pinecone (Pinecone documentation), Redis Enterprise Cloud (Redis documentation), and MongoDB Atlas (MongoDB documentation) [74b9512345f6a18ad1f760f4d10f066a0dfadb0865ebc787fee4b43458b80eb9]",
             "expected_answer": "Amazon OpenSearch Serverless, Amazon Aurora PostgreSQL-Compatible Edition, Pinecone, Redis Enterprise Cloud, and MongoDB Atlas.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.5,
+                "token_precision": 0.7143,
                 "token_recall": 1.0,
-                "token_f1": 0.6667
+                "token_f1": 0.8333
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1561,13 +1594,13 @@
             "question_id": "QA-040",
             "question_type": "direct",
             "question": "What are two advantages of using Amazon Kendra for RAG?",
-            "predicted_answer": "Two advantages of using Amazon Kendra for RAG are:\n- You do not have to maintain a vector database because Amazon Kendra handles the entire vector search process [9188d58cd23c7c5402ad9ffc3018269dd4d6f7b3bfd4718c6ff8e6eee584f629]\n- Amazon Kendra provides access control list (ACL) filtering that returns only documents that the end user has access to [9188d58cd23c7c5402ad9ffc3018269dd4d6f7b3bfd4718c6ff8e6eee584f629]",
+            "predicted_answer": "You do not have to maintain a vector database because Amazon Kendra handles the entire vector search process [9188d58cd23c7c5402ad9ffc3018269dd4d6f7b3bfd4718c6ff8e6eee584f629]. Amazon Kendra provides access control list (ACL) filtering that returns only documents that the end user has access to [9188d58cd23c7c5402ad9ffc3018269dd4d6f7b3bfd4718c6ff8e6eee584f629].",
             "expected_answer": "The guide says Kendra removes the need to maintain a separate vector database because it handles vector search, and it offers pre-built connectors to sources such as databases, websites, S3, SharePoint, and Confluence. It also supports ACL filtering and metadata-based boosting.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.3261,
+                "token_precision": 0.4054,
                 "token_recall": 0.3488,
-                "token_f1": 0.3371
+                "token_f1": 0.375
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1578,7 +1611,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9783,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.8167,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1600,13 +1633,13 @@
             "question_id": "QA-041",
             "question_type": "direct",
             "question": "What is one reason to choose a custom RAG architecture instead of a fully managed option?",
-            "predicted_answer": "You have a specific reason to customize the RAG workflow [4d1ca1c681f218687f3af2c084d6f4eb82484865f95f882b9bd5bc0fc2935930]",
-            "expected_answer": "A custom architecture can provide more control over components such as the retriever, vector database, and chunking strategy.",
+            "predicted_answer": "Custom RAG architectures provide more control over components such as the retriever or vector database [5053d3b849f7c708199df434cec4c62700e4e0420b87bff6b9067abb3366a755].",
+            "expected_answer": "Custom RAG architectures provide more control over components such as the retriever or vector database.",
             "answer_correctness": {
-                "exact_match": 0,
-                "token_precision": 0.2,
-                "token_recall": 0.1111,
-                "token_f1": 0.1429
+                "exact_match": 1,
+                "token_precision": 1.0,
+                "token_recall": 1.0,
+                "token_f1": 1.0
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1629,7 +1662,7 @@
             ],
             "citation_verification": [
                 {
-                    "chunk_id": "4d1ca1c681f218687f3af2c084d6f4eb82484865f95f882b9bd5bc0fc2935930",
+                    "chunk_id": "5053d3b849f7c708199df434cec4c62700e4e0420b87bff6b9067abb3366a755",
                     "verified": true
                 }
             ],
@@ -1639,13 +1672,13 @@
             "question_id": "QA-042",
             "question_type": "direct",
             "question": "What is the difference between the RetrieveAndGenerate and Retrieve APIs described for Amazon Bedrock?",
-            "predicted_answer": "The difference between the RetrieveAndGenerate and Retrieve APIs for Amazon Bedrock is:\n\nRetrieveAndGenerate queries your knowledge base and generates responses from the information it retrieves. Internally, Amazon Bedrock converts queries into embeddings, queries the knowledge base, augments the prompt with search results as context information, and returns the LLM-generated response. Amazon Bedrock also manages the short-term memory of the conversation to provide more contextual results [66bb8637b1cfbedb869a710a1b31828b40814630fcc6f6f5d3cdfc7452bb91d5].\n\nRetrieve queries your knowledge base with information retrieved directly from the knowledge base. You can use the information returned from this API to process the retrieved text, evaluate their relevance, or develop a separate workflow for response generation. Internally, Amazon Bedrock converts queries into embeddings, searches the knowledge base, and returns the relevant results. You can build additional workflows on top of the search results [c104e98f449482b6e465006c4e3e9c97d9c26fb32875c7ec15581eec39b632a9].\n\nThe key difference is that RetrieveAndGenerate automatically generates responses using the retrieved information through an LLM, while Retrieve simply returns search results that you must process to create your own responses.",
+            "predicted_answer": "The RetrieveAndGenerate API returns the LLM-generated response after augmenting the prompt with search results and manages short-term conversation memory, while the Retrieve API returns raw search results that require additional processing to generate responses. [66bb8637b1cfbedb869a710a1b31828b40814630fcc6f6f5d3cdfc7452bb91d5] [c104e98f449482b6e465006c4e3e9c97d9c26fb32875c7ec15581eec39b632a9]",
             "expected_answer": "RetrieveAndGenerate performs retrieval, augments the prompt, and generates a response; Retrieve queries the knowledge base and returns retrieved information directly for use by the application.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.1288,
-                "token_recall": 0.84,
-                "token_f1": 0.2234
+                "token_precision": 0.25,
+                "token_recall": 0.36,
+                "token_f1": 0.2951
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1656,7 +1689,7 @@
             "citation_count": 2,
             "verified_citation_count": 2,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9264,
+            "faithfulness_lexical_proxy": 0.8611,
             "confidence_indicator": 0.8824,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1682,26 +1715,26 @@
             "question_id": "QA-043",
             "question_type": "direct",
             "question": "What does the AWS guide say is a limitation of fine-tuned models for document question answering?",
-            "predicted_answer": "Fine-tuned models do not provide a reference to the source in their responses [a2faf4eda99fff0ecd5578f6414620df7204c685ebc61a5f25753373b47e2707].",
+            "predicted_answer": "I don't know. The model could not generate a reliable answer from the supplied documents.",
             "expected_answer": "Fine-tuned models do not provide references to source material in their responses, and the guide notes an increased risk of hallucination when they are used to answer questions.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.8571,
-                "token_recall": 0.4138,
-                "token_f1": 0.5581
+                "token_precision": 0.25,
+                "token_recall": 0.1379,
+                "token_f1": 0.1778
             },
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": true,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.5,
-            "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
-            "has_citations": true,
-            "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.9659,
-            "is_supported": true,
+            "citation_accuracy": null,
+            "citation_count": 0,
+            "verified_citation_count": 0,
+            "has_citations": false,
+            "faithfulness_lexical_proxy": 0.625,
+            "confidence_indicator": 0.3659,
+            "is_supported": false,
             "retrieved_chunk_ids": [
                 "7be36c2bcce96f680628a02a10c474397259c8c2bfbdcfc6d108be5fbb861618",
                 "a2faf4eda99fff0ecd5578f6414620df7204c685ebc61a5f25753373b47e2707",
@@ -1709,25 +1742,20 @@
                 "cef90fce40861bfcf382e87fe2df746fa2445d992df3c95916324abf497d2aeb",
                 "b16597300bcb732ccf54c19d81a60c157f0bc9791ee72053019941aade3efa0a"
             ],
-            "citation_verification": [
-                {
-                    "chunk_id": "a2faf4eda99fff0ecd5578f6414620df7204c685ebc61a5f25753373b47e2707",
-                    "verified": true
-                }
-            ],
+            "citation_verification": [],
             "status": "success"
         },
         {
             "question_id": "QA-044",
             "question_type": "direct",
             "question": "Which AWS service can run OCR on scanned documents during an Amazon Q Business enrichment workflow?",
-            "predicted_answer": "AWS Lambda is the service that can run OCR on scanned documents during an Amazon Q Business enrichment workflow, as the document states that \"you can use a Lambda function to run optical character recognition (OCR) on the scanned documents to extract text from them\" [344958f829e9b20440b62cf55dafbf8d6293fec5dc29e795af30b65d6bba5791].",
-            "expected_answer": "An AWS Lambda function can run OCR on scanned documents and extract text for ingestion.",
+            "predicted_answer": "AWS Lambda runs OCR on scanned documents during an Amazon Q Business enrichment workflow. [344958f829e9b20440b62cf55dafbf8d6293fec5dc29e795af30b65d6bba5791]",
+            "expected_answer": "AWS Lambda",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.2667,
-                "token_recall": 0.8,
-                "token_f1": 0.4
+                "token_precision": 0.1429,
+                "token_recall": 1.0,
+                "token_f1": 0.25
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1738,7 +1766,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9778,
+            "faithfulness_lexical_proxy": 0.9286,
             "confidence_indicator": 0.8657,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1760,7 +1788,7 @@
             "question_id": "QA-045",
             "question_type": "multi_hop",
             "question": "A team uses the Starter plan and wants to know both its maximum workspace size and API request allowance. What are the two limits?",
-            "predicted_answer": "The Starter plan has a maximum workspace size of 3 members [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb] and an API request allowance of 60 requests per minute [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb].",
+            "predicted_answer": "The Starter plan has a maximum workspace size of 3 members and an API request allowance of 60 requests per minute [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb].",
             "expected_answer": "The Starter plan allows up to 3 workspace members and 60 REST API requests per minute.",
             "answer_correctness": {
                 "exact_match": 0,
@@ -1799,13 +1827,13 @@
             "question_id": "QA-046",
             "question_type": "multi_hop",
             "question": "A company stores customer contracts and source code as Tier 2 data. What encryption applies, and how long is the retention period?",
-            "predicted_answer": "The company stores customer contracts and source code as Tier 2 data. According to the compliance policy, Tier 2 data (Customer Contracts, Source Code) applies AES-256 at rest, TLS 1.3 in transit encryption, with a retention period of 5 years [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549].",
+            "predicted_answer": "AES-256 at rest, TLS 1.3 in transit with a retention period of 5 years [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
             "expected_answer": "Tier 2 data uses AES-256 encryption at rest and TLS 1.3 in transit, with a 5-year retention period.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.4524,
-                "token_recall": 0.9048,
-                "token_f1": 0.6032
+                "token_precision": 0.875,
+                "token_recall": 0.6667,
+                "token_f1": 0.7568
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1816,7 +1844,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.881,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.7116,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1838,13 +1866,13 @@
             "question_id": "QA-047",
             "question_type": "multi_hop",
             "question": "A CloudNote Pro user is offline when a parent folder is deleted, then adds new documents to that folder. What caused the conflict and what are the documented recovery choices?",
-            "predicted_answer": "The conflict was caused when one user deletes a parent folder while another offline user adds new documents inside that same folder [90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6]. \n\nThe documented recovery choices are:\n1. Select \"Keep Both\" to restore the deleted folder structure alongside your offline notes\n2. Select \"Merge into Active Workspace\" to relocate the orphaned notes to your root directory",
+            "predicted_answer": "The conflict occurs when one user deletes a parent folder while another offline user adds new documents inside that same folder. The documented recovery choices are to either \"Keep Both\" to restore the deleted folder structure alongside offline notes or \"Merge into Active Workspace\" to relocate orphaned notes to the root directory [90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6].",
             "expected_answer": "The structural conflict occurs because one user deleted the parent folder while the offline user added documents inside it. The user should open the Conflict Resolution Drawer, compare local and cloud timestamps, and choose Keep Both or Merge into Active Workspace.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.375,
-                "token_recall": 0.5122,
-                "token_f1": 0.433
+                "token_precision": 0.4423,
+                "token_recall": 0.561,
+                "token_f1": 0.4946
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1855,7 +1883,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8929,
+            "faithfulness_lexical_proxy": 0.8846,
             "confidence_indicator": 0.6852,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1877,13 +1905,13 @@
             "question_id": "QA-048",
             "question_type": "multi_hop",
             "question": "An API client receives HTTP 400 after submitting a vector query. Which two causes are documented, and what should be checked?",
-            "predicted_answer": "The two documented causes are vector dimensionality mismatch and invalid JSON filter syntax [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc]. The client should check the vector dimensionality to ensure it matches the expected dimensionality and verify the JSON filter syntax is valid.",
+            "predicted_answer": "The documented causes for HTTP 400 after vector query submission are vector dimensionality mismatch and invalid JSON filter syntax [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc]. The client should verify the vector dimensionality and JSON filter syntax.",
             "expected_answer": "The guide lists a vector dimensionality mismatch or invalid JSON filter syntax. The client should check that the query vector matches the index dimensionality and that the filter JSON is valid.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.6571,
-                "token_recall": 0.7419,
-                "token_f1": 0.697
+                "token_precision": 0.6,
+                "token_recall": 0.5806,
+                "token_f1": 0.5902
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1894,7 +1922,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.7714,
+            "faithfulness_lexical_proxy": 0.7667,
             "confidence_indicator": 0.6087,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1916,24 +1944,24 @@
             "question_id": "QA-049",
             "question_type": "multi_hop",
             "question": "A customer has the Team Plan and asks how many API requests per minute are allowed and whether SSO/SAML is included by default. What does the plan table say?",
-            "predicted_answer": "The Team Plan allows 1,000 API requests per minute and SSO/SAML is not included by default (it's an add-on that costs $3/user/mo) [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb].",
+            "predicted_answer": "The Team Plan allows 1,000 API requests per minute [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb]. SSO/SAML 2.0 is not included by default and requires an add-on fee of $3 per user per month [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb].",
             "expected_answer": "The Team Plan allows 1,000 requests per minute. SSO/SAML 2.0 is not included by default; it is listed as an add-on for $3 per user per month.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.8214,
-                "token_recall": 0.7419,
-                "token_f1": 0.7797
+                "token_precision": 0.8387,
+                "token_recall": 0.8387,
+                "token_f1": 0.8387
             },
             "abstention_correct": null,
             "clarification_correct": null,
-            "is_abstention": false,
+            "is_abstention": true,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.5,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8929,
+            "faithfulness_lexical_proxy": 0.8387,
             "confidence_indicator": 0.6812,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1955,13 +1983,13 @@
             "question_id": "QA-050",
             "question_type": "multi_hop",
             "question": "For Tier 1 Restricted data, identify example data types, encryption, and retention period.",
-            "predicted_answer": "For Tier 1 Restricted data, the example data types are PII, Payment Cards, and Auth Secrets, with encryption standard AES-256-GCM + Customer Managed Keys and a retention period of 7 Years (Audit Regulated) [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549].",
+            "predicted_answer": "For Tier 1 Restricted data, example data types are PII, Payment Cards, and Auth Secrets; encryption uses AES-256-GCM with Customer Managed Keys; and the retention period is 7 years (Audit Regulated) [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549].",
             "expected_answer": "Examples are PII, payment cards, and authentication secrets. The required encryption is AES-256-GCM with customer-managed keys, and the retention period is 7 years for audit-regulated data.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.7059,
-                "token_recall": 0.8,
-                "token_f1": 0.75
+                "token_precision": 0.7576,
+                "token_recall": 0.8333,
+                "token_f1": 0.7937
             },
             "abstention_correct": null,
             "clarification_correct": null,
@@ -1972,7 +2000,7 @@
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9412,
+            "faithfulness_lexical_proxy": 0.8788,
             "confidence_indicator": 0.7565,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1994,21 +2022,21 @@
             "question_id": "QA-051",
             "question_type": "ambiguous",
             "question": "What is the API limit?",
-            "predicted_answer": "The API limit varies by subscription tier and endpoint. For the REST API, the rate limits are:\n- Starter (Free): 60 requests per minute [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb]\n- Team Plan ($12/user/month): 1,000 requests per minute [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb]\n- Enterprise Plan: 10,000 requests per minute [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb]\n\nAdditionally, specific endpoints may have their own dedicated limits, such as the `/v2/notes/export` endpoint having a burst limit of 60 requests per minute [71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59].",
+            "predicted_answer": "Which API limit are you referring to? (e.g., notes export API, vector search API, or REST API rate limits by subscription tier)",
             "expected_answer": "The question is ambiguous because the documents mention multiple limits. Please specify whether you mean the CloudScale API's top_k maximum, the upsert batch size, or a CloudNote Pro subscription plan's requests per minute.",
             "answer_correctness": null,
             "abstention_correct": null,
-            "clarification_correct": false,
+            "clarification_correct": true,
             "is_abstention": false,
             "retrieval_recall_at_k": 0.0,
             "mean_reciprocal_rank": 0.0,
-            "citation_accuracy": 1.0,
-            "citation_count": 2,
-            "verified_citation_count": 2,
-            "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8308,
-            "confidence_indicator": 0.6604,
-            "is_supported": true,
+            "citation_accuracy": null,
+            "citation_count": 0,
+            "verified_citation_count": 0,
+            "has_citations": false,
+            "faithfulness_lexical_proxy": 0.8261,
+            "confidence_indicator": 0.0604,
+            "is_supported": false,
             "retrieved_chunk_ids": [
                 "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
                 "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
@@ -2016,37 +2044,28 @@
                 "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
                 "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50"
             ],
-            "citation_verification": [
-                {
-                    "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
-                    "verified": true
-                },
-                {
-                    "chunk_id": "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
-                    "verified": true
-                }
-            ],
+            "citation_verification": [],
             "status": "success"
         },
         {
             "question_id": "QA-052",
             "question_type": "ambiguous",
             "question": "How long is data kept?",
-            "predicted_answer": "The retention period for data depends on the data tier:\n\n- Tier 1: Restricted (PII, Payment Cards, Auth Secrets) - 7 Years (Audit Regulated) [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]\n- Tier 2: Confidential (Customer Contracts, Source Code) - 5 Years [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]\n- Tier 3: Internal (SOPs, Internal Wikis, System Logs) - 2 Years [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]\n- Tier 4: Public (Marketing Brochures, API Docs) - Indefinite [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
+            "predicted_answer": "Which data retention policy are you asking about: the compliance policy tiers or AWS retrieval services?",
             "expected_answer": "The question is ambiguous because retention depends on the data classification tier or subscription feature. Please specify the policy tier or the type of data/version history you mean.",
             "answer_correctness": null,
             "abstention_correct": null,
-            "clarification_correct": false,
+            "clarification_correct": true,
             "is_abstention": false,
             "retrieval_recall_at_k": 0.5,
             "mean_reciprocal_rank": 1.0,
-            "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
-            "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9796,
-            "confidence_indicator": 0.6184,
-            "is_supported": true,
+            "citation_accuracy": null,
+            "citation_count": 0,
+            "verified_citation_count": 0,
+            "has_citations": false,
+            "faithfulness_lexical_proxy": 0.5,
+            "confidence_indicator": 0.0184,
+            "is_supported": false,
             "retrieved_chunk_ids": [
                 "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
                 "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
@@ -2054,19 +2073,14 @@
                 "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
                 "c9dbeae815502e9ee783ba38e6072f4696cb424601407637064c6557b083a723"
             ],
-            "citation_verification": [
-                {
-                    "chunk_id": "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
-                    "verified": true
-                }
-            ],
+            "citation_verification": [],
             "status": "success"
         },
         {
             "question_id": "QA-053",
             "question_type": "ambiguous",
             "question": "What encryption is used?",
-            "predicted_answer": "Are you asking about encryption in transit or encryption at rest?",
+            "predicted_answer": "Are you asking about encryption in transit, encryption at rest, or specific data tiers (e.g., Tier 1, Tier 2)?",
             "expected_answer": "Please clarify whether you mean CloudNote Pro's document encryption, the compliance policy's tier-specific encryption, or encryption in transit. The documents describe different controls for each context.",
             "answer_correctness": null,
             "abstention_correct": null,
@@ -2078,7 +2092,7 @@
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.8182,
+            "faithfulness_lexical_proxy": 0.75,
             "confidence_indicator": 0.0376,
             "is_supported": false,
             "retrieved_chunk_ids": [
@@ -2095,7 +2109,7 @@
             "question_id": "QA-054",
             "question_type": "ambiguous",
             "question": "What happened to the customer?",
-            "predicted_answer": "Which customer are you referring to? (TKT-88412, TKT-88430, or TKT-88438)",
+            "predicted_answer": "Which customer incident are you referring to: billing change, account security compromise, or API throttling issue?",
             "expected_answer": "The support file contains several customer tickets with different issues. Please provide a ticket ID (for example, TKT-88412 or TKT-88430) so I can identify the correct interaction.",
             "answer_correctness": null,
             "abstention_correct": null,
@@ -2107,7 +2121,7 @@
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.9231,
+            "faithfulness_lexical_proxy": 0.625,
             "confidence_indicator": 0.0002,
             "is_supported": false,
             "retrieved_chunk_ids": [
@@ -2124,21 +2138,21 @@
             "question_id": "QA-055",
             "question_type": "ambiguous",
             "question": "Which database should we use for RAG?",
-            "predicted_answer": "The document does not specify a single database that \"should\" be used for RAG. Instead, it describes options that depend on your specific use case and requirements:\n\nYou can use a fully managed semantic search solution like Amazon Kendra, or build a custom semantic search by using an AWS vector database [c3e1a7b13759882ae370458d8c1aabd438abd4a30452ce02561bf84e1895e82b]. \n\nFor production systems, you can start with fully managed services such as Amazon Q Business and Amazon Bedrock knowledge bases, or choose a custom retriever if you want more control over the RAG workflow [5b369661fa39c10ccadf88366c3d3dc0187c281c8ec6dab1d51f412661c2c17b].\n\nThe document states that \"Review the recommendations in Choosing a RAG option to determine which option is best suited for your use case\" [5b369661fa39c10ccadf88366c3d3dc0187c281c8ec6dab1d51f412661c2c17b].",
+            "predicted_answer": "What RAG use case or requirement should the database support?",
             "expected_answer": "The AWS guide describes several options rather than naming one universally best database. Please specify constraints such as existing infrastructure, latency, graph-query needs, or how much control you need.",
             "answer_correctness": null,
             "abstention_correct": null,
-            "clarification_correct": true,
-            "is_abstention": true,
+            "clarification_correct": false,
+            "is_abstention": false,
             "retrieval_recall_at_k": 0.0,
             "mean_reciprocal_rank": 0.0,
-            "citation_accuracy": 1.0,
-            "citation_count": 2,
-            "verified_citation_count": 2,
-            "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8981,
-            "confidence_indicator": 0.9647,
-            "is_supported": true,
+            "citation_accuracy": null,
+            "citation_count": 0,
+            "verified_citation_count": 0,
+            "has_citations": false,
+            "faithfulness_lexical_proxy": 0.7,
+            "confidence_indicator": 0.3647,
+            "is_supported": false,
             "retrieved_chunk_ids": [
                 "c3e1a7b13759882ae370458d8c1aabd438abd4a30452ce02561bf84e1895e82b",
                 "398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2",
@@ -2146,23 +2160,14 @@
                 "8bec805348c85e7050f75c50010c68b04c344d62e7b5fb92616e598b30446ca5",
                 "5b369661fa39c10ccadf88366c3d3dc0187c281c8ec6dab1d51f412661c2c17b"
             ],
-            "citation_verification": [
-                {
-                    "chunk_id": "c3e1a7b13759882ae370458d8c1aabd438abd4a30452ce02561bf84e1895e82b",
-                    "verified": true
-                },
-                {
-                    "chunk_id": "5b369661fa39c10ccadf88366c3d3dc0187c281c8ec6dab1d51f412661c2c17b",
-                    "verified": true
-                }
-            ],
+            "citation_verification": [],
             "status": "success"
         },
         {
             "question_id": "QA-056",
             "question_type": "ambiguous",
             "question": "Is the platform secure?",
-            "predicted_answer": "Yes, CloudNote Pro is secure with strong security measures including encryption in transit (TLS 1.3 with certificate pinning) [a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84], encryption at rest (AES-256-GCM with customer-managed keys) [a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84], compliance with SOC 2 Type II, GDPR, and HIPAA [a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84], and mandatory multi-factor authentication for administrative access [b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf].",
+            "predicted_answer": "Which security aspect of CloudNote Pro are you referring to?",
             "expected_answer": "The question is too broad to answer with a single yes/no. Please specify the security area (authentication, encryption, incident response, access control, or compliance) and which product or policy document you mean.",
             "answer_correctness": null,
             "abstention_correct": null,
@@ -2170,13 +2175,13 @@
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.3333,
-            "citation_accuracy": 1.0,
-            "citation_count": 2,
-            "verified_citation_count": 2,
-            "has_citations": true,
-            "faithfulness_lexical_proxy": 0.913,
-            "confidence_indicator": 0.6001,
-            "is_supported": true,
+            "citation_accuracy": null,
+            "citation_count": 0,
+            "verified_citation_count": 0,
+            "has_citations": false,
+            "faithfulness_lexical_proxy": 0.6,
+            "confidence_indicator": 0.0001,
+            "is_supported": false,
             "retrieved_chunk_ids": [
                 "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
                 "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
@@ -2184,42 +2189,33 @@
                 "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
                 "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936"
             ],
-            "citation_verification": [
-                {
-                    "chunk_id": "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
-                    "verified": true
-                },
-                {
-                    "chunk_id": "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf",
-                    "verified": true
-                }
-            ],
+            "citation_verification": [],
             "status": "success"
         },
         {
             "question_id": "QA-057",
             "question_type": "direct",
             "question": "What is the current price of CloudNote Pro's Enterprise plan?",
-            "predicted_answer": "The documents do not provide a specific price for CloudNote Pro's Enterprise plan. The pricing table in the `knowledge_base_sample.md` document (citation ID: `57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2`) shows that the Enterprise plan is labeled as \"Custom\", which means it is not a standard price but rather customized based on business needs. \n\nThis indicates that the pricing for the Enterprise plan is tailored to individual requirements rather than being a fixed or publicly disclosed price point.",
-            "expected_answer": "The Enterprise plan is custom-priced; the supplied documents do not provide a numeric price.",
+            "predicted_answer": "The current price of CloudNote Pro's Enterprise plan is custom, as it is not a fixed price but tailored based on customer requirements. [57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2]",
+            "expected_answer": "CloudNote Pro's Enterprise plan has a custom price (not a fixed price).",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.1644,
-                "token_recall": 0.8,
-                "token_f1": 0.2727
+                "token_precision": 0.4583,
+                "token_recall": 0.8462,
+                "token_f1": 0.5946
             },
             "abstention_correct": null,
             "clarification_correct": null,
-            "is_abstention": true,
+            "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.25,
-            "citation_accuracy": null,
-            "citation_count": 0,
-            "verified_citation_count": 0,
-            "has_citations": false,
-            "faithfulness_lexical_proxy": 0.4795,
-            "confidence_indicator": 0.0503,
-            "is_supported": false,
+            "citation_accuracy": 1.0,
+            "citation_count": 1,
+            "verified_citation_count": 1,
+            "has_citations": true,
+            "faithfulness_lexical_proxy": 0.5417,
+            "confidence_indicator": 0.6503,
+            "is_supported": true,
             "retrieved_chunk_ids": [
                 "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
                 "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936",
@@ -2227,26 +2223,31 @@
                 "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
                 "fd7932ca9294a8d0aa37c38ba956febcc3a400998b21d3855c3577f661fd3ad1"
             ],
-            "citation_verification": [],
+            "citation_verification": [
+                {
+                    "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
+                    "verified": true
+                }
+            ],
             "status": "success"
         },
         {
             "question_id": "QA-058",
             "question_type": "unanswerable",
             "question": "What is the name of the person who founded CloudNote Pro?",
-            "predicted_answer": "The supplied documents do not contain enough information to determine who founded CloudNote Pro. None of the document chunks mention the founder of CloudNote Pro. The context describes CloudNote Pro as a collaborative workspace platform and its architecture, but does not include any information about its founders or company origins.",
+            "predicted_answer": "The supplied documents do not contain enough information about who founded CloudNote Pro.",
             "expected_answer": "The supplied documents do not identify the founder of CloudNote Pro.",
             "answer_correctness": null,
-            "abstention_correct": false,
+            "abstention_correct": true,
             "clarification_correct": null,
-            "is_abstention": false,
+            "is_abstention": true,
             "retrieval_recall_at_k": null,
             "mean_reciprocal_rank": null,
             "citation_accuracy": null,
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.56,
+            "faithfulness_lexical_proxy": 0.5385,
             "confidence_indicator": 0.0539,
             "is_supported": false,
             "retrieved_chunk_ids": [
@@ -2263,19 +2264,19 @@
             "question_id": "QA-059",
             "question_type": "unanswerable",
             "question": "What is the phone number for the CloudNote Pro support team?",
-            "predicted_answer": "The supplied documents do not contain enough information to answer what the phone number for the CloudNote Pro support team is. None of the document chunks mention a phone number for support contact. The context includes customer support transcripts and knowledge base information about CloudNote Pro, but there is no contact information for the support team including phone numbers.",
+            "predicted_answer": "The supplied documents do not contain information about the phone number for the CloudNote Pro support team.",
             "expected_answer": "The supplied documents do not provide a CloudNote Pro support phone number.",
             "answer_correctness": null,
-            "abstention_correct": false,
+            "abstention_correct": true,
             "clarification_correct": null,
-            "is_abstention": false,
+            "is_abstention": true,
             "retrieval_recall_at_k": null,
             "mean_reciprocal_rank": null,
             "citation_accuracy": null,
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.5593,
+            "faithfulness_lexical_proxy": 0.5882,
             "confidence_indicator": 0.1176,
             "is_supported": false,
             "retrieved_chunk_ids": [
@@ -2292,7 +2293,7 @@
             "question_id": "QA-060",
             "question_type": "unanswerable",
             "question": "Which country hosts the CloudNote Pro production database?",
-            "predicted_answer": "The supplied documents do not contain enough information to determine which country hosts the CloudNote Pro production database. The context mentions CloudNote Pro uses PostgreSQL with row-level security in the storage layer and references Amazon services, but does not specify the country where the production database is hosted.",
+            "predicted_answer": "The supplied documents do not contain enough information to determine which country hosts the CloudNote Pro production database.",
             "expected_answer": "The supplied documents do not specify the country or region hosting the production PostgreSQL cluster.",
             "answer_correctness": null,
             "abstention_correct": true,
@@ -2304,7 +2305,7 @@
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.449,
+            "faithfulness_lexical_proxy": 0.2778,
             "confidence_indicator": 0.0318,
             "is_supported": false,
             "retrieved_chunk_ids": [
@@ -2321,7 +2322,7 @@
             "question_id": "QA-061",
             "question_type": "unanswerable",
             "question": "What is the exact embedding model used by the CloudScale Vector API in production?",
-            "predicted_answer": "The supplied documents do not contain enough information to answer what the exact embedding model used by the CloudScale Vector API in production is. While the first document describes CloudScale Vector API v2.4 and its functionality, it does not specify any embedding model used by the API. The other documents discuss RAG systems and vector databases in general but do not mention CloudScale's specific embedding model implementation in production.",
+            "predicted_answer": "The supplied documents do not contain enough information to determine the exact embedding model used by the CloudScale Vector API in production.",
             "expected_answer": "The CloudScale API document gives an example vector dimensionality but does not identify the production embedding model.",
             "answer_correctness": null,
             "abstention_correct": true,
@@ -2333,7 +2334,7 @@
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.6761,
+            "faithfulness_lexical_proxy": 0.6818,
             "confidence_indicator": 0.1039,
             "is_supported": false,
             "retrieved_chunk_ids": [
@@ -2350,7 +2351,7 @@
             "question_id": "QA-062",
             "question_type": "unanswerable",
             "question": "What is the password for the CloudNote Pro administrator account?",
-            "predicted_answer": "The supplied documents do not contain enough information to answer what the password for the CloudNote Pro administrator account is. While the documents describe security policies (including MFA requirements) and mention password reset procedures, they do not provide any specific administrator account password. The context only states that customers should \"reset your password using a unique passphrase\" in one support transcript, but never reveals the actual password value.",
+            "predicted_answer": "The supplied documents do not contain information about the specific password for the CloudNote Pro administrator account.",
             "expected_answer": "The supplied documents do not provide an administrator password, and credentials should not be inferred or disclosed.",
             "answer_correctness": null,
             "abstention_correct": true,
@@ -2362,7 +2363,7 @@
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.5588,
+            "faithfulness_lexical_proxy": 0.5882,
             "confidence_indicator": 0.0485,
             "is_supported": false,
             "retrieved_chunk_ids": [
@@ -2379,7 +2380,7 @@
             "question_id": "QA-063",
             "question_type": "unanswerable",
             "question": "What was the exact date and time of the Frankfurt login alert in ticket TKT-88430?",
-            "predicted_answer": "The supplied documents do not contain enough information to answer the question about the exact date and time of the Frankfurt login alert in ticket TKT-88430. \n\nThe document for ticket TKT-88430 (citation ID 53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511) mentions that the customer \"received an email saying a new login occurred from an unrecognized browser in Frankfurt, Germany\" but does not specify the exact date and time when this alert was generated. The transcript only describes the customer's query and the agent's response without including any timestamps or specific dates related to the login event.",
+            "predicted_answer": "The supplied documents do not contain the exact date and time of the Frankfurt login alert in ticket TKT-88430. The transcript only states that the customer \"received an email saying a new login occurred from an unrecognized browser in Frankfurt, Germany\" but does not specify when this alert occurred.",
             "expected_answer": "The visible ticket content identifies the location as Frankfurt, Germany, but does not provide an exact timestamp for the login alert.",
             "answer_correctness": null,
             "abstention_correct": true,
@@ -2391,7 +2392,7 @@
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.6809,
+            "faithfulness_lexical_proxy": 0.76,
             "confidence_indicator": 0.0685,
             "is_supported": false,
             "retrieved_chunk_ids": [
