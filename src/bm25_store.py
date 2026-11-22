@@ -358,10 +358,41 @@ def search_bm25(
                     continue
 
             if where is not None:
-                matches_filter = all(
-                    metadata.get(key) == value
-                    for key, value in where.items()
-                )
+                matches_filter = True
+
+                for key, condition in where.items():
+                    metadata_value = metadata.get(key)
+
+                    # Support ChromaDB-style $in filters.
+                    if isinstance(condition, dict):
+                        if "$in" in condition:
+                            allowed_values = condition["$in"]
+
+                            if not isinstance(allowed_values, (list, tuple, set)):
+                                raise ValueError(
+                                    f"The $in filter for '{key}' must contain a list or tuple"
+                                )
+
+                            if metadata_value not in allowed_values:
+                                matches_filter = False
+                                break
+
+                        # Support explicit equality filters.
+                        elif "$eq" in condition:
+                            if metadata_value != condition["$eq"]:
+                                matches_filter = False
+                                break
+
+                        else:
+                            raise ValueError(
+                                f"Unsupported BM25 filter operator for '{key}': "
+                                f"{list(condition.keys())}"
+                            )
+
+                    # Support ordinary exact-match filters.
+                    elif metadata_value != condition:
+                        matches_filter = False
+                        break
 
                 if not matches_filter:
                     continue
