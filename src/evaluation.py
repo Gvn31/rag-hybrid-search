@@ -101,6 +101,30 @@ def normalize_qa_dataset(dataset):
             if not answerable:
                 relevant_chunk_ids = []
 
+            relevant_sources = item.get("relevant_sources", [])
+            if not isinstance(relevant_sources, list):
+                relevant_sources = []
+
+            if answerable and not relevant_sources:
+                relevant_sources = [
+                    chunk["source"]
+                    for chunk in source_chunks
+                    if (
+                        isinstance(chunk, dict)
+                        and isinstance(chunk.get("source"), str)
+                        and chunk["source"].strip()
+                    )
+                ]
+
+            relevant_sources = list(dict.fromkeys(
+                source
+                for source in relevant_sources
+                if isinstance(source, str) and source.strip()
+            ))
+
+            if not answerable:
+                relevant_sources = []
+
             normalized_questions.append({
                 "question_id": question_id,
                 "question": item.get("question"),
@@ -110,6 +134,7 @@ def normalize_qa_dataset(dataset):
                     ""
                 ),
                 "relevant_chunk_ids": relevant_chunk_ids,
+                "relevant_sources": relevant_sources,
                 "answerable": answerable
 
             })
@@ -371,6 +396,55 @@ def calculate_recall_at_k(retrieved_chunks, relevant_chunk_ids):
         raise RAGPipelineException(str(e)) from e
 
 
+def calculate_source_recall_at_k(retrieved_chunks, relevant_sources):
+
+    """Calculate source-level Recall@K for strategy comparisons."""
+
+    if not relevant_sources:
+        return None
+
+    relevant = set(relevant_sources)
+    retrieved = set()
+
+    for chunk in retrieved_chunks:
+        if not isinstance(chunk, dict):
+            continue
+        metadata = chunk.get("metadata", {})
+        source = (
+            metadata.get("source")
+            if isinstance(metadata, dict)
+            else None
+        ) or chunk.get("source")
+        if isinstance(source, str):
+            retrieved.add(source)
+
+    return round(len(relevant.intersection(retrieved)) / len(relevant), 4)
+
+
+def calculate_source_mrr(retrieved_chunks, relevant_sources):
+
+    """Calculate reciprocal rank by source document."""
+
+    if not relevant_sources:
+        return None
+
+    relevant = set(relevant_sources)
+
+    for rank, chunk in enumerate(retrieved_chunks, start=1):
+        if not isinstance(chunk, dict):
+            continue
+        metadata = chunk.get("metadata", {})
+        source = (
+            metadata.get("source")
+            if isinstance(metadata, dict)
+            else None
+        ) or chunk.get("source")
+        if source in relevant:
+            return round(1.0 / rank, 4)
+
+    return 0.0
+
+
 def calculate_mrr(retrieved_chunks, relevant_chunk_ids):
 
     """Calculate reciprocal rank using one rank per retrieved chunk."""
@@ -580,6 +654,8 @@ def is_abstention(answer):
             r"\bcould not be determined\b",
 
             r"\bnot specified\b",
+
+            r"\bnot explicitly (?:stated|specified|mentioned|identified|provided)\b",
 
             r"\bnot identified\b",
 
@@ -1198,6 +1274,16 @@ def evaluate_single_question(
 
         )
 
+        relevant_sources = qa_item.get("relevant_sources", [])
+        source_recall = calculate_source_recall_at_k(
+            retrieved_chunks,
+            relevant_sources
+        )
+        source_mrr = calculate_source_mrr(
+            retrieved_chunks,
+            relevant_sources
+        )
+
         faithfulness = evaluate_lexical_faithfulness(
 
             answer,
@@ -1243,6 +1329,10 @@ def evaluate_single_question(
             "retrieval_recall_at_k": retrieval_recall,
 
             "mean_reciprocal_rank": mrr,
+
+            "source_recall_at_k": source_recall,
+
+            "source_mean_reciprocal_rank": source_mrr,
 
             "citation_accuracy": citation_accuracy,
 
@@ -1457,6 +1547,16 @@ def calculate_aggregate_metrics(results):
 
             ]),
 
+            "source_recall_at_k": calculate_average([
+                result.get("source_recall_at_k")
+                for result in successful_results
+            ]),
+
+            "source_mean_reciprocal_rank": calculate_average([
+                result.get("source_mean_reciprocal_rank")
+                for result in successful_results
+            ]),
+
             # Micro-average over citations actually emitted. Responses without
 
             # citations are measured separately as citation coverage.
@@ -1527,13 +1627,11 @@ def compare_chunking_strategies(strategy_results):
             raise ValueError("Invalid strategy results")
 
         required_metrics = [
-
             "answer_token_f1",
-            "retrieval_recall_at_k",
-            "mean_reciprocal_rank",
+            "source_recall_at_k",
+            "source_mean_reciprocal_rank",
             "citation_accuracy",
             "faithfulness_lexical_proxy"
-
         ]
 
         comparison = {}
@@ -1582,18 +1680,14 @@ def compare_chunking_strategies(strategy_results):
 
 
 # Evaluation report output
-def save_evaluation_report(report):
+def save_evaluation_report(report, output_path=None):
 
     """Save the evaluation report as JSON."""
 
     try:
-
-        EVALUATION_REPORT_PATH.parent.mkdir(
-            parents=True,
-            exist_ok=True
-        )
-
-        temporary_path = EVALUATION_REPORT_PATH.with_suffix(".tmp")
+        report_path = Path(output_path) if output_path else EVALUATION_REPORT_PATH
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        temporary_path = report_path.with_suffix(report_path.suffix + ".tmp")
 
         with temporary_path.open("w", encoding="utf-8") as file:
 
@@ -1603,15 +1697,11 @@ def save_evaluation_report(report):
 
             file.flush()
 
-        temporary_path.replace(EVALUATION_REPORT_PATH)
+        temporary_path.replace(report_path)
 
-        logger.info(
+        logger.info("Evaluation report saved: {}", report_path)
 
-            f"Evaluation report saved: {EVALUATION_REPORT_PATH}"
-
-        )
-
-        return EVALUATION_REPORT_PATH
+        return report_path
 
     except Exception as e:
 
@@ -1631,7 +1721,9 @@ def evaluate_dataset(
 
     user_id=None,
 
-    source_filter=None
+    source_filter=None,
+
+    report_path=None
 
 ):
 
@@ -1726,7 +1818,11 @@ def evaluate_dataset(
 
         }
 
-        save_evaluation_report(report)
+        saved_report_path = save_evaluation_report(
+            report,
+            output_path=report_path
+        )
+        report["report_path"] = str(saved_report_path)
 
         logger.info("Complete dataset evaluation finished")
 
@@ -1790,5 +1886,9 @@ def main():
 if __name__ == "__main__":
     main()
 
+
+
+
+        
 
 

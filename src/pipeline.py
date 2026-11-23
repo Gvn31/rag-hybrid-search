@@ -1,4 +1,3 @@
-
 import argparse
 from pathlib import Path
 
@@ -18,6 +17,14 @@ from src.indexing import index_embedded_chunks
 
 from src.vector_store import initialize_vector_store
 from src.bm25_store import get_index_count
+from src.evaluation import (
+    EVALUATION_REPORT_PATH,
+    EVALUATION_SOURCES,
+    evaluate_dataset,
+    load_qa_dataset,
+    compare_chunking_strategies,
+    save_evaluation_report
+)
 
 
 # Set the project data directory
@@ -53,7 +60,10 @@ def process_document(
     strategy=CHUNKING_STRATEGY,
     user_id=None,
     replace_existing=True,
-    corpus_id=DEFAULT_CORPUS_ID
+    corpus_id=DEFAULT_CORPUS_ID,
+    run_evaluation=True,
+    evaluation_top_k=5,
+    retrieval_top_k=50
 ):
 
     try:
@@ -207,7 +217,11 @@ def run_pipeline(
     strategy=CHUNKING_STRATEGY,
     user_id=None,
     replace_existing=True,
-    corpus_id=DEFAULT_CORPUS_ID
+    corpus_id=DEFAULT_CORPUS_ID,
+    run_evaluation=True,
+    evaluation_top_k=5,
+    retrieval_top_k=50,
+    evaluation_report_path=None
 ):
 
     try:
@@ -249,18 +263,9 @@ def run_pipeline(
         )
 
         if not document_files:
-
-            logger.warning(
+            raise FileNotFoundError(
                 f"No supported documents found in {raw_dir}"
             )
-
-            return {
-                "total_files": 0,
-                "successful": 0,
-                "skipped": 0,
-                "corpus_id": corpus_id,
-                "results": []
-            }
 
         logger.info(
             f"Found {len(document_files)} documents in {raw_dir} | "
@@ -304,12 +309,30 @@ def run_pipeline(
 
         # Read final index counts
         _, collection = initialize_vector_store()
-
         chroma_count = collection.count()
-
         bm25_count = get_index_count()
 
-        # Prepare pipeline summary
+        if successful == 0:
+            raise RAGPipelineException(
+                "No documents were indexed successfully; evaluation was not started."
+            )
+
+        evaluation_report = None
+
+        # Evaluate the indexed documents against the complete QA dataset.
+        if run_evaluation:
+            logger.info("Starting end-to-end QA evaluation")
+            dataset = load_qa_dataset()
+            evaluation_report = evaluate_dataset(
+                dataset=dataset,
+                top_k=evaluation_top_k,
+                retrieval_top_k=retrieval_top_k,
+                user_id=user_id,
+                source_filter=EVALUATION_SOURCES,
+                report_path=evaluation_report_path
+            )
+
+        # Prepare the complete pipeline summary.
         summary = {
             "total_files": len(document_files),
             "successful": successful,
@@ -317,6 +340,15 @@ def run_pipeline(
             "corpus_id": corpus_id,
             "chroma_count": chroma_count,
             "bm25_count": bm25_count,
+            "evaluation_completed": evaluation_report is not None,
+            "evaluation_report": (
+                str(evaluation_report.get("report_path", EVALUATION_REPORT_PATH))
+                if evaluation_report else None
+            ),
+            "evaluation_metrics": (
+                evaluation_report.get("aggregate_metrics")
+                if evaluation_report else None
+            ),
             "results": results
         }
 
@@ -341,6 +373,102 @@ def run_pipeline(
             "RAG pipeline execution failed"
         )
 
+        raise RAGPipelineException(str(e)) from e
+
+
+
+
+# Evaluate every chunking strategy using the same QA dataset
+
+def run_chunking_strategy_comparison(
+    raw_dir=RAW_DATA_DIR,
+    strategies=("fixed_size", "recursive", "semantic"),
+    user_id=None,
+    corpus_id=DEFAULT_CORPUS_ID,
+    evaluation_top_k=5,
+    retrieval_top_k=50
+):
+
+    try:
+        supported_strategies = {"fixed_size", "recursive", "semantic"}
+        if (
+            not isinstance(strategies, (list, tuple))
+            or len(strategies) != len(supported_strategies)
+            or set(strategies) != supported_strategies
+        ):
+            raise ValueError(
+                "Strategies must include fixed_size, recursive, and semantic exactly once"
+            )
+
+        strategy_results = {}
+        report_paths = {}
+
+        for strategy in strategies:
+            strategy_report_path = EVALUATION_REPORT_PATH.with_name(
+                f"evaluation_report_{strategy}.json"
+            )
+            logger.info("Running chunking comparison for {}", strategy)
+
+            run_summary = run_pipeline(
+                raw_dir=raw_dir,
+                strategy=strategy,
+                user_id=user_id,
+                replace_existing=True,
+                corpus_id=corpus_id,
+                run_evaluation=True,
+                evaluation_top_k=evaluation_top_k,
+                retrieval_top_k=retrieval_top_k,
+                evaluation_report_path=strategy_report_path
+            )
+
+            metrics = run_summary.get("evaluation_metrics")
+            if not isinstance(metrics, dict):
+                raise ValueError(
+                    f"No evaluation metrics returned for {strategy}"
+                )
+
+            strategy_results[strategy] = metrics
+            report_paths[strategy] = str(strategy_report_path)
+
+        comparison = compare_chunking_strategies(strategy_results)
+        comparison_report = {
+            "strategies": list(strategies),
+            "retrieval_comparison_method": (
+                "Source-level relevance is used because chunk IDs change by strategy."
+            ),
+            "reports": report_paths,
+            "metrics": comparison
+        }
+        comparison_path = EVALUATION_REPORT_PATH.with_name(
+            "chunking_strategy_comparison.json"
+        )
+        save_evaluation_report(comparison_report, comparison_path)
+
+        run_pipeline(
+            raw_dir=raw_dir,
+            strategy=CHUNKING_STRATEGY,
+            user_id=user_id,
+            replace_existing=True,
+            corpus_id=corpus_id,
+            run_evaluation=False
+        )
+
+        logger.info(
+            "Chunking strategy comparison saved: {}",
+            comparison_path
+        )
+        return {
+            "comparison_report": str(comparison_path),
+            "reports": report_paths,
+            "metrics": comparison,
+            "active_strategy_restored": CHUNKING_STRATEGY
+        }
+
+    except RAGPipelineException:
+        raise
+
+    except Exception as e:
+        logger.exception("Chunking strategy comparison failed")
         raise RAGPipelineException(str(e)) from e
 
 
@@ -371,6 +499,12 @@ def main():
     )
 
     parser.add_argument(
+        "--compare-chunking-strategies",
+        action="store_true",
+        help="Run evaluation with fixed-size, recursive, and semantic chunking"
+    )
+
+    parser.add_argument(
         "--user-id",
         default=None,
         help="User ID for document isolation"
@@ -391,6 +525,26 @@ def main():
         help="Do not replace existing document versions"
     )
 
+    parser.add_argument(
+        "--skip-evaluation",
+        action="store_true",
+        help="Run ingestion and indexing without QA evaluation"
+    )
+
+    parser.add_argument(
+        "--evaluation-top-k",
+        type=int,
+        default=5,
+        help="Number of final retrieved chunks used during evaluation"
+    )
+
+    parser.add_argument(
+        "--retrieval-top-k",
+        type=int,
+        default=50,
+        help="Candidate chunks retrieved before reranking during evaluation"
+    )
+
     args = parser.parse_args()
 
     try:
@@ -399,12 +553,32 @@ def main():
             "\nStarting RAG document indexing pipeline...\n"
         )
 
+        if args.compare_chunking_strategies:
+            comparison = run_chunking_strategy_comparison(
+                raw_dir=args.raw_dir,
+                user_id=args.user_id,
+                corpus_id=args.corpus_id,
+                evaluation_top_k=args.evaluation_top_k,
+                retrieval_top_k=args.retrieval_top_k
+            )
+            print("\nChunking Strategy Comparison")
+            print("-" * 40)
+            for strategy, metrics in comparison["metrics"].items():
+                print(f"{strategy}:")
+                for metric, value in metrics.items():
+                    print(f"  {metric}: {value}")
+            print(f"\nComparison report: {comparison['comparison_report']}")
+            return
+
         summary = run_pipeline(
             raw_dir=args.raw_dir,
             strategy=args.strategy,
             user_id=args.user_id,
             replace_existing=not args.keep_existing,
-            corpus_id=args.corpus_id
+            corpus_id=args.corpus_id,
+            run_evaluation=not args.skip_evaluation,
+            evaluation_top_k=args.evaluation_top_k,
+            retrieval_top_k=args.retrieval_top_k
         )
 
         print("\nPipeline Summary")
@@ -429,6 +603,13 @@ def main():
             "\nPipeline execution completed."
         )
 
+        if summary.get("evaluation_completed"):
+            print("\nEvaluation Metrics")
+            print("-" * 40)
+            for metric, value in summary["evaluation_metrics"].items():
+                print(f"{metric}: {value}")
+            print(f"\nEvaluation report: {summary['evaluation_report']}")
+
     except RAGPipelineException as e:
 
         logger.error(
@@ -452,3 +633,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
