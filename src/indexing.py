@@ -1,4 +1,3 @@
-
 import math
 
 from src.logger import logger
@@ -19,7 +18,7 @@ from src.vector_store import (
 from src.bm25_store import (
     index_chunks,
     delete_document as delete_bm25_document,
-    load_bm25_index
+    load_bm25_records
 )
 
 
@@ -216,7 +215,7 @@ def get_bm25_chunk_ids(source, user_id=None):
         if not isinstance(source, str) or not source.strip():
             raise ValueError("A valid source is required")
 
-        records, _ = load_bm25_index()
+        records = load_bm25_records()
 
         chunk_ids = set()
 

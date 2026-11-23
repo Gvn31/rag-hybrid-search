@@ -113,57 +113,70 @@ def validate_record(record):
         raise RAGPipelineException(str(e)) from e
 
 
-# Load saved document records and build the BM25 index
-def load_bm25_index():
+# Load every persisted BM25 record
+
+def load_bm25_records():
     try:
         if not BM25_FILE.exists():
             logger.info("No existing BM25 index found")
-            return [], None
+            return []
 
-        with open(BM25_FILE, "r", encoding="utf-8") as file:
+        with BM25_FILE.open("r", encoding="utf-8") as file:
             records = json.load(file)
 
         if not isinstance(records, list):
             raise ValueError("Invalid BM25 index format")
 
         seen_ids = set()
-        valid_records = []
-        valid_corpus = []
-
         for record in records:
-
             validate_record(record)
-
             if record["id"] in seen_ids:
                 raise ValueError(
                     f"Duplicate BM25 record ID: {record['id']}"
                 )
-
             seen_ids.add(record["id"])
 
-            tokens = tokenize_text(record["text"])
-
-            if tokens:
-                valid_records.append(record)
-                valid_corpus.append(tokens)
-
-        bm25_index = (
-            BM25Okapi(valid_corpus)
-            if valid_corpus
-            else None
-        )
-
-        logger.info(
-            f"BM25 index loaded with {len(valid_records)} searchable documents"
-        )
-
-        return valid_records, bm25_index
+        return records
 
     except RAGPipelineException:
         raise
 
     except Exception as e:
-        logger.exception("Failed to load BM25 index")
+        logger.exception("Failed to load BM25 records")
+        raise RAGPipelineException(str(e)) from e
+
+
+# Build a searchable BM25 index
+
+def load_bm25_index():
+    try:
+        records = load_bm25_records()
+        searchable_records = []
+        searchable_corpus = []
+
+        for record in records:
+            tokens = tokenize_text(record["text"])
+            if tokens:
+                searchable_records.append(record)
+                searchable_corpus.append(tokens)
+
+        bm25_index = (
+            BM25Okapi(searchable_corpus)
+            if searchable_corpus
+            else None
+        )
+
+        logger.info(
+            f"BM25 index loaded with {len(searchable_records)} searchable documents"
+        )
+
+        return searchable_records, bm25_index
+
+    except RAGPipelineException:
+        raise
+
+    except Exception as e:
+        logger.exception("Failed to build BM25 index")
         raise RAGPipelineException(str(e)) from e
 
 
@@ -282,7 +295,7 @@ def index_chunks(chunks, user_id=None):
 
         # Update existing records without duplicating chunk IDs
         with INDEX_LOCK:
-            existing_records, _ = load_bm25_index()
+            existing_records = load_bm25_records()
 
             records_by_id = {
                 record["id"]: record
@@ -458,7 +471,7 @@ def delete_document(source, user_id=None):
                 raise ValueError("user_id must be a non-empty string")
 
         with INDEX_LOCK:
-            records, _ = load_bm25_index()
+            records = load_bm25_records()
 
             remaining_records = []
             deleted_count = 0
@@ -504,7 +517,7 @@ def delete_document(source, user_id=None):
 # Return the total number of indexed document chunks
 def get_index_count():
     try:
-        records, _ = load_bm25_index()
+        records = load_bm25_records()
 
         total_chunks = len(records)
 
