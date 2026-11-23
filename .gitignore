@@ -63,5 +63,18 @@ logs/
 src/test.py
 src/test2.py
 src/test3.py
+src/debug.py
+src/debug_qa.py
+src/debug_qa_2.py
+src/db_qa_3.py
+src/inspect.py
 
 
+
+debug_qa_2.txt
+debug_qa_3.txt
+debug_qa2.txt
+debug_qa55.txt
+debug_qa55.txt
+test3.txt
+debug.txt
