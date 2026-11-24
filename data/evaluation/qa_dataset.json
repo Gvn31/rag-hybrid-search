@@ -1,16 +1,16 @@
 {
   "dataset_name": "Hybrid RAG Evaluation Q&A Dataset",
-  "version": "1.0",
+  "version": "1.3",
   "language": "English",
   "description": "Manually authored, source-grounded evaluation cases derived from the exported 112-chunk review file. Questions are divided into straightforward, multi_hop, ambiguous, and unanswerable categories.",
   "source_export": "data/evaluation/exports/indexed_chunks.json",
   "review_source": "data/evaluation/exports/qa_review.txt",
   "total_questions": 63,
   "category_counts": {
-    "straightforward": 44,
+    "straightforward": 45,
     "multi_hop": 6,
     "ambiguous": 6,
-    "unanswerable": 7
+    "unanswerable": 6
   },
   "questions": [
     {
@@ -76,6 +76,9 @@
           "source": "api_documentation_sample.html",
           "chunk_id": "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc"
         }
+      ],
+      "acceptable_answers": [
+        "100"
       ]
     },
     {
@@ -128,6 +131,9 @@
           "source": "compliance_policy_sample.docx",
           "chunk_id": "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583"
         }
+      ],
+      "acceptable_answers": [
+        "API keys, database passwords, and TLS certificates must rotate every 90 days via automated secrets management."
       ]
     },
     {
@@ -180,6 +186,9 @@
           "source": "compliance_policy_sample.docx",
           "chunk_id": "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549"
         }
+      ],
+      "acceptable_answers": [
+        "The full root-cause analysis for a Severity 2 incident must be delivered within 48 hours of detection."
       ]
     },
     {
@@ -206,6 +215,9 @@
           "source": "compliance_policy_sample.docx",
           "chunk_id": "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549"
         }
+      ],
+      "acceptable_answers": [
+        "Tier 3 Internal data is retained for two years."
       ]
     },
     {
@@ -232,6 +244,9 @@
           "source": "knowledge_base_sample.md",
           "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
         }
+      ],
+      "acceptable_answers": [
+        "CloudNote Pro operates on a multi-tenant cloud architecture with cross-platform client applications built with Electron (macOS, Windows), React (Web), and Swift/Kotlin (iOS, Android)."
       ]
     },
     {
@@ -258,6 +273,9 @@
           "source": "knowledge_base_sample.md",
           "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
         }
+      ],
+      "acceptable_answers": [
+        "The CRDT synchronization service merges concurrent edits with sub-50ms latency."
       ]
     },
     {
@@ -271,6 +289,9 @@
           "source": "knowledge_base_sample.md",
           "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
         }
+      ],
+      "acceptable_answers": [
+        "The Starter plan allows 3 workspace members."
       ]
     },
     {
@@ -284,6 +305,9 @@
           "source": "knowledge_base_sample.md",
           "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
         }
+      ],
+      "acceptable_answers": [
+        "The Team Plan's REST API rate limit is 1,000 req/min."
       ]
     },
     {
@@ -323,6 +347,9 @@
           "source": "knowledge_base_sample.md",
           "chunk_id": "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6"
         }
+      ],
+      "acceptable_answers": [
+        "Open the Conflict Resolution Drawer, compare the Local Version and Cloud Version timestamps, then choose Keep Both to restore the deleted folder or Merge into Active Workspace to move orphaned notes to the root."
       ]
     },
     {
@@ -362,6 +389,9 @@
           "source": "support_transcripts_sample.txt",
           "chunk_id": "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511"
         }
+      ],
+      "acceptable_answers": [
+        "A new login from an unrecognized browser in Frankfurt, Germany was reported."
       ]
     },
     {
@@ -388,6 +418,9 @@
           "source": "support_transcripts_sample.txt",
           "chunk_id": "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59"
         }
+      ],
+      "acceptable_answers": [
+        "The customer reported an HTTP 429 Too Many Requests error in ticket TKT-88438."
       ]
     },
     {
@@ -420,13 +453,16 @@
       "id": "QA-032",
       "category": "straightforward",
       "question": "Does the sample document contain macros, scripts, or tracking?",
-      "expected_answer": "No. It states that it has no macros, no scripts, and no tracking of any kind.",
+      "expected_answer": "No, the sample document contains no macros, scripts, or tracking.",
       "answerable": true,
       "source_chunks": [
         {
           "source": "sample-document-medium.docx",
           "chunk_id": "077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2"
         }
+      ],
+      "acceptable_answers": [
+        "No macros, no scripts, and no tracking of any kind."
       ]
     },
     {
@@ -440,6 +476,9 @@
           "source": "sample-document-medium.docx",
           "chunk_id": "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb"
         }
+      ],
+      "acceptable_answers": [
+        "It provides a realistic sample file for developers, QA testers, and product teams to test uploads, previews, conversions, and integrations."
       ]
     },
     {
@@ -453,6 +492,9 @@
           "source": "sample-document-medium.docx",
           "chunk_id": "2a9b7e9a8feb16b83201ee917ce8d17024a929479934b160894a3514a678d147"
         }
+      ],
+      "acceptable_answers": [
+        "Nothing in the sample should be treated as a template for legal, financial, or medical documents."
       ]
     },
     {
@@ -466,6 +508,9 @@
           "source": "retrieval-augmented-generation-options.pdf",
           "chunk_id": "d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45"
         }
+      ],
+      "acceptable_answers": [
+        "Create embeddings for internal documents and store them in a vector database; a human submits a natural-language query; an orchestrator retrieves relevant data with similarity search and adds it to the prompt; then the query and context go to the LLM, which generates the response."
       ]
     },
     {
@@ -492,6 +537,9 @@
           "source": "retrieval-augmented-generation-options.pdf",
           "chunk_id": "398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2"
         }
+      ],
+      "acceptable_answers": [
+        "For a user query, the retriever fetches relevant context from the vector database and ranks the responses based on business requirements."
       ]
     },
     {
@@ -524,7 +572,7 @@
       "id": "QA-040",
       "category": "straightforward",
       "question": "What are two advantages of using Amazon Kendra for RAG?",
-      "expected_answer": "The guide says Kendra removes the need to maintain a separate vector database because it handles vector search, and it offers pre-built connectors to sources such as databases, websites, S3, SharePoint, and Confluence. It also supports ACL filtering and metadata-based boosting.",
+      "expected_answer": "Amazon Kendra handles the entire vector search process, so a separate vector database is not needed. It also provides pre-built connectors for popular data sources, including databases, website crawlers, Amazon S3, Microsoft SharePoint, and Atlassian Confluence.",
       "answerable": true,
       "source_chunks": [
         {
@@ -542,8 +590,12 @@
       "source_chunks": [
         {
           "source": "retrieval-augmented-generation-options.pdf",
-          "chunk_id": "5053d3b849f7c708199df434cec4c62700e4e0420b87bff6b9067abb3366a755"
+          "chunk_id": "b71493a13b701bae8d059fff6925181536ce63278a0d6a38e80c12b701995e8b"
         }
+      ],
+      "acceptable_answers": [
+        "A custom RAG architecture gives you flexibility to choose your own vector database or access an unsupported data source.",
+        "Custom RAG lets you choose the retriever or vector database and access unsupported data sources."
       ]
     },
     {
@@ -557,32 +609,44 @@
           "source": "retrieval-augmented-generation-options.pdf",
           "chunk_id": "c104e98f449482b6e465006c4e3e9c97d9c26fb32875c7ec15581eec39b632a9"
         }
+      ],
+      "acceptable_answers": [
+        "RetrieveAndGenerate retrieves information, adds it to the prompt, and generates an answer; Retrieve returns retrieved information to the application without generating an answer.",
+        "RetrieveAndGenerate queries the knowledge base, augments the prompt with retrieved search results as context, and returns an LLM-generated response. Retrieve queries the knowledge base and returns retrieved information directly so the application can process it or build a separate workflow."
       ]
     },
     {
       "id": "QA-043",
       "category": "straightforward",
       "question": "What does the AWS guide say is a limitation of fine-tuned models for document question answering?",
-      "expected_answer": "Fine-tuned models do not provide references to source material in their responses, and the guide notes an increased risk of hallucination when they are used to answer questions.",
+      "expected_answer": "Fine-tuned models do not provide references to source material in their responses.",
       "answerable": true,
       "source_chunks": [
         {
           "source": "retrieval-augmented-generation-options.pdf",
           "chunk_id": "a2faf4eda99fff0ecd5578f6414620df7204c685ebc61a5f25753373b47e2707"
         }
+      ],
+      "acceptable_answers": [
+        "Fine-tuned models can have an increased risk of hallucination when used to answer questions.",
+        "Fine-tuned models do not provide references to source material in their responses, and using them can increase hallucination risk."
       ]
     },
     {
       "id": "QA-044",
       "category": "straightforward",
       "question": "Which AWS service can run OCR on scanned documents during an Amazon Q Business enrichment workflow?",
-      "expected_answer": "AWS Lambda",
+      "expected_answer": "A Lambda function runs OCR on scanned documents and extracts their text.",
       "answerable": true,
       "source_chunks": [
         {
           "source": "retrieval-augmented-generation-options.pdf",
           "chunk_id": "344958f829e9b20440b62cf55dafbf8d6293fec5dc29e795af30b65d6bba5791"
         }
+      ],
+      "acceptable_answers": [
+        "Amazon Q Business can use a Lambda function to run OCR on scanned documents and extract their text during ingestion.",
+        "AWS Lambda function"
       ]
     },
     {
@@ -622,6 +686,9 @@
           "source": "knowledge_base_sample.md",
           "chunk_id": "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6"
         }
+      ],
+      "acceptable_answers": [
+        "The conflict occurred because one user deleted the parent folder while another offline user added documents inside it. Recovery choices are Keep Both or Merge into Active Workspace."
       ]
     },
     {
@@ -736,7 +803,11 @@
       "source_chunks": [
         {
           "source": "retrieval-augmented-generation-options.pdf",
-          "chunk_id": "4d1ca1c681f218687f3af2c084d6f4eb82484865f95f882b9bd5bc0fc2935930"
+          "chunk_id": "30beab85a35ffb4fb9282818412c4323c8503072116c32a5eb962f9b0eec798f"
+        },
+        {
+          "source": "retrieval-augmented-generation-options.pdf",
+          "chunk_id": "16a73f7d53519bc8a2d5e77597b318cce2d940851a3f52e0b5f0985eb5aea27d"
         }
       ]
     },
@@ -768,6 +839,10 @@
           "source": "knowledge_base_sample.md",
           "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
         }
+      ],
+      "acceptable_answers": [
+        "The CloudNote Pro Enterprise plan is custom priced.",
+        "The current price of CloudNote Pro's Enterprise plan is custom."
       ]
     },
     {
@@ -848,5 +923,6 @@
         }
       ]
     }
-  ]
+  ],
+  "reference_revision_note": "Added source-verified answer variants and corrected two references that asked for fewer facts than they contained. Added the concise source-supported answer 'AWS Lambda function' for QA-044 and corrected category_counts to match the question records. Added a concise, source-supported alternative for QA-057's custom Enterprise pricing answer."
 }

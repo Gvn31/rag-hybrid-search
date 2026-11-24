@@ -1,8 +1,10 @@
 {
-    "evaluation_timestamp": "2026-11-22T20:10:28.155088+00:00",
+    "evaluation_timestamp": "2026-11-24T20:26:04.796459+00:00",
     "evaluation_configuration": {
         "top_k": 5,
-        "retrieval_top_k": 10,
+        "retrieval_top_k": 50,
+        "llm_judge_model": "qwen3:4b",
+        "llm_judge_enabled": true,
         "user_id": null,
         "source_filter": [
             "api_documentation_sample.html",
@@ -20,40 +22,66 @@
         "answerable_questions": 51,
         "ambiguous_questions": 6,
         "unanswerable_questions": 6,
-        "exact_match": 0.1765,
-        "answer_token_precision": 0.6725,
-        "answer_token_recall": 0.71,
-        "answer_token_f1": 0.6538,
-        "retrieval_recall_at_k": 0.9561,
+        "exact_match": 0.0784,
+        "answer_token_precision": 0.6618,
+        "answer_token_recall": 0.7209,
+        "answer_token_f1": 0.6533,
+        "answer_correctness_llm_judge": 1.0,
+        "faithfulness_llm_judge": 1.0,
+        "llm_judge_question_count": 51,
+        "llm_judge_failed_question_count": 0,
+        "answer_exact_match_multi_reference": 0.1765,
+        "answer_token_precision_multi_reference": 0.7645,
+        "answer_token_recall_multi_reference": 0.84,
+        "answer_token_f1_multi_reference": 0.7794,
+        "multi_reference_question_count": 51,
+        "retrieval_recall_at_k": 0.9474,
         "retrieval_metric_question_count": 57,
-        "mean_reciprocal_rank": 0.8582,
+        "mean_reciprocal_rank": 0.8646,
+        "source_recall_at_k": 0.9737,
+        "source_mean_reciprocal_rank": 0.9649,
         "citation_accuracy": 1.0,
-        "total_citations": 59,
-        "verified_citations": 59,
-        "citation_coverage": 0.7937,
-        "faithfulness_lexical_proxy": 0.8626,
-        "average_confidence_indicator": 0.6147,
+        "total_citations": 49,
+        "verified_citations": 49,
+        "citation_coverage": 0.6667,
+        "citation_coverage_answerable": 0.8235,
+        "faithfulness_lexical_proxy": 0.8794,
+        "average_confidence_indicator": 0.5504,
         "unanswerable_abstention_accuracy": 1.0,
-        "ambiguous_clarification_accuracy": 0.6667
+        "ambiguous_clarification_accuracy": 1.0
     },
     "individual_results": [
         {
             "question_id": "QA-001",
             "question_type": "direct",
             "question": "What authentication mechanism must CloudScale Vector API requests use?",
-            "predicted_answer": "CloudScale Vector API requests must use a Bearer token in the Authorization HTTP header [0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50].",
+            "predicted_answer": "All API requests must include a valid Bearer token in the Authorization HTTP header [0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50].",
             "expected_answer": "A valid Bearer token must be included in the Authorization HTTP header.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.6429,
-                "token_recall": 0.75,
-                "token_f1": 0.6923
+                "token_precision": 0.7143,
+                "token_recall": 0.8333,
+                "token_f1": 0.7692
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.7143,
+                "token_recall": 0.8333,
+                "token_f1": 0.7692,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "A valid Bearer token must be included in the Authorization HTTP header."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
@@ -65,8 +93,8 @@
                 "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50",
                 "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc",
                 "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf",
-                "b2b22e7b8e679bcd45d722a2fa7157b87cbfc1a5e5da43690ef98031c2842275",
-                "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
+                "0bd81991061db86b3df437d8a088f261b36533f45e5565965c64950e59745bf1",
+                "b2b22e7b8e679bcd45d722a2fa7157b87cbfc1a5e5da43690ef98031c2842275"
             ],
             "citation_verification": [
                 {
@@ -88,24 +116,38 @@
                 "token_recall": 1.0,
                 "token_f1": 1.0
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 1,
+                "token_precision": 1.0,
+                "token_recall": 1.0,
+                "token_f1": 1.0,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "POST /v2/vectors/upsert."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
             "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.7442,
+            "confidence_indicator": 0.7463,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50",
                 "398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2",
                 "0346d73ed1bbc84f981b5342078c9b3f6698e6894442eaf89bb77de45e9ccd4d",
                 "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc",
-                "0bd81991061db86b3df437d8a088f261b36533f45e5565965c64950e59745bf1"
+                "84fb35ae187cc3971826518ecb77dcdb09f69ac63edf96d70cc18edaad1b846a"
             ],
             "citation_verification": [
                 {
@@ -127,11 +169,25 @@
                 "token_recall": 0.7143,
                 "token_f1": 0.8333
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 1.0,
+                "token_recall": 0.7143,
+                "token_f1": 0.8333,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "Up to 1,000 vectors per request."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
@@ -142,9 +198,9 @@
             "retrieved_chunk_ids": [
                 "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50",
                 "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
+                "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935",
                 "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
-                "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc",
-                "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
+                "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc"
             ],
             "citation_verification": [
                 {
@@ -166,11 +222,25 @@
                 "token_recall": 1.0,
                 "token_f1": 0.625
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.4545,
+                "token_recall": 1.0,
+                "token_f1": 0.625,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "The default top_k is 10."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
@@ -181,9 +251,9 @@
             "retrieved_chunk_ids": [
                 "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc",
                 "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50",
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613",
                 "c9dbeae815502e9ee783ba38e6072f4696cb424601407637064c6557b083a723",
-                "5919bdba946e055295ebb55b928a4c91c40abdec696abbc369ec9ad50b56a281",
-                "6e4a81967ed681f95bc3a766ae0b3aa8c5a029f33d99b56fe866701cbd791cec"
+                "5919bdba946e055295ebb55b928a4c91c40abdec696abbc369ec9ad50b56a281"
             ],
             "citation_verification": [
                 {
@@ -197,46 +267,55 @@
             "question_id": "QA-005",
             "question_type": "direct",
             "question": "What is the maximum top_k value accepted by the CloudScale API documentation?",
-            "predicted_answer": "The maximum top_k value accepted by the CloudScale API documentation is 100 [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc].",
+            "predicted_answer": "100",
             "expected_answer": "The maximum top_k value is 100.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.5,
-                "token_recall": 1.0,
-                "token_f1": 0.6667
+                "token_precision": 1.0,
+                "token_recall": 0.1667,
+                "token_f1": 0.2857
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 1,
+                "token_precision": 1.0,
+                "token_recall": 1.0,
+                "token_f1": 1.0,
+                "best_reference_index": 1,
+                "reference_count": 2,
+                "best_reference": "100"
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
-            "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
-            "has_citations": true,
-            "faithfulness_lexical_proxy": 0.6667,
-            "confidence_indicator": 0.6142,
-            "is_supported": true,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
+            "citation_accuracy": null,
+            "citation_count": 0,
+            "verified_citation_count": 0,
+            "has_citations": false,
+            "faithfulness_lexical_proxy": 1.0,
+            "confidence_indicator": 0.0142,
+            "is_supported": false,
             "retrieved_chunk_ids": [
                 "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc",
                 "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50",
+                "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935",
                 "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
-                "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
-                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1"
+                "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
             ],
-            "citation_verification": [
-                {
-                    "chunk_id": "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc",
-                    "verified": true
-                }
-            ],
+            "citation_verification": [],
             "status": "success"
         },
         {
             "question_id": "QA-006",
             "question_type": "direct",
             "question": "Which metadata filter operators are listed in the CloudScale API guide?",
-            "predicted_answer": "The CloudScale API guide lists $eq, $in, and $gte as metadata filter operators [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc].",
+            "predicted_answer": "The CloudScale API guide lists $eq, $in, and $gte operators for metadata filters.",
             "expected_answer": "The guide lists $eq, $in, and $gte.",
             "answer_correctness": {
                 "exact_match": 0,
@@ -244,55 +323,78 @@
                 "token_recall": 1.0,
                 "token_f1": 0.7
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.5385,
+                "token_recall": 1.0,
+                "token_f1": 0.7,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "The guide lists $eq, $in, and $gte."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.5,
-            "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
-            "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8462,
-            "confidence_indicator": 0.6874,
-            "is_supported": true,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
+            "citation_accuracy": null,
+            "citation_count": 0,
+            "verified_citation_count": 0,
+            "has_citations": false,
+            "faithfulness_lexical_proxy": 0.9231,
+            "confidence_indicator": 0.0882,
+            "is_supported": false,
             "retrieved_chunk_ids": [
                 "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50",
                 "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc",
                 "b2b22e7b8e679bcd45d722a2fa7157b87cbfc1a5e5da43690ef98031c2842275",
-                "03ad47418949e4cd27dcce55144122473fcf9f286b6560de6f354509a6bed00b",
-                "cc22e8c1673aa2a5a0f8aff2980f92a4547b2064712704c9c1f6a32264bb627f"
+                "1856186206ecc0c5c938fd2e9292d6b838cdf2659c466b3b7d091902b33f0c58",
+                "03ad47418949e4cd27dcce55144122473fcf9f286b6560de6f354509a6bed00b"
             ],
-            "citation_verification": [
-                {
-                    "chunk_id": "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc",
-                    "verified": true
-                }
-            ],
+            "citation_verification": [],
             "status": "success"
         },
         {
             "question_id": "QA-007",
             "question_type": "direct",
             "question": "What does HTTP 401 mean according to the CloudScale API guide?",
-            "predicted_answer": "Missing, expired, or revoked API Bearer token [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc]",
+            "predicted_answer": "HTTP 401 means Missing, expired, or revoked API Bearer token [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc].",
             "expected_answer": "It means the Bearer token is missing, expired, or revoked.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.8571,
-                "token_recall": 0.6,
-                "token_f1": 0.7059
+                "token_precision": 0.7,
+                "token_recall": 0.7,
+                "token_f1": 0.7
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.7,
+                "token_recall": 0.7,
+                "token_f1": 0.7,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "It means the Bearer token is missing, expired, or revoked."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.5,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 1.0,
+            "faithfulness_lexical_proxy": 0.9,
             "confidence_indicator": 0.6436,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -300,7 +402,7 @@
                 "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc",
                 "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936",
                 "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf",
-                "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
+                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1"
             ],
             "citation_verification": [
                 {
@@ -314,32 +416,46 @@
             "question_id": "QA-008",
             "question_type": "direct",
             "question": "What vector normalization practice is recommended for dot-product similarity?",
-            "predicted_answer": "Normalize dense vectors to unit L2 length before upserting [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc]",
+            "predicted_answer": "Normalize dense vectors to unit L2 length before upserting when using dot-product similarity metrics. [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc]",
             "expected_answer": "Normalize dense vectors to unit L2 length before upserting.",
             "answer_correctness": {
-                "exact_match": 1,
-                "token_precision": 1.0,
+                "exact_match": 0,
+                "token_precision": 0.6,
                 "token_recall": 1.0,
-                "token_f1": 1.0
+                "token_f1": 0.75
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.6,
+                "token_recall": 1.0,
+                "token_f1": 0.75,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "Normalize dense vectors to unit L2 length before upserting."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
             "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.6883,
+            "confidence_indicator": 0.6884,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc",
                 "5919bdba946e055295ebb55b928a4c91c40abdec696abbc369ec9ad50b56a281",
                 "03972aede5c92c13cf1b6f0cf7d3fe20c446f78e27d7a8d64c879f368f07f7b0",
-                "64d3a73b934384cc9a2b30c2cbe97647413a0a277fd6ae7c90b062a595d573a0",
-                "5053d3b849f7c708199df434cec4c62700e4e0420b87bff6b9067abb3366a755"
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613",
+                "64d3a73b934384cc9a2b30c2cbe97647413a0a277fd6ae7c90b062a595d573a0"
             ],
             "citation_verification": [
                 {
@@ -353,32 +469,46 @@
             "question_id": "QA-009",
             "question_type": "direct",
             "question": "How often must API keys, database passwords, and TLS certificates be rotated?",
-            "predicted_answer": "API keys, database passwords, and TLS certificates must rotate every 90 days [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583]",
+            "predicted_answer": "API keys, database passwords, and TLS certificates must rotate every 90 days via automated secrets management [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583].",
             "expected_answer": "They must be rotated every 90 days through automated secrets management.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.3333,
-                "token_recall": 0.3636,
-                "token_f1": 0.3478
+                "token_precision": 0.4375,
+                "token_recall": 0.6364,
+                "token_f1": 0.5185
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 1,
+                "token_precision": 1.0,
+                "token_recall": 1.0,
+                "token_f1": 1.0,
+                "best_reference_index": 1,
+                "reference_count": 2,
+                "best_reference": "API keys, database passwords, and TLS certificates must rotate every 90 days via automated secrets management."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
             "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.6817,
+            "confidence_indicator": 0.6818,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
                 "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
                 "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
                 "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50",
-                "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59"
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613"
             ],
             "citation_verification": [
                 {
@@ -392,19 +522,33 @@
             "question_id": "QA-010",
             "question_type": "direct",
             "question": "How long can an interactive administrative session remain inactive before it terminates?",
-            "predicted_answer": "15 minutes [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583]",
+            "predicted_answer": "Interactive administrative sessions automatically terminate after 15 minutes of inactivity [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583].",
             "expected_answer": "It automatically terminates after 15 minutes of inactivity.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 1.0,
-                "token_recall": 0.25,
-                "token_f1": 0.4
+                "token_precision": 0.6,
+                "token_recall": 0.75,
+                "token_f1": 0.6667
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.6,
+                "token_recall": 0.75,
+                "token_f1": 0.6667,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "It automatically terminates after 15 minutes of inactivity."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
@@ -415,9 +559,9 @@
             "retrieved_chunk_ids": [
                 "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
                 "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
-                "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
-                "f410a7f666633c2c81b9c3e399fe813cd755fb7818ec1bf54f38acc7924aa8f0",
-                "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf"
+                "522b824ef49e201270b8c8be079faba0b897abd06c3415ee609e6ada9e8adf66",
+                "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935",
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613"
             ],
             "citation_verification": [
                 {
@@ -431,32 +575,46 @@
             "question_id": "QA-011",
             "question_type": "direct",
             "question": "Which authentication methods are mandatory for administrative consoles and VPN endpoints?",
-            "predicted_answer": "Hardware security keys or time-based one-time passwords (TOTP) [b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf]",
+            "predicted_answer": "Multi-Factor Authentication (MFA): Hardware security keys or time-based one-time passwords (TOTP) are mandatory for all administrative consoles and VPN endpoints [b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf]",
             "expected_answer": "Hardware security keys or time-based one-time passwords (TOTP) are mandatory.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 1.0,
-                "token_recall": 0.8333,
-                "token_f1": 0.9091
+                "token_precision": 0.5217,
+                "token_recall": 1.0,
+                "token_f1": 0.6857
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.5217,
+                "token_recall": 1.0,
+                "token_f1": 0.6857,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "Hardware security keys or time-based one-time passwords (TOTP) are mandatory."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
             "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.6798,
+            "confidence_indicator": 0.6802,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf",
+                "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50",
                 "b2b22e7b8e679bcd45d722a2fa7157b87cbfc1a5e5da43690ef98031c2842275",
                 "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
-                "03ad47418949e4cd27dcce55144122473fcf9f286b6560de6f354509a6bed00b",
-                "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84"
+                "03ad47418949e4cd27dcce55144122473fcf9f286b6560de6f354509a6bed00b"
             ],
             "citation_verification": [
                 {
@@ -470,19 +628,33 @@
             "question_id": "QA-012",
             "question_type": "direct",
             "question": "What is the required containment start time for a Severity 2 high-risk incident?",
-            "predicted_answer": "1 hour of detection [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
+            "predicted_answer": "Containment actions must begin within 1 hour of detection [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
             "expected_answer": "Containment actions must begin within 1 hour of detection.",
             "answer_correctness": {
-                "exact_match": 0,
+                "exact_match": 1,
                 "token_precision": 1.0,
-                "token_recall": 0.4444,
-                "token_f1": 0.6154
+                "token_recall": 1.0,
+                "token_f1": 1.0
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 1,
+                "token_precision": 1.0,
+                "token_recall": 1.0,
+                "token_f1": 1.0,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "Containment actions must begin within 1 hour of detection."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
@@ -495,7 +667,7 @@
                 "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
                 "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935",
                 "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
-                "50188e0ca4a22aad8c311788449f738c7baa86dd3c6bd921c166999519214c8d"
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613"
             ],
             "citation_verification": [
                 {
@@ -509,32 +681,46 @@
             "question_id": "QA-013",
             "question_type": "direct",
             "question": "When must the full root-cause analysis for a Severity 2 incident be delivered?",
-            "predicted_answer": "within 48 hours [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
+            "predicted_answer": "within 48 hours of detection [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
             "expected_answer": "Within 48 hours.",
             "answer_correctness": {
-                "exact_match": 1,
-                "token_precision": 1.0,
+                "exact_match": 0,
+                "token_precision": 0.6,
                 "token_recall": 1.0,
-                "token_f1": 1.0
+                "token_f1": 0.75
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.6,
+                "token_recall": 1.0,
+                "token_f1": 0.75,
+                "best_reference_index": 0,
+                "reference_count": 2,
+                "best_reference": "Within 48 hours."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
             "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.6805,
+            "confidence_indicator": 0.6806,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
                 "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
-                "d6c6ef4857c47f209f72c66535e95a4404688c551bf930dd6eb2651eb3340921",
-                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
-                "50188e0ca4a22aad8c311788449f738c7baa86dd3c6bd921c166999519214c8d"
+                "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935",
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613",
+                "d6c6ef4857c47f209f72c66535e95a4404688c551bf930dd6eb2651eb3340921"
             ],
             "citation_verification": [
                 {
@@ -548,46 +734,55 @@
             "question_id": "QA-014",
             "question_type": "direct",
             "question": "What encryption and retention rules apply to Tier 1 Restricted data?",
-            "predicted_answer": "AES-256-GCM with Customer Managed Keys and 7 Years (Audit Regulated) [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
+            "predicted_answer": "Tier 1 Restricted data requires AES-256-GCM with Customer Managed Keys and a 7-year retention period (Audit Regulated).",
             "expected_answer": "Tier 1 data (including PII, payment cards, and authentication secrets) uses AES-256-GCM with customer-managed keys and has a 7-year retention period for audit-regulated data.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.9167,
-                "token_recall": 0.3793,
-                "token_f1": 0.5366
+                "token_precision": 0.9,
+                "token_recall": 0.6207,
+                "token_f1": 0.7347
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.9,
+                "token_recall": 0.6207,
+                "token_f1": 0.7347,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "Tier 1 data (including PII, payment cards, and authentication secrets) uses AES-256-GCM with customer-managed keys and has a 7-year retention period for audit-regulated data."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
-            "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
-            "has_citations": true,
-            "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.7592,
-            "is_supported": true,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
+            "citation_accuracy": null,
+            "citation_count": 0,
+            "verified_citation_count": 0,
+            "has_citations": false,
+            "faithfulness_lexical_proxy": 0.9,
+            "confidence_indicator": 0.1592,
+            "is_supported": false,
             "retrieved_chunk_ids": [
                 "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
                 "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
                 "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
-                "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf",
-                "b2b22e7b8e679bcd45d722a2fa7157b87cbfc1a5e5da43690ef98031c2842275"
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613",
+                "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935"
             ],
-            "citation_verification": [
-                {
-                    "chunk_id": "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
-                    "verified": true
-                }
-            ],
+            "citation_verification": [],
             "status": "success"
         },
         {
             "question_id": "QA-015",
             "question_type": "direct",
             "question": "What is the retention period for Tier 3 Internal data?",
-            "predicted_answer": "2 Years [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
+            "predicted_answer": "2 Years [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583]",
             "expected_answer": "Two years.",
             "answer_correctness": {
                 "exact_match": 1,
@@ -595,11 +790,25 @@
                 "token_recall": 1.0,
                 "token_f1": 1.0
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 1,
+                "token_precision": 1.0,
+                "token_recall": 1.0,
+                "token_f1": 1.0,
+                "best_reference_index": 0,
+                "reference_count": 2,
+                "best_reference": "Two years."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
@@ -611,12 +820,12 @@
                 "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
                 "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
                 "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613",
-                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
-                "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
+                "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935",
+                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1"
             ],
             "citation_verification": [
                 {
-                    "chunk_id": "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
+                    "chunk_id": "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
                     "verified": true
                 }
             ],
@@ -626,19 +835,33 @@
             "question_id": "QA-016",
             "question_type": "direct",
             "question": "What must happen during a Severity 1 critical breach?",
-            "predicted_answer": "The Incident Commander must be paged within 15 minutes, and executive leadership must be notified within 1 hour [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583]",
+            "predicted_answer": "The Incident Commander must be paged within 15 minutes, and executive leadership notified within 1 hour [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583].",
             "expected_answer": "The Incident Commander must be paged within 15 minutes, and executive leadership must be notified within 1 hour.",
             "answer_correctness": {
-                "exact_match": 1,
+                "exact_match": 0,
                 "token_precision": 1.0,
-                "token_recall": 1.0,
-                "token_f1": 1.0
+                "token_recall": 0.8889,
+                "token_f1": 0.9412
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 1.0,
+                "token_recall": 0.8889,
+                "token_f1": 0.9412,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "The Incident Commander must be paged within 15 minutes, and executive leadership must be notified within 1 hour."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
@@ -649,9 +872,9 @@
             "retrieved_chunk_ids": [
                 "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
                 "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
+                "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935",
                 "d6c6ef4857c47f209f72c66535e95a4404688c551bf930dd6eb2651eb3340921",
-                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
-                "50188e0ca4a22aad8c311788449f738c7baa86dd3c6bd921c166999519214c8d"
+                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1"
             ],
             "citation_verification": [
                 {
@@ -665,46 +888,55 @@
             "question_id": "QA-017",
             "question_type": "direct",
             "question": "Which technologies are named for CloudNote Pro's client applications?",
-            "predicted_answer": "Electron, React, Swift, and Kotlin [57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2]",
+            "predicted_answer": "Electron (macOS, Windows), React (Web), and Swift/Kotlin (iOS, Android)",
             "expected_answer": "Electron for macOS and Windows, React for the web, and Swift/Kotlin for iOS and Android.",
             "answer_correctness": {
                 "exact_match": 0,
                 "token_precision": 1.0,
-                "token_recall": 0.3125,
-                "token_f1": 0.4762
+                "token_recall": 0.625,
+                "token_f1": 0.7692
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 1.0,
+                "token_recall": 0.625,
+                "token_f1": 0.7692,
+                "best_reference_index": 0,
+                "reference_count": 2,
+                "best_reference": "Electron for macOS and Windows, React for the web, and Swift/Kotlin for iOS and Android."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
-            "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
-            "has_citations": true,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
+            "citation_accuracy": null,
+            "citation_count": 0,
+            "verified_citation_count": 0,
+            "has_citations": false,
             "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.7398,
-            "is_supported": true,
+            "confidence_indicator": 0.1402,
+            "is_supported": false,
             "retrieved_chunk_ids": [
                 "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
                 "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936",
-                "31abc88eaf200681aa9791bebaca428db20299ab123b05b12eebbf59d6018a5b",
-                "c9dbeae815502e9ee783ba38e6072f4696cb424601407637064c6557b083a723",
-                "19dbe3ebc8afb79d4dc98d1181e1d28dd9d1c30c023b0534412d699d35dd9943"
+                "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd",
+                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613"
             ],
-            "citation_verification": [
-                {
-                    "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
-                    "verified": true
-                }
-            ],
+            "citation_verification": [],
             "status": "success"
         },
         {
             "question_id": "QA-018",
             "question_type": "direct",
             "question": "Which database stores CloudNote Pro metadata and permissions?",
-            "predicted_answer": "PostgreSQL cluster with row-level security [57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2]",
+            "predicted_answer": "PostgreSQL cluster with row-level security [74b9512345f6a18ad1f760f4d10f066a0dfadb0865ebc787fee4b43458b80eb9]",
             "expected_answer": "A PostgreSQL cluster with row-level security.",
             "answer_correctness": {
                 "exact_match": 0,
@@ -712,28 +944,42 @@
                 "token_recall": 0.8571,
                 "token_f1": 0.9231
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 1.0,
+                "token_recall": 0.8571,
+                "token_f1": 0.9231,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "A PostgreSQL cluster with row-level security."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
             "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.7256,
+            "confidence_indicator": 0.7317,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
                 "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936",
-                "c9dbeae815502e9ee783ba38e6072f4696cb424601407637064c6557b083a723",
-                "b2b22e7b8e679bcd45d722a2fa7157b87cbfc1a5e5da43690ef98031c2842275",
-                "03ad47418949e4cd27dcce55144122473fcf9f286b6560de6f354509a6bed00b"
+                "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
+                "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50",
+                "74b9512345f6a18ad1f760f4d10f066a0dfadb0865ebc787fee4b43458b80eb9"
             ],
             "citation_verification": [
                 {
-                    "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
+                    "chunk_id": "74b9512345f6a18ad1f760f4d10f066a0dfadb0865ebc787fee4b43458b80eb9",
                     "verified": true
                 }
             ],
@@ -743,24 +989,38 @@
             "question_id": "QA-019",
             "question_type": "direct",
             "question": "How quickly does the CloudNote Pro CRDT synchronization service merge concurrent edits?",
-            "predicted_answer": "CloudNote Pro's CRDT synchronization service merges concurrent edits with sub-50ms latency [57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2].",
+            "predicted_answer": "The CRDT synchronization service merges concurrent edits with sub-50ms latency [90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6].",
             "expected_answer": "It is described as operating with sub-50-millisecond latency.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.2308,
+                "token_precision": 0.2727,
                 "token_recall": 0.3,
-                "token_f1": 0.2609
+                "token_f1": 0.2857
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 1,
+                "token_precision": 1.0,
+                "token_recall": 1.0,
+                "token_f1": 1.0,
+                "best_reference_index": 1,
+                "reference_count": 2,
+                "best_reference": "The CRDT synchronization service merges concurrent edits with sub-50ms latency."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9231,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.6977,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -772,7 +1032,7 @@
             ],
             "citation_verification": [
                 {
-                    "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
+                    "chunk_id": "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6",
                     "verified": true
                 }
             ],
@@ -790,11 +1050,25 @@
                 "token_recall": 0.6667,
                 "token_f1": 0.3333
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.5556,
+                "token_recall": 0.7143,
+                "token_f1": 0.625,
+                "best_reference_index": 1,
+                "reference_count": 2,
+                "best_reference": "The Starter plan allows 3 workspace members."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
@@ -806,8 +1080,8 @@
                 "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
                 "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
                 "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
-                "fd7932ca9294a8d0aa37c38ba956febcc3a400998b21d3855c3577f661fd3ad1",
-                "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583"
+                "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935",
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613"
             ],
             "citation_verification": [
                 {
@@ -829,24 +1103,38 @@
                 "token_recall": 0.4,
                 "token_f1": 0.2222
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 1,
+                "token_precision": 1.0,
+                "token_recall": 1.0,
+                "token_f1": 1.0,
+                "best_reference_index": 1,
+                "reference_count": 2,
+                "best_reference": "The Team Plan's REST API rate limit is 1,000 req/min."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
             "faithfulness_lexical_proxy": 0.9231,
-            "confidence_indicator": 0.7239,
+            "confidence_indicator": 0.724,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
                 "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
                 "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
-                "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
-                "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50"
+                "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935",
+                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1"
             ],
             "citation_verification": [
                 {
@@ -868,11 +1156,25 @@
                 "token_recall": 1.0,
                 "token_f1": 1.0
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 1,
+                "token_precision": 1.0,
+                "token_recall": 1.0,
+                "token_f1": 1.0,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "Seven days."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
@@ -883,9 +1185,9 @@
             "retrieved_chunk_ids": [
                 "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
                 "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
-                "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
-                "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
-                "cc22e8c1673aa2a5a0f8aff2980f92a4547b2064712704c9c1f6a32264bb627f"
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613",
+                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
+                "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583"
             ],
             "citation_verification": [
                 {
@@ -899,32 +1201,46 @@
             "question_id": "QA-023",
             "question_type": "direct",
             "question": "Which encryption and compliance standards are stated in the CloudNote Pro guide?",
-            "predicted_answer": "CloudNote Pro states encryption in transit uses TLS 1.3 with strict certificate pinning [a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84] and encryption at rest uses AES-256-GCM with customer-managed keys for Enterprise plans [a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84]. Compliance standards include SOC 2 Type II annual audits, GDPR compliance, and HIPAA Business Associate Agreements available upon request [a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84].",
+            "predicted_answer": "CloudNote Pro enforces TLS 1.3 with strict certificate pinning for encryption in transit, AES-256-GCM encryption at rest with customer-managed keys on Enterprise plans, SOC 2 Type II annual audits, GDPR compliance, and HIPAA Business Associate Agreements (BAA) available upon request [a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84].",
             "expected_answer": "It states TLS 1.3 with strict certificate pinning on mobile clients, AES-256-GCM encryption at rest with customer-managed keys available on Enterprise plans, annual SOC 2 Type II audits, GDPR compliance, and HIPAA BAAs available upon request.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.6875,
+                "token_precision": 0.75,
                 "token_recall": 0.825,
-                "token_f1": 0.75
+                "token_f1": 0.7857
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.75,
+                "token_recall": 0.825,
+                "token_f1": 0.7857,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "It states TLS 1.3 with strict certificate pinning on mobile clients, AES-256-GCM encryption at rest with customer-managed keys available on Enterprise plans, annual SOC 2 Type II audits, GDPR compliance, and HIPAA BAAs available upon request."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.875,
-            "confidence_indicator": 0.7242,
+            "faithfulness_lexical_proxy": 0.9545,
+            "confidence_indicator": 0.7247,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
                 "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936",
                 "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
                 "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf",
-                "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549"
+                "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad"
             ],
             "citation_verification": [
                 {
@@ -938,32 +1254,46 @@
             "question_id": "QA-024",
             "question_type": "direct",
             "question": "What should a user do when a sync conflict occurs because a parent folder was deleted while another user added documents offline?",
-            "predicted_answer": "Open the Conflict Resolution Drawer from the left sidebar, compare the Local Version timestamp against the Cloud Version timestamp, and select either \"Keep Both\" to restore the deleted folder structure alongside offline notes or \"Merge into Active Workspace\" to relocate the orphaned notes to the root directory [90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6].",
+            "predicted_answer": "Open the Conflict Resolution Drawer from the left sidebar, compare the Local Version timestamp against the Cloud Version timestamp, and select either Keep Both to restore the deleted folder structure alongside offline notes or Merge into Active Workspace to relocate orphaned notes to the root directory [90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6].",
             "expected_answer": "Open the Conflict Resolution Drawer, compare the Local Version and Cloud Version timestamps, then choose Keep Both or Merge into Active Workspace.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.4043,
+                "token_precision": 0.413,
                 "token_recall": 0.8636,
-                "token_f1": 0.5507
+                "token_f1": 0.5588
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.6522,
+                "token_recall": 0.8824,
+                "token_f1": 0.75,
+                "best_reference_index": 1,
+                "reference_count": 2,
+                "best_reference": "Open the Conflict Resolution Drawer, compare the Local Version and Cloud Version timestamps, then choose Keep Both to restore the deleted folder or Merge into Active Workspace to move orphaned notes to the root."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 1.0,
+            "faithfulness_lexical_proxy": 0.9783,
             "confidence_indicator": 0.68,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6",
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613",
+                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
                 "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd",
-                "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
-                "b42a0408837750b4c24fdf84090c8702aef52b270ec9ced31f17bf60d5aabb45",
-                "b137803988416bc76e70fa9ef54e4378d4b90005a6c5bc6f7f0c3167e54e0ca7"
+                "9188d58cd23c7c5402ad9ffc3018269dd4d6f7b3bfd4718c6ff8e6eee584f629"
             ],
             "citation_verification": [
                 {
@@ -977,7 +1307,7 @@
             "question_id": "QA-025",
             "question_type": "direct",
             "question": "Why did the customer's monthly invoice increase from $15 to $24 in support ticket TKT-88412?",
-            "predicted_answer": "The customer's monthly invoice increased from $15 to $24 because two additional team members accepted workspace invitations on October 14, which automatically added two seats at $4.50 each under the Team Plan terms [0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad].",
+            "predicted_answer": "The customer's monthly invoice increased from $15 to $24 because two additional team members accepted workspace invitations on October 14, which automatically added two seats at $4.50 each under their Team Plan terms [0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad].",
             "expected_answer": "Two additional team members accepted workspace invitations, adding two seats at $4.50 each under the Team Plan.",
             "answer_correctness": {
                 "exact_match": 0,
@@ -985,24 +1315,38 @@
                 "token_recall": 0.9444,
                 "token_f1": 0.6415
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.4857,
+                "token_recall": 0.9444,
+                "token_f1": 0.6415,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "Two additional team members accepted workspace invitations, adding two seats at $4.50 each under the Team Plan."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9429,
-            "confidence_indicator": 0.6805,
+            "faithfulness_lexical_proxy": 0.9143,
+            "confidence_indicator": 0.6806,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
                 "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
                 "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd",
-                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
-                "fd7932ca9294a8d0aa37c38ba956febcc3a400998b21d3855c3577f661fd3ad1"
+                "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
+                "f5e927c29bada8d088be3fd3a36b403f48cd417b8f9095c5086fdcfbf0a5c8d3"
             ],
             "citation_verification": [
                 {
@@ -1016,149 +1360,190 @@
             "question_id": "QA-026",
             "question_type": "direct",
             "question": "What problem did the customer report in ticket TKT-88419?",
-            "predicted_answer": "The customer reported that the desktop app on macOS freezes when trying to export notebooks larger than 50 pages to PDF, crashing at 80% progress. [5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd]",
+            "predicted_answer": "The desktop app on macOS keeps freezing every time I try to export a notebook larger than 50 pages to PDF.",
             "expected_answer": "The macOS desktop app freezes while exporting a notebook larger than 50 pages to PDF and crashes at 80% progress.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.56,
-                "token_recall": 0.7,
-                "token_f1": 0.6222
+                "token_precision": 0.5714,
+                "token_recall": 0.6,
+                "token_f1": 0.5854
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.5714,
+                "token_recall": 0.6,
+                "token_f1": 0.5854,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "The macOS desktop app freezes while exporting a notebook larger than 50 pages to PDF and crashes at 80% progress."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
-            "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
-            "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8,
-            "confidence_indicator": 0.8897,
-            "is_supported": true,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
+            "citation_accuracy": null,
+            "citation_count": 0,
+            "verified_citation_count": 0,
+            "has_citations": false,
+            "faithfulness_lexical_proxy": 1.0,
+            "confidence_indicator": 0.3342,
+            "is_supported": false,
             "retrieved_chunk_ids": [
                 "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd",
                 "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
                 "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
                 "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
-                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1"
+                "f5e927c29bada8d088be3fd3a36b403f48cd417b8f9095c5086fdcfbf0a5c8d3"
             ],
-            "citation_verification": [
-                {
-                    "chunk_id": "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd",
-                    "verified": true
-                }
-            ],
+            "citation_verification": [],
             "status": "success"
         },
         {
             "question_id": "QA-027",
             "question_type": "direct",
             "question": "What security concern was raised in ticket TKT-88430?",
-            "predicted_answer": "The security concern raised in ticket TKT-88430 was an unrecognized login attempt from Frankfurt, Germany. [53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511]",
+            "predicted_answer": "A new login occurred from an unrecognized browser in Frankfurt, Germany.",
             "expected_answer": "The customer received an alert about a login from an unrecognized browser in Frankfurt, Germany, despite being based in Bengaluru and not having travelled recently.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.5,
-                "token_recall": 0.32,
-                "token_f1": 0.3902
+                "token_precision": 0.8182,
+                "token_recall": 0.36,
+                "token_f1": 0.5
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.9091,
+                "token_recall": 0.8333,
+                "token_f1": 0.8696,
+                "best_reference_index": 1,
+                "reference_count": 2,
+                "best_reference": "A new login from an unrecognized browser in Frankfurt, Germany was reported."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
-            "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
-            "has_citations": true,
-            "faithfulness_lexical_proxy": 0.75,
-            "confidence_indicator": 0.694,
-            "is_supported": true,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
+            "citation_accuracy": null,
+            "citation_count": 0,
+            "verified_citation_count": 0,
+            "has_citations": false,
+            "faithfulness_lexical_proxy": 1.0,
+            "confidence_indicator": 0.1027,
+            "is_supported": false,
             "retrieved_chunk_ids": [
                 "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
                 "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
-                "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
-                "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
-                "66bf52b1174b9927a202cf344b7f2ed761c165a44d89b3e30acc09e02d53531b"
+                "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd",
+                "f5e927c29bada8d088be3fd3a36b403f48cd417b8f9095c5086fdcfbf0a5c8d3",
+                "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad"
             ],
-            "citation_verification": [
-                {
-                    "chunk_id": "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
-                    "verified": true
-                }
-            ],
+            "citation_verification": [],
             "status": "success"
         },
         {
             "question_id": "QA-028",
             "question_type": "direct",
             "question": "What feature did the customer request in ticket TKT-88425?",
-            "predicted_answer": "The customer requested the ability to export action items directly into Jira or Linear tasks with one click instead of copying and pasting them manually [f5e927c29bada8d088be3fd3a36b403f48cd417b8f9095c5086fdcfbf0a5c8d3].",
+            "predicted_answer": "The customer requested to export action items directly into Jira or Linear tasks with one click.",
             "expected_answer": "They requested a one-click way to export AI meeting-summary action items directly into Jira or Linear tasks.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.52,
+                "token_precision": 0.8125,
                 "token_recall": 0.6842,
-                "token_f1": 0.5909
+                "token_f1": 0.7429
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.8125,
+                "token_recall": 0.6842,
+                "token_f1": 0.7429,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "They requested a one-click way to export AI meeting-summary action items directly into Jira or Linear tasks."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
-            "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
-            "has_citations": true,
-            "faithfulness_lexical_proxy": 0.92,
-            "confidence_indicator": 0.8906,
-            "is_supported": true,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
+            "citation_accuracy": null,
+            "citation_count": 0,
+            "verified_citation_count": 0,
+            "has_citations": false,
+            "faithfulness_lexical_proxy": 0.9375,
+            "confidence_indicator": 0.2907,
+            "is_supported": false,
             "retrieved_chunk_ids": [
                 "f5e927c29bada8d088be3fd3a36b403f48cd417b8f9095c5086fdcfbf0a5c8d3",
                 "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
                 "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
                 "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
-                "66bf52b1174b9927a202cf344b7f2ed761c165a44d89b3e30acc09e02d53531b"
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613"
             ],
-            "citation_verification": [
-                {
-                    "chunk_id": "f5e927c29bada8d088be3fd3a36b403f48cd417b8f9095c5086fdcfbf0a5c8d3",
-                    "verified": true
-                }
-            ],
+            "citation_verification": [],
             "status": "success"
         },
         {
             "question_id": "QA-029",
             "question_type": "direct",
             "question": "What HTTP error did the customer report in ticket TKT-88438?",
-            "predicted_answer": "429 Too Many Requests [71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59]",
+            "predicted_answer": "The customer reported a 429 Too Many Requests error in ticket TKT-88438 [71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59].",
             "expected_answer": "HTTP 429 Too Many Requests.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 1.0,
+                "token_precision": 0.3077,
                 "token_recall": 0.8,
-                "token_f1": 0.8889
+                "token_f1": 0.4444
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.9231,
+                "token_recall": 0.8571,
+                "token_f1": 0.8889,
+                "best_reference_index": 1,
+                "reference_count": 2,
+                "best_reference": "The customer reported an HTTP 429 Too Many Requests error in ticket TKT-88438."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.8662,
+            "faithfulness_lexical_proxy": 0.9231,
+            "confidence_indicator": 0.8936,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
                 "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
                 "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd",
                 "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
-                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1"
+                "f5e927c29bada8d088be3fd3a36b403f48cd417b8f9095c5086fdcfbf0a5c8d3"
             ],
             "citation_verification": [
                 {
@@ -1172,26 +1557,40 @@
             "question_id": "QA-030",
             "question_type": "direct",
             "question": "Which special text characters does the sample document recommend checking during document-processing tests?",
-            "predicted_answer": "non-ASCII characters (e.g., café, naïve, Zürich), smart quotes (e.g., “this”, 'that'), and currency symbols (€, £, ¥) [7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a, 9b15dc328a3c9043824d7e90e48071946badddc96822e815400bee41673bfc02, 077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2]",
+            "predicted_answer": "non-ASCII characters such as café, naïve, and Zürich; smart quotes like \"this\" and 'that'; currency symbols (€, £, ¥); and long words that force line wrapping in narrow columns",
             "expected_answer": "It recommends checking non-ASCII characters such as café, naïve, and Zürich; smart quotes; currency symbols such as €, £, and ¥; and long words that force line wrapping.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.7059,
-                "token_recall": 0.4615,
-                "token_f1": 0.5581
+                "token_precision": 0.7778,
+                "token_recall": 0.8077,
+                "token_f1": 0.7925
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.7778,
+                "token_recall": 0.8077,
+                "token_f1": 0.7925,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "It recommends checking non-ASCII characters such as café, naïve, and Zürich; smart quotes; currency symbols such as €, £, and ¥; and long words that force line wrapping."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
-            "citation_accuracy": 1.0,
-            "citation_count": 3,
-            "verified_citation_count": 3,
-            "has_citations": true,
-            "faithfulness_lexical_proxy": 0.7647,
-            "confidence_indicator": 0.7962,
-            "is_supported": true,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
+            "citation_accuracy": null,
+            "citation_count": 0,
+            "verified_citation_count": 0,
+            "has_citations": false,
+            "faithfulness_lexical_proxy": 1.0,
+            "confidence_indicator": 0.1962,
+            "is_supported": false,
             "retrieved_chunk_ids": [
                 "7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a",
                 "9b15dc328a3c9043824d7e90e48071946badddc96822e815400bee41673bfc02",
@@ -1199,46 +1598,47 @@
                 "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
                 "2a9b7e9a8feb16b83201ee917ce8d17024a929479934b160894a3514a678d147"
             ],
-            "citation_verification": [
-                {
-                    "chunk_id": "7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a",
-                    "verified": true
-                },
-                {
-                    "chunk_id": "9b15dc328a3c9043824d7e90e48071946badddc96822e815400bee41673bfc02",
-                    "verified": true
-                },
-                {
-                    "chunk_id": "077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2",
-                    "verified": true
-                }
-            ],
+            "citation_verification": [],
             "status": "success"
         },
         {
             "question_id": "QA-031",
             "question_type": "direct",
             "question": "What kinds of structures does the sample document say a good test document should contain?",
-            "predicted_answer": "headings at several levels, ordinary paragraphs, bulleted and numbered lists, a data table, an embedded image, and page breaks [f77c0bcb275643ce9e6bba706cf556dba17b7e949eef93b59cfc292bda333dbe, 5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb]",
+            "predicted_answer": "A good test document mixes the structures real users produce: headings at several levels, ordinary paragraphs, bulleted and numbered lists, a data table, an embedded image, and page breaks.",
             "expected_answer": "Headings at several levels, ordinary paragraphs, bulleted and numbered lists, a data table, an embedded image, and page breaks.",
             "answer_correctness": {
-                "exact_match": 1,
-                "token_precision": 1.0,
+                "exact_match": 0,
+                "token_precision": 0.6552,
                 "token_recall": 1.0,
-                "token_f1": 1.0
+                "token_f1": 0.7917
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.6552,
+                "token_recall": 1.0,
+                "token_f1": 0.7917,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "Headings at several levels, ordinary paragraphs, bulleted and numbered lists, a data table, an embedded image, and page breaks."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
-            "citation_accuracy": 1.0,
-            "citation_count": 2,
-            "verified_citation_count": 2,
-            "has_citations": true,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
+            "citation_accuracy": null,
+            "citation_count": 0,
+            "verified_citation_count": 0,
+            "has_citations": false,
             "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.8861,
-            "is_supported": true,
+            "confidence_indicator": 0.2861,
+            "is_supported": false,
             "retrieved_chunk_ids": [
                 "f77c0bcb275643ce9e6bba706cf556dba17b7e949eef93b59cfc292bda333dbe",
                 "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
@@ -1246,40 +1646,45 @@
                 "2a9b7e9a8feb16b83201ee917ce8d17024a929479934b160894a3514a678d147",
                 "7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a"
             ],
-            "citation_verification": [
-                {
-                    "chunk_id": "f77c0bcb275643ce9e6bba706cf556dba17b7e949eef93b59cfc292bda333dbe",
-                    "verified": true
-                },
-                {
-                    "chunk_id": "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
-                    "verified": true
-                }
-            ],
+            "citation_verification": [],
             "status": "success"
         },
         {
             "question_id": "QA-032",
             "question_type": "direct",
             "question": "Does the sample document contain macros, scripts, or tracking?",
-            "predicted_answer": "No, the sample document does not contain macros, scripts, or tracking [5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb, 077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2, 924b3c4493dd527a4270252f94c5246e2d2f42bb50e8985f946113dd63179c03, f77c0bcb275643ce9e6bba706cf556dba17b7e949eef93b59cfc292bda333dbe].",
-            "expected_answer": "No. It states that it has no macros, no scripts, and no tracking of any kind.",
+            "predicted_answer": "No macros, no scripts, no tracking of any kind [077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2, 924b3c4493dd527a4270252f94c5246e2d2f42bb50e8985f946113dd63179c03, f77c0bcb275643ce9e6bba706cf556dba17b7e949eef93b59cfc292bda333dbe]",
+            "expected_answer": "No, the sample document contains no macros, scripts, or tracking.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.3636,
-                "token_recall": 0.25,
-                "token_f1": 0.2963
+                "token_precision": 0.5556,
+                "token_recall": 0.5,
+                "token_f1": 0.5263
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 1.0,
+                "token_recall": 0.9,
+                "token_f1": 0.9474,
+                "best_reference_index": 1,
+                "reference_count": 2,
+                "best_reference": "No macros, no scripts, and no tracking of any kind."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
-            "is_abstention": true,
+            "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.5,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
-            "citation_count": 4,
-            "verified_citation_count": 4,
+            "citation_count": 3,
+            "verified_citation_count": 3,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8182,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.8606,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1290,10 +1695,6 @@
                 "ae01ca330e59b51eb03053e908474f2b70c8004e8fd16f45fa282500fbe89ddf"
             ],
             "citation_verification": [
-                {
-                    "chunk_id": "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
-                    "verified": true
-                },
                 {
                     "chunk_id": "077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2",
                     "verified": true
@@ -1313,73 +1714,52 @@
             "question_id": "QA-033",
             "question_type": "direct",
             "question": "What is the sample document's stated purpose?",
-            "predicted_answer": "The sample document's stated purpose is to provide a realistic file for developers, QA testers, and product teams to test uploads, previews, conversions, and integrations [5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb].",
+            "predicted_answer": "The sample document's stated purpose is to provide developers, QA testers, and product teams with a realistic file for testing uploads, previews, conversions, and integrations. [5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb] [ae01ca330e59b51eb03053e908474f2b70c8004e8fd16f45fa282500fbe89ddf] [2a9b7e9a8feb16b83201ee917ce8d17024a929479934b160894a3514a678d147] [7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a]",
             "expected_answer": "It is a stable fixture for developers, QA testers, and product teams to test uploads, previews, conversions, and integrations.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.6154,
-                "token_recall": 0.8421,
-                "token_f1": 0.7111
+                "token_precision": 0.5769,
+                "token_recall": 0.7895,
+                "token_f1": 0.6667
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.6538,
+                "token_recall": 0.85,
+                "token_f1": 0.7391,
+                "best_reference_index": 1,
+                "reference_count": 2,
+                "best_reference": "It provides a realistic sample file for developers, QA testers, and product teams to test uploads, previews, conversions, and integrations."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
+            "citation_count": 4,
+            "verified_citation_count": 4,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8846,
-            "confidence_indicator": 0.7798,
+            "faithfulness_lexical_proxy": 0.8462,
+            "confidence_indicator": 0.7805,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
                 "ae01ca330e59b51eb03053e908474f2b70c8004e8fd16f45fa282500fbe89ddf",
                 "2a9b7e9a8feb16b83201ee917ce8d17024a929479934b160894a3514a678d147",
-                "7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a",
-                "f77c0bcb275643ce9e6bba706cf556dba17b7e949eef93b59cfc292bda333dbe"
+                "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936",
+                "7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a"
             ],
             "citation_verification": [
                 {
                     "chunk_id": "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
                     "verified": true
-                }
-            ],
-            "status": "success"
-        },
-        {
-            "question_id": "QA-034",
-            "question_type": "direct",
-            "question": "What does the sample document say about using it as a legal, financial, or medical template?",
-            "predicted_answer": "The sample document states that it should not be treated as a template for legal, financial, or medical documents [ae01ca330e59b51eb03053e908474f2b70c8004e8fd16f45fa282500fbe89ddf, 2a9b7e9a8feb16b83201ee917ce8d17024a929479934b160894a3514a678d147, 7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a]",
-            "expected_answer": "It explicitly says it should not be treated as a template for legal, financial, or medical documents.",
-            "answer_correctness": {
-                "exact_match": 0,
-                "token_precision": 0.7368,
-                "token_recall": 0.8235,
-                "token_f1": 0.7778
-            },
-            "abstention_correct": null,
-            "clarification_correct": null,
-            "is_abstention": false,
-            "retrieval_recall_at_k": 1.0,
-            "mean_reciprocal_rank": 0.5,
-            "citation_accuracy": 1.0,
-            "citation_count": 3,
-            "verified_citation_count": 3,
-            "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9474,
-            "confidence_indicator": 0.8394,
-            "is_supported": true,
-            "retrieved_chunk_ids": [
-                "ae01ca330e59b51eb03053e908474f2b70c8004e8fd16f45fa282500fbe89ddf",
-                "2a9b7e9a8feb16b83201ee917ce8d17024a929479934b160894a3514a678d147",
-                "7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a",
-                "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
-                "be1626b227b0ef41a9db9f7834e12abf7d2d3e5292430c2eea867655802789c3"
-            ],
-            "citation_verification": [
+                },
                 {
                     "chunk_id": "ae01ca330e59b51eb03053e908474f2b70c8004e8fd16f45fa282500fbe89ddf",
                     "verified": true
@@ -1396,39 +1776,110 @@
             "status": "success"
         },
         {
+            "question_id": "QA-034",
+            "question_type": "direct",
+            "question": "What does the sample document say about using it as a legal, financial, or medical template?",
+            "predicted_answer": "The sample document states that nothing here should be treated as a template for legal, financial, or medical documents. It is a fixture — a stable, known input that lets you verify that the rest of your system behaves correctly [ae01ca330e59b51eb03053e908474f2b70c8004e8fd16f45fa282500fbe89ddf].",
+            "expected_answer": "It explicitly says it should not be treated as a template for legal, financial, or medical documents.",
+            "answer_correctness": {
+                "exact_match": 0,
+                "token_precision": 0.3333,
+                "token_recall": 0.7647,
+                "token_f1": 0.4643
+            },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.3846,
+                "token_recall": 0.9375,
+                "token_f1": 0.5455,
+                "best_reference_index": 1,
+                "reference_count": 2,
+                "best_reference": "Nothing in the sample should be treated as a template for legal, financial, or medical documents."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
+            "abstention_correct": null,
+            "clarification_correct": null,
+            "is_abstention": false,
+            "retrieval_recall_at_k": 1.0,
+            "mean_reciprocal_rank": 0.5,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
+            "citation_accuracy": 1.0,
+            "citation_count": 1,
+            "verified_citation_count": 1,
+            "has_citations": true,
+            "faithfulness_lexical_proxy": 0.9744,
+            "confidence_indicator": 0.8394,
+            "is_supported": true,
+            "retrieved_chunk_ids": [
+                "ae01ca330e59b51eb03053e908474f2b70c8004e8fd16f45fa282500fbe89ddf",
+                "2a9b7e9a8feb16b83201ee917ce8d17024a929479934b160894a3514a678d147",
+                "7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a",
+                "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
+                "be1626b227b0ef41a9db9f7834e12abf7d2d3e5292430c2eea867655802789c3"
+            ],
+            "citation_verification": [
+                {
+                    "chunk_id": "ae01ca330e59b51eb03053e908474f2b70c8004e8fd16f45fa282500fbe89ddf",
+                    "verified": true
+                }
+            ],
+            "status": "success"
+        },
+        {
             "question_id": "QA-035",
             "question_type": "direct",
             "question": "What are the four broad steps in the RAG process described in the AWS guide?",
-            "predicted_answer": "The four broad steps in the RAG process described in the AWS guide are:\n1. You create embeddings to ingest internal documents into a vector database\n2. A human submits a query in natural language\n3. An orchestrator performs similarity search in the vector database and retrieves relevant data\n4. The orchestrator sends the query and context to the LLM which generates a response [d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45]",
+            "predicted_answer": "You create embeddings to ingest the internal documents into a vector database. [d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45]; A human submits a query in natural language. [d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45]; An orchestrator performs a similarity search in the vector database and retrieves the relevant data. [d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45]; The orchestrator sends the query and the context to the LLM. The LLM generates a response to the query by using the additional context. [8bec805348c85e7050f75c50010c68b04c344d62e7b5fb92616e598b30446ca5]",
             "expected_answer": "Create embeddings to ingest internal documents into a vector database; convert the user query into a vector and retrieve similar vectors; pass retrieved context with the query to the foundation model; and return the generated response to the user.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.375,
-                "token_recall": 0.6154,
-                "token_f1": 0.466
+                "token_precision": 0.4237,
+                "token_recall": 0.641,
+                "token_f1": 0.5102
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.5932,
+                "token_recall": 0.7609,
+                "token_f1": 0.6667,
+                "best_reference_index": 1,
+                "reference_count": 2,
+                "best_reference": "Create embeddings for internal documents and store them in a vector database; a human submits a natural-language query; an orchestrator retrieves relevant data with similarity search and adds it to the prompt; then the query and context go to the LLM, which generates the response."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
-            "citation_count": 1,
-            "verified_citation_count": 1,
+            "citation_count": 2,
+            "verified_citation_count": 2,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9688,
-            "confidence_indicator": 0.9072,
+            "faithfulness_lexical_proxy": 1.0,
+            "confidence_indicator": 0.9533,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45",
+                "c3e1a7b13759882ae370458d8c1aabd438abd4a30452ce02561bf84e1895e82b",
                 "4d1ca1c681f218687f3af2c084d6f4eb82484865f95f882b9bd5bc0fc2935930",
                 "8bec805348c85e7050f75c50010c68b04c344d62e7b5fb92616e598b30446ca5",
-                "5b369661fa39c10ccadf88366c3d3dc0187c281c8ec6dab1d51f412661c2c17b",
-                "dbd1bfb3ab08a64ee811465bf9eb7b8f7884f89d2acbb5f02f4b6f3332d7d1c0"
+                "5b369661fa39c10ccadf88366c3d3dc0187c281c8ec6dab1d51f412661c2c17b"
             ],
             "citation_verification": [
                 {
                     "chunk_id": "d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45",
+                    "verified": true
+                },
+                {
+                    "chunk_id": "8bec805348c85e7050f75c50010c68b04c344d62e7b5fb92616e598b30446ca5",
                     "verified": true
                 }
             ],
@@ -1438,32 +1889,46 @@
             "question_id": "QA-036",
             "question_type": "direct",
             "question": "What is the role of a vector database in a production-level RAG system?",
-            "predicted_answer": "The vector database serves as an index of the embeddings, associated text, and metadata, optimized for search and retrieval in a production-level RAG system [398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2].",
+            "predicted_answer": "A vector database is an index of the embeddings, the associated text, and metadata. The index is optimized for search and retrieval [398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2].",
             "expected_answer": "It stores an index of embeddings together with associated text and metadata, optimized for search and retrieval.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.52,
+                "token_precision": 0.5909,
                 "token_recall": 0.7647,
-                "token_f1": 0.619
+                "token_f1": 0.6667
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.5909,
+                "token_recall": 0.7647,
+                "token_f1": 0.6667,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "It stores an index of embeddings together with associated text and metadata, optimized for search and retrieval."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.96,
-            "confidence_indicator": 0.9041,
+            "faithfulness_lexical_proxy": 1.0,
+            "confidence_indicator": 0.9796,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2",
                 "8bec805348c85e7050f75c50010c68b04c344d62e7b5fb92616e598b30446ca5",
+                "c81319f0a246742a517b5ab3d73464aaaa6cc87f8cef6b7cfa143090462265ba",
                 "d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45",
-                "c3e1a7b13759882ae370458d8c1aabd438abd4a30452ce02561bf84e1895e82b",
-                "5053d3b849f7c708199df434cec4c62700e4e0420b87bff6b9067abb3366a755"
+                "74b9512345f6a18ad1f760f4d10f066a0dfadb0865ebc787fee4b43458b80eb9"
             ],
             "citation_verification": [
                 {
@@ -1477,7 +1942,7 @@
             "question_id": "QA-037",
             "question_type": "direct",
             "question": "What does the retriever do in a RAG system?",
-            "predicted_answer": "The retriever fetches the relevant context from the vector database and ranks the responses based on business requirements [398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2]",
+            "predicted_answer": "The retriever fetches the relevant context from the vector database and ranks the responses based on business requirements [398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2].",
             "expected_answer": "For a user query, it fetches relevant context from the vector database and ranks the retrieved results according to the system's requirements.",
             "answer_correctness": {
                 "exact_match": 0,
@@ -1485,24 +1950,38 @@
                 "token_recall": 0.5217,
                 "token_f1": 0.5854
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.9444,
+                "token_recall": 0.8095,
+                "token_f1": 0.8718,
+                "best_reference_index": 1,
+                "reference_count": 2,
+                "best_reference": "For a user query, the retriever fetches relevant context from the vector database and ranks the responses based on business requirements."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
-            "mean_reciprocal_rank": 1.0,
+            "mean_reciprocal_rank": 0.5,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
             "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.9043,
+            "confidence_indicator": 0.9924,
             "is_supported": true,
             "retrieved_chunk_ids": [
+                "c3e1a7b13759882ae370458d8c1aabd438abd4a30452ce02561bf84e1895e82b",
                 "398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2",
+                "b71493a13b701bae8d059fff6925181536ce63278a0d6a38e80c12b701995e8b",
                 "5b369661fa39c10ccadf88366c3d3dc0187c281c8ec6dab1d51f412661c2c17b",
-                "f9d51b5e3324a910c8a8593fc678d84c5964fe3c69bb388d48cd700ca3513a6c",
-                "8bec805348c85e7050f75c50010c68b04c344d62e7b5fb92616e598b30446ca5",
-                "efe9b0ae087adc371974ed65c28b6895dd1299ed3995d6cf0614d9d5e6ed3703"
+                "cd6d141d4c64fd4f21cc8687d0f7e61e7c02eb02bb48e6dafba0b9e7b4391169"
             ],
             "citation_verification": [
                 {
@@ -1516,32 +1995,46 @@
             "question_id": "QA-038",
             "question_type": "direct",
             "question": "Name two similarity metrics mentioned for vector search in the AWS guide.",
-            "predicted_answer": "L2 distance and cosine distance [03972aede5c92c13cf1b6f0cf7d3fe20c446f78e27d7a8d64c879f368f07f7b0]",
+            "predicted_answer": "L2 distance [03972aede5c92c13cf1b6f0cf7d3fe20c446f78e27d7a8d64c879f368f07f7b0]; cosine distance [03972aede5c92c13cf1b6f0cf7d3fe20c446f78e27d7a8d64c879f368f07f7b0]",
             "expected_answer": "L2 distance and cosine distance.",
             "answer_correctness": {
-                "exact_match": 1,
+                "exact_match": 0,
                 "token_precision": 1.0,
-                "token_recall": 1.0,
-                "token_f1": 1.0
+                "token_recall": 0.8,
+                "token_f1": 0.8889
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 1.0,
+                "token_recall": 0.8,
+                "token_f1": 0.8889,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "L2 distance and cosine distance."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.5,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
             "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.8595,
+            "confidence_indicator": 0.8727,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "03972aede5c92c13cf1b6f0cf7d3fe20c446f78e27d7a8d64c879f368f07f7b0",
                 "5919bdba946e055295ebb55b928a4c91c40abdec696abbc369ec9ad50b56a281",
+                "a83cf45c33118ab6d8d712f641f50c7a18debd0018de3e135b1376bf1cf3d82c",
                 "c39eb98020c9bed9a2442c5053e4d6e2facbb1c9dae6ae4bb8c620d251d0b1bb",
-                "05c118a8db4e6ab882821928e48fa389d74a56107239fbdfeb45a05ecad16a7c",
-                "64d3a73b934384cc9a2b30c2cbe97647413a0a277fd6ae7c90b062a595d573a0"
+                "05c118a8db4e6ab882821928e48fa389d74a56107239fbdfeb45a05ecad16a7c"
             ],
             "citation_verification": [
                 {
@@ -1555,19 +2048,33 @@
             "question_id": "QA-039",
             "question_type": "direct",
             "question": "Which vector database options are listed as supported by Amazon Bedrock Knowledge Bases in the cited chunk?",
-            "predicted_answer": "Amazon OpenSearch Serverless, Amazon Aurora PostgreSQL-Compatible Edition, Pinecone (Pinecone documentation), Redis Enterprise Cloud (Redis documentation), and MongoDB Atlas (MongoDB documentation) [74b9512345f6a18ad1f760f4d10f066a0dfadb0865ebc787fee4b43458b80eb9]",
+            "predicted_answer": "Amazon OpenSearch Serverless, Amazon Aurora PostgreSQL-Compatible Edition, Pinecone, Redis Enterprise Cloud, and MongoDB Atlas are supported by Amazon Bedrock Knowledge Bases [74b9512345f6a18ad1f760f4d10f066a0dfadb0865ebc787fee4b43458b80eb9].",
             "expected_answer": "Amazon OpenSearch Serverless, Amazon Aurora PostgreSQL-Compatible Edition, Pinecone, Redis Enterprise Cloud, and MongoDB Atlas.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.7143,
+                "token_precision": 0.6818,
                 "token_recall": 1.0,
-                "token_f1": 0.8333
+                "token_f1": 0.8108
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.6818,
+                "token_recall": 1.0,
+                "token_f1": 0.8108,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "Amazon OpenSearch Serverless, Amazon Aurora PostgreSQL-Compatible Edition, Pinecone, Redis Enterprise Cloud, and MongoDB Atlas."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
@@ -1594,32 +2101,46 @@
             "question_id": "QA-040",
             "question_type": "direct",
             "question": "What are two advantages of using Amazon Kendra for RAG?",
-            "predicted_answer": "You do not have to maintain a vector database because Amazon Kendra handles the entire vector search process [9188d58cd23c7c5402ad9ffc3018269dd4d6f7b3bfd4718c6ff8e6eee584f629]. Amazon Kendra provides access control list (ACL) filtering that returns only documents that the end user has access to [9188d58cd23c7c5402ad9ffc3018269dd4d6f7b3bfd4718c6ff8e6eee584f629].",
-            "expected_answer": "The guide says Kendra removes the need to maintain a separate vector database because it handles vector search, and it offers pre-built connectors to sources such as databases, websites, S3, SharePoint, and Confluence. It also supports ACL filtering and metadata-based boosting.",
+            "predicted_answer": "You do not have to maintain a vector database because Amazon Kendra handles the entire vector search process. [9188d58cd23c7c5402ad9ffc3018269dd4d6f7b3bfd4718c6ff8e6eee584f629]; Amazon Kendra contains pre-built connectors for popular data sources, such as databases, website crawlers, Amazon S3 buckets, Microsoft SharePoint instances, and Atlassian Confluence instances. [9188d58cd23c7c5402ad9ffc3018269dd4d6f7b3bfd4718c6ff8e6eee584f629]",
+            "expected_answer": "Amazon Kendra handles the entire vector search process, so a separate vector database is not needed. It also provides pre-built connectors for popular data sources, including databases, website crawlers, Amazon S3, Microsoft SharePoint, and Atlassian Confluence.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.4054,
-                "token_recall": 0.3488,
-                "token_f1": 0.375
+                "token_precision": 0.6744,
+                "token_recall": 0.7838,
+                "token_f1": 0.725
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.6744,
+                "token_recall": 0.7838,
+                "token_f1": 0.725,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "Amazon Kendra handles the entire vector search process, so a separate vector database is not needed. It also provides pre-built connectors for popular data sources, including databases, website crawlers, Amazon S3, Microsoft SharePoint, and Atlassian Confluence."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
             "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.8167,
+            "confidence_indicator": 0.9902,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "9188d58cd23c7c5402ad9ffc3018269dd4d6f7b3bfd4718c6ff8e6eee584f629",
-                "5b369661fa39c10ccadf88366c3d3dc0187c281c8ec6dab1d51f412661c2c17b",
-                "dbd1bfb3ab08a64ee811465bf9eb7b8f7884f89d2acbb5f02f4b6f3332d7d1c0",
-                "4d1ca1c681f218687f3af2c084d6f4eb82484865f95f882b9bd5bc0fc2935930",
-                "f9d51b5e3324a910c8a8593fc678d84c5964fe3c69bb388d48cd700ca3513a6c"
+                "2c9f4981d4275b8cb59c3b93e3e7690a404adb34a7e8d29fbb71c0e6e49dc309",
+                "6e4a81967ed681f95bc3a766ae0b3aa8c5a029f33d99b56fe866701cbd791cec",
+                "30beab85a35ffb4fb9282818412c4323c8503072116c32a5eb962f9b0eec798f",
+                "e414aeb707d9b3b0f3b6bac018b260fa4281cd032ed2216def778d700968cc19"
             ],
             "citation_verification": [
                 {
@@ -1633,36 +2154,50 @@
             "question_id": "QA-041",
             "question_type": "direct",
             "question": "What is one reason to choose a custom RAG architecture instead of a fully managed option?",
-            "predicted_answer": "Custom RAG architectures provide more control over components such as the retriever or vector database [5053d3b849f7c708199df434cec4c62700e4e0420b87bff6b9067abb3366a755].",
+            "predicted_answer": "One specific reason to choose a custom RAG architecture instead of a fully managed option is the need for flexibility to choose your own vector database or access unsupported data sources, as stated in the evidence [b71493a13b701bae8d059fff6925181536ce63278a0d6a38e80c12b701995e8b].",
             "expected_answer": "Custom RAG architectures provide more control over components such as the retriever or vector database.",
             "answer_correctness": {
-                "exact_match": 1,
-                "token_precision": 1.0,
-                "token_recall": 1.0,
-                "token_f1": 1.0
+                "exact_match": 0,
+                "token_precision": 0.1944,
+                "token_recall": 0.4667,
+                "token_f1": 0.2745
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.4167,
+                "token_recall": 0.7895,
+                "token_f1": 0.5455,
+                "best_reference_index": 1,
+                "reference_count": 3,
+                "best_reference": "A custom RAG architecture gives you flexibility to choose your own vector database or access an unsupported data source."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.3333,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 1.0,
-            "confidence_indicator": 0.8268,
+            "faithfulness_lexical_proxy": 0.9167,
+            "confidence_indicator": 0.9947,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "4d1ca1c681f218687f3af2c084d6f4eb82484865f95f882b9bd5bc0fc2935930",
                 "dbd1bfb3ab08a64ee811465bf9eb7b8f7884f89d2acbb5f02f4b6f3332d7d1c0",
-                "5053d3b849f7c708199df434cec4c62700e4e0420b87bff6b9067abb3366a755",
-                "67b793322ec22a7259f2a68eba90b63123ce618382f2bd0e834f264fecdcf428",
-                "50188e0ca4a22aad8c311788449f738c7baa86dd3c6bd921c166999519214c8d"
+                "b71493a13b701bae8d059fff6925181536ce63278a0d6a38e80c12b701995e8b",
+                "9e1eddd6e9193fa7348e5b17c55b2792695d774b90c76458fa85f1b27fe83ad0",
+                "b16597300bcb732ccf54c19d81a60c157f0bc9791ee72053019941aade3efa0a"
             ],
             "citation_verification": [
                 {
-                    "chunk_id": "5053d3b849f7c708199df434cec4c62700e4e0420b87bff6b9067abb3366a755",
+                    "chunk_id": "b71493a13b701bae8d059fff6925181536ce63278a0d6a38e80c12b701995e8b",
                     "verified": true
                 }
             ],
@@ -1672,32 +2207,46 @@
             "question_id": "QA-042",
             "question_type": "direct",
             "question": "What is the difference between the RetrieveAndGenerate and Retrieve APIs described for Amazon Bedrock?",
-            "predicted_answer": "The RetrieveAndGenerate API returns the LLM-generated response after augmenting the prompt with search results and manages short-term conversation memory, while the Retrieve API returns raw search results that require additional processing to generate responses. [66bb8637b1cfbedb869a710a1b31828b40814630fcc6f6f5d3cdfc7452bb91d5] [c104e98f449482b6e465006c4e3e9c97d9c26fb32875c7ec15581eec39b632a9]",
+            "predicted_answer": "The RetrieveAndGenerate API queries the knowledge base and generates responses from the retrieved information, while the Retrieve API queries the knowledge base and returns results that can be processed for response generation. [66bb8637b1cfbedb869a710a1b31828b40814630fcc6f6f5d3cdfc7452bb91d5] [c104e98f449482b6e465006c4e3e9c97d9c26fb32875c7ec15581eec39b632a9]",
             "expected_answer": "RetrieveAndGenerate performs retrieval, augments the prompt, and generates a response; Retrieve queries the knowledge base and returns retrieved information directly for use by the application.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.25,
-                "token_recall": 0.36,
-                "token_f1": 0.2951
+                "token_precision": 0.5,
+                "token_recall": 0.64,
+                "token_f1": 0.5614
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.5,
+                "token_recall": 0.64,
+                "token_f1": 0.5614,
+                "best_reference_index": 0,
+                "reference_count": 3,
+                "best_reference": "RetrieveAndGenerate performs retrieval, augments the prompt, and generates a response; Retrieve queries the knowledge base and returns retrieved information directly for use by the application."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.5,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 2,
             "verified_citation_count": 2,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8611,
-            "confidence_indicator": 0.8824,
+            "faithfulness_lexical_proxy": 0.875,
+            "confidence_indicator": 0.8915,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "66bb8637b1cfbedb869a710a1b31828b40814630fcc6f6f5d3cdfc7452bb91d5",
                 "c104e98f449482b6e465006c4e3e9c97d9c26fb32875c7ec15581eec39b632a9",
                 "27cc565c07b3d7cbe48379eb722ad3225b1303656845ddb1856a1a5627139bd7",
                 "5b369661fa39c10ccadf88366c3d3dc0187c281c8ec6dab1d51f412661c2c17b",
-                "b137803988416bc76e70fa9ef54e4378d4b90005a6c5bc6f7f0c3167e54e0ca7"
+                "2e9b09685fa8394b4cea6a1654e86c245ce7ac3ee6917fa2f4ea66b87bd9a045"
             ],
             "citation_verification": [
                 {
@@ -1715,66 +2264,99 @@
             "question_id": "QA-043",
             "question_type": "direct",
             "question": "What does the AWS guide say is a limitation of fine-tuned models for document question answering?",
-            "predicted_answer": "I don't know. The model could not generate a reliable answer from the supplied documents.",
-            "expected_answer": "Fine-tuned models do not provide references to source material in their responses, and the guide notes an increased risk of hallucination when they are used to answer questions.",
+            "predicted_answer": "Fine-tuned models do not provide a reference to the source in their responses [a2faf4eda99fff0ecd5578f6414620df7204c685ebc61a5f25753373b47e2707].",
+            "expected_answer": "Fine-tuned models do not provide references to source material in their responses.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.25,
-                "token_recall": 0.1379,
-                "token_f1": 0.1778
+                "token_precision": 0.7857,
+                "token_recall": 0.8462,
+                "token_f1": 0.8148
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.7857,
+                "token_recall": 0.8462,
+                "token_f1": 0.8148,
+                "best_reference_index": 0,
+                "reference_count": 3,
+                "best_reference": "Fine-tuned models do not provide references to source material in their responses."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": true,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.5,
-            "citation_accuracy": null,
-            "citation_count": 0,
-            "verified_citation_count": 0,
-            "has_citations": false,
-            "faithfulness_lexical_proxy": 0.625,
-            "confidence_indicator": 0.3659,
-            "is_supported": false,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
+            "citation_accuracy": 1.0,
+            "citation_count": 1,
+            "verified_citation_count": 1,
+            "has_citations": true,
+            "faithfulness_lexical_proxy": 1.0,
+            "confidence_indicator": 0.9732,
+            "is_supported": true,
             "retrieved_chunk_ids": [
                 "7be36c2bcce96f680628a02a10c474397259c8c2bfbdcfc6d108be5fbb861618",
                 "a2faf4eda99fff0ecd5578f6414620df7204c685ebc61a5f25753373b47e2707",
                 "f11feb99f7cb387a029820ca20c482b26e2ecbd8b2bddb01bb344b2f9fe33c80",
                 "cef90fce40861bfcf382e87fe2df746fa2445d992df3c95916324abf497d2aeb",
-                "b16597300bcb732ccf54c19d81a60c157f0bc9791ee72053019941aade3efa0a"
+                "efe9b0ae087adc371974ed65c28b6895dd1299ed3995d6cf0614d9d5e6ed3703"
             ],
-            "citation_verification": [],
+            "citation_verification": [
+                {
+                    "chunk_id": "a2faf4eda99fff0ecd5578f6414620df7204c685ebc61a5f25753373b47e2707",
+                    "verified": true
+                }
+            ],
             "status": "success"
         },
         {
             "question_id": "QA-044",
             "question_type": "direct",
             "question": "Which AWS service can run OCR on scanned documents during an Amazon Q Business enrichment workflow?",
-            "predicted_answer": "AWS Lambda runs OCR on scanned documents during an Amazon Q Business enrichment workflow. [344958f829e9b20440b62cf55dafbf8d6293fec5dc29e795af30b65d6bba5791]",
-            "expected_answer": "AWS Lambda",
+            "predicted_answer": "AWS Lambda function [344958f829e9b20440b62cf55dafbf8d6293fec5dc29e795af30b65d6bba5791]",
+            "expected_answer": "A Lambda function runs OCR on scanned documents and extracts their text.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.1429,
-                "token_recall": 1.0,
-                "token_f1": 0.25
+                "token_precision": 0.6667,
+                "token_recall": 0.1667,
+                "token_f1": 0.2667
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 1,
+                "token_precision": 1.0,
+                "token_recall": 1.0,
+                "token_f1": 1.0,
+                "best_reference_index": 2,
+                "reference_count": 3,
+                "best_reference": "AWS Lambda function"
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9286,
-            "confidence_indicator": 0.8657,
+            "faithfulness_lexical_proxy": 1.0,
+            "confidence_indicator": 0.9138,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "344958f829e9b20440b62cf55dafbf8d6293fec5dc29e795af30b65d6bba5791",
+                "c55779fbb470daf2287ca120b1344d2fd37329d166e77040341918b1cbc1ee20",
                 "d22c219b2f4cf825d07e903c9efa780b17f726256306fbb96d0cf015b66f4aab",
                 "9e1eddd6e9193fa7348e5b17c55b2792695d774b90c76458fa85f1b27fe83ad0",
-                "91f39b74c65c7877cf3e7efd14deb459fb4f15e48990aa688a3422921a0bd4bf",
-                "5b369661fa39c10ccadf88366c3d3dc0187c281c8ec6dab1d51f412661c2c17b"
+                "cd6d141d4c64fd4f21cc8687d0f7e61e7c02eb02bb48e6dafba0b9e7b4391169"
             ],
             "citation_verification": [
                 {
@@ -1788,24 +2370,38 @@
             "question_id": "QA-045",
             "question_type": "multi_hop",
             "question": "A team uses the Starter plan and wants to know both its maximum workspace size and API request allowance. What are the two limits?",
-            "predicted_answer": "The Starter plan has a maximum workspace size of 3 members and an API request allowance of 60 requests per minute [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb].",
+            "predicted_answer": "The Starter plan has a maximum workspace size of 3 members and a REST API rate limit of 60 requests per minute [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb].",
             "expected_answer": "The Starter plan allows up to 3 workspace members and 60 REST API requests per minute.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.5714,
-                "token_recall": 0.75,
-                "token_f1": 0.6486
+                "token_precision": 0.5909,
+                "token_recall": 0.8125,
+                "token_f1": 0.6842
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.5909,
+                "token_recall": 0.8125,
+                "token_f1": 0.6842,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "The Starter plan allows up to 3 workspace members and 60 REST API requests per minute."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.9048,
+            "faithfulness_lexical_proxy": 0.9545,
             "confidence_indicator": 0.6407,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1813,7 +2409,7 @@
                 "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
                 "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
                 "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc",
-                "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50"
+                "522b824ef49e201270b8c8be079faba0b897abd06c3415ee609e6ada9e8adf66"
             ],
             "citation_verification": [
                 {
@@ -1827,19 +2423,33 @@
             "question_id": "QA-046",
             "question_type": "multi_hop",
             "question": "A company stores customer contracts and source code as Tier 2 data. What encryption applies, and how long is the retention period?",
-            "predicted_answer": "AES-256 at rest, TLS 1.3 in transit with a retention period of 5 years [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
+            "predicted_answer": "AES-256 at rest, TLS 1.3 in transit [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583] and 5 Years [d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583]",
             "expected_answer": "Tier 2 data uses AES-256 encryption at rest and TLS 1.3 in transit, with a 5-year retention period.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.875,
-                "token_recall": 0.6667,
-                "token_f1": 0.7568
+                "token_precision": 0.9167,
+                "token_recall": 0.5238,
+                "token_f1": 0.6667
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.9167,
+                "token_recall": 0.5238,
+                "token_f1": 0.6667,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "Tier 2 data uses AES-256 encryption at rest and TLS 1.3 in transit, with a 5-year retention period."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
@@ -1856,7 +2466,7 @@
             ],
             "citation_verification": [
                 {
-                    "chunk_id": "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
+                    "chunk_id": "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
                     "verified": true
                 }
             ],
@@ -1866,24 +2476,38 @@
             "question_id": "QA-047",
             "question_type": "multi_hop",
             "question": "A CloudNote Pro user is offline when a parent folder is deleted, then adds new documents to that folder. What caused the conflict and what are the documented recovery choices?",
-            "predicted_answer": "The conflict occurs when one user deletes a parent folder while another offline user adds new documents inside that same folder. The documented recovery choices are to either \"Keep Both\" to restore the deleted folder structure alongside offline notes or \"Merge into Active Workspace\" to relocate orphaned notes to the root directory [90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6].",
+            "predicted_answer": "The conflict was caused by one user deleting a parent folder while another offline user adds new documents inside that folder [90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6]. The documented recovery choices are: Keep Both to restore the deleted folder structure alongside offline notes, or Merge into Active Workspace to relocate orphaned notes to the root directory [90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6].",
             "expected_answer": "The structural conflict occurs because one user deleted the parent folder while the offline user added documents inside it. The user should open the Conflict Resolution Drawer, compare local and cloud timestamps, and choose Keep Both or Merge into Active Workspace.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.4423,
-                "token_recall": 0.561,
-                "token_f1": 0.4946
+                "token_precision": 0.44,
+                "token_recall": 0.5366,
+                "token_f1": 0.4835
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.48,
+                "token_recall": 0.8571,
+                "token_f1": 0.6154,
+                "best_reference_index": 1,
+                "reference_count": 2,
+                "best_reference": "The conflict occurred because one user deleted the parent folder while another offline user added documents inside it. Recovery choices are Keep Both or Merge into Active Workspace."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8846,
+            "faithfulness_lexical_proxy": 0.84,
             "confidence_indicator": 0.6852,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1905,32 +2529,46 @@
             "question_id": "QA-048",
             "question_type": "multi_hop",
             "question": "An API client receives HTTP 400 after submitting a vector query. Which two causes are documented, and what should be checked?",
-            "predicted_answer": "The documented causes for HTTP 400 after vector query submission are vector dimensionality mismatch and invalid JSON filter syntax [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc]. The client should verify the vector dimensionality and JSON filter syntax.",
+            "predicted_answer": "Vector dimensionality mismatch Check: Verify the vector dimensionality matches the index dimensionality [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc]; Invalid JSON filter syntax Check: Validate JSON filter syntax using a JSON validator [1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc]",
             "expected_answer": "The guide lists a vector dimensionality mismatch or invalid JSON filter syntax. The client should check that the query vector matches the index dimensionality and that the filter JSON is valid.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.6,
-                "token_recall": 0.5806,
-                "token_f1": 0.5902
+                "token_precision": 0.68,
+                "token_recall": 0.5484,
+                "token_f1": 0.6071
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.68,
+                "token_recall": 0.5484,
+                "token_f1": 0.6071,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "The guide lists a vector dimensionality mismatch or invalid JSON filter syntax. The client should check that the query vector matches the index dimensionality and that the filter JSON is valid."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.7667,
-            "confidence_indicator": 0.6087,
+            "faithfulness_lexical_proxy": 0.8,
+            "confidence_indicator": 0.6088,
             "is_supported": true,
             "retrieved_chunk_ids": [
                 "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc",
                 "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50",
+                "30fad99a5261c0b4ae85b46f5856fea4341cc5513f13461d17841d44aec0e94d",
                 "5919bdba946e055295ebb55b928a4c91c40abdec696abbc369ec9ad50b56a281",
-                "a83cf45c33118ab6d8d712f641f50c7a18debd0018de3e135b1376bf1cf3d82c",
-                "d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45"
+                "a83cf45c33118ab6d8d712f641f50c7a18debd0018de3e135b1376bf1cf3d82c"
             ],
             "citation_verification": [
                 {
@@ -1944,24 +2582,38 @@
             "question_id": "QA-049",
             "question_type": "multi_hop",
             "question": "A customer has the Team Plan and asks how many API requests per minute are allowed and whether SSO/SAML is included by default. What does the plan table say?",
-            "predicted_answer": "The Team Plan allows 1,000 API requests per minute [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb]. SSO/SAML 2.0 is not included by default and requires an add-on fee of $3 per user per month [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb].",
+            "predicted_answer": "The Team Plan allows 1,000 requests per minute and includes SSO/SAML 2.0 as an add-on ($3/user/mo). [a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb]",
             "expected_answer": "The Team Plan allows 1,000 requests per minute. SSO/SAML 2.0 is not included by default; it is listed as an add-on for $3 per user per month.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.8387,
-                "token_recall": 0.8387,
-                "token_f1": 0.8387
+                "token_precision": 0.8636,
+                "token_recall": 0.6129,
+                "token_f1": 0.717
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.8636,
+                "token_recall": 0.6129,
+                "token_f1": 0.717,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "The Team Plan allows 1,000 requests per minute. SSO/SAML 2.0 is not included by default; it is listed as an add-on for $3 per user per month."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
-            "is_abstention": true,
+            "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.5,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 0.5,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8387,
+            "faithfulness_lexical_proxy": 0.8636,
             "confidence_indicator": 0.6812,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -1969,7 +2621,7 @@
                 "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
                 "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
                 "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
-                "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549"
+                "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50"
             ],
             "citation_verification": [
                 {
@@ -1983,24 +2635,38 @@
             "question_id": "QA-050",
             "question_type": "multi_hop",
             "question": "For Tier 1 Restricted data, identify example data types, encryption, and retention period.",
-            "predicted_answer": "For Tier 1 Restricted data, example data types are PII, Payment Cards, and Auth Secrets; encryption uses AES-256-GCM with Customer Managed Keys; and the retention period is 7 years (Audit Regulated) [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549].",
+            "predicted_answer": "PII, Payment Cards, Auth Secrets; AES-256-GCM + Customer Managed Keys; 7 Years (Audit Regulated) [563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549]",
             "expected_answer": "Examples are PII, payment cards, and authentication secrets. The required encryption is AES-256-GCM with customer-managed keys, and the retention period is 7 years for audit-regulated data.",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.7576,
-                "token_recall": 0.8333,
-                "token_f1": 0.7937
+                "token_precision": 0.9333,
+                "token_recall": 0.4667,
+                "token_f1": 0.6222
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.9333,
+                "token_recall": 0.4667,
+                "token_f1": 0.6222,
+                "best_reference_index": 0,
+                "reference_count": 1,
+                "best_reference": "Examples are PII, payment cards, and authentication secrets. The required encryption is AES-256-GCM with customer-managed keys, and the retention period is 7 years for audit-regulated data."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.8788,
+            "faithfulness_lexical_proxy": 1.0,
             "confidence_indicator": 0.7565,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -2022,27 +2688,33 @@
             "question_id": "QA-051",
             "question_type": "ambiguous",
             "question": "What is the API limit?",
-            "predicted_answer": "Which API limit are you referring to? (e.g., notes export API, vector search API, or REST API rate limits by subscription tier)",
+            "predicted_answer": "Which API limit are you referring to?",
             "expected_answer": "The question is ambiguous because the documents mention multiple limits. Please specify whether you mean the CloudScale API's top_k maximum, the upsert batch size, or a CloudNote Pro subscription plan's requests per minute.",
             "answer_correctness": null,
+            "answer_correctness_multi_reference": null,
+            "answer_correctness_llm_judge": null,
+            "faithfulness_llm_judge": null,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": true,
             "is_abstention": false,
             "retrieval_recall_at_k": 0.0,
             "mean_reciprocal_rank": 0.0,
+            "source_recall_at_k": 0.0,
+            "source_mean_reciprocal_rank": 0.0,
             "citation_accuracy": null,
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.8261,
+            "faithfulness_lexical_proxy": 0.7143,
             "confidence_indicator": 0.0604,
             "is_supported": false,
             "retrieved_chunk_ids": [
                 "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
                 "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
                 "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
-                "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
-                "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50"
+                "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935",
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613"
             ],
             "citation_verification": [],
             "status": "success"
@@ -2051,27 +2723,33 @@
             "question_id": "QA-052",
             "question_type": "ambiguous",
             "question": "How long is data kept?",
-            "predicted_answer": "Which data retention policy are you asking about: the compliance policy tiers or AWS retrieval services?",
+            "predicted_answer": "Which data-retention policy or service are you referring to?",
             "expected_answer": "The question is ambiguous because retention depends on the data classification tier or subscription feature. Please specify the policy tier or the type of data/version history you mean.",
             "answer_correctness": null,
+            "answer_correctness_multi_reference": null,
+            "answer_correctness_llm_judge": null,
+            "faithfulness_llm_judge": null,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": true,
             "is_abstention": false,
             "retrieval_recall_at_k": 0.5,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 0.5,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": null,
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.5,
+            "faithfulness_lexical_proxy": 0.7,
             "confidence_indicator": 0.0184,
             "is_supported": false,
             "retrieved_chunk_ids": [
                 "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
                 "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
                 "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613",
-                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
-                "c9dbeae815502e9ee783ba38e6072f4696cb424601407637064c6557b083a723"
+                "9b15dc328a3c9043824d7e90e48071946badddc96822e815400bee41673bfc02",
+                "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935"
             ],
             "citation_verification": [],
             "status": "success"
@@ -2080,27 +2758,33 @@
             "question_id": "QA-053",
             "question_type": "ambiguous",
             "question": "What encryption is used?",
-            "predicted_answer": "Are you asking about encryption in transit, encryption at rest, or specific data tiers (e.g., Tier 1, Tier 2)?",
+            "predicted_answer": "Which product or policy document do you mean, and which security area are you asking about?",
             "expected_answer": "Please clarify whether you mean CloudNote Pro's document encryption, the compliance policy's tier-specific encryption, or encryption in transit. The documents describe different controls for each context.",
             "answer_correctness": null,
+            "answer_correctness_multi_reference": null,
+            "answer_correctness_llm_judge": null,
+            "faithfulness_llm_judge": null,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": true,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": null,
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.75,
+            "faithfulness_lexical_proxy": 0.25,
             "confidence_indicator": 0.0376,
             "is_supported": false,
             "retrieved_chunk_ids": [
                 "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
                 "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549",
                 "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583",
-                "b2b22e7b8e679bcd45d722a2fa7157b87cbfc1a5e5da43690ef98031c2842275",
-                "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf"
+                "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935",
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613"
             ],
             "citation_verification": [],
             "status": "success"
@@ -2109,27 +2793,33 @@
             "question_id": "QA-054",
             "question_type": "ambiguous",
             "question": "What happened to the customer?",
-            "predicted_answer": "Which customer incident are you referring to: billing change, account security compromise, or API throttling issue?",
+            "predicted_answer": "Which customer or ticket ID are you referring to?",
             "expected_answer": "The support file contains several customer tickets with different issues. Please provide a ticket ID (for example, TKT-88412 or TKT-88430) so I can identify the correct interaction.",
             "answer_correctness": null,
+            "answer_correctness_multi_reference": null,
+            "answer_correctness_llm_judge": null,
+            "faithfulness_llm_judge": null,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": true,
             "is_abstention": false,
-            "retrieval_recall_at_k": 1.0,
+            "retrieval_recall_at_k": 0.5,
             "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": null,
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.625,
+            "faithfulness_lexical_proxy": 0.7778,
             "confidence_indicator": 0.0002,
             "is_supported": false,
             "retrieved_chunk_ids": [
                 "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
                 "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
+                "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd",
                 "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
-                "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
-                "f9d51b5e3324a910c8a8593fc678d84c5964fe3c69bb388d48cd700ca3513a6c"
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613"
             ],
             "citation_verification": [],
             "status": "success"
@@ -2138,27 +2828,33 @@
             "question_id": "QA-055",
             "question_type": "ambiguous",
             "question": "Which database should we use for RAG?",
-            "predicted_answer": "What RAG use case or requirement should the database support?",
+            "predicted_answer": "Which product or policy document do you mean, and which security area are you asking about?",
             "expected_answer": "The AWS guide describes several options rather than naming one universally best database. Please specify constraints such as existing infrastructure, latency, graph-query needs, or how much control you need.",
             "answer_correctness": null,
+            "answer_correctness_multi_reference": null,
+            "answer_correctness_llm_judge": null,
+            "faithfulness_llm_judge": null,
+            "llm_judge_error": null,
             "abstention_correct": null,
-            "clarification_correct": false,
+            "clarification_correct": true,
             "is_abstention": false,
-            "retrieval_recall_at_k": 0.0,
-            "mean_reciprocal_rank": 0.0,
+            "retrieval_recall_at_k": 0.5,
+            "mean_reciprocal_rank": 1.0,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": null,
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.7,
-            "confidence_indicator": 0.3647,
+            "faithfulness_lexical_proxy": 0.4375,
+            "confidence_indicator": 0.3946,
             "is_supported": false,
             "retrieved_chunk_ids": [
+                "30beab85a35ffb4fb9282818412c4323c8503072116c32a5eb962f9b0eec798f",
+                "b71493a13b701bae8d059fff6925181536ce63278a0d6a38e80c12b701995e8b",
                 "c3e1a7b13759882ae370458d8c1aabd438abd4a30452ce02561bf84e1895e82b",
-                "398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2",
-                "efe9b0ae087adc371974ed65c28b6895dd1299ed3995d6cf0614d9d5e6ed3703",
-                "8bec805348c85e7050f75c50010c68b04c344d62e7b5fb92616e598b30446ca5",
-                "5b369661fa39c10ccadf88366c3d3dc0187c281c8ec6dab1d51f412661c2c17b"
+                "c81319f0a246742a517b5ab3d73464aaaa6cc87f8cef6b7cfa143090462265ba",
+                "66ed55f2af5f3e2b2864a5ae051915aba6e5828a6cdeac616358b17196d20317"
             ],
             "citation_verification": [],
             "status": "success"
@@ -2167,27 +2863,33 @@
             "question_id": "QA-056",
             "question_type": "ambiguous",
             "question": "Is the platform secure?",
-            "predicted_answer": "Which security aspect of CloudNote Pro are you referring to?",
+            "predicted_answer": "Which product or policy document do you mean, and which security area are you asking about?",
             "expected_answer": "The question is too broad to answer with a single yes/no. Please specify the security area (authentication, encryption, incident response, access control, or compliance) and which product or policy document you mean.",
             "answer_correctness": null,
+            "answer_correctness_multi_reference": null,
+            "answer_correctness_llm_judge": null,
+            "faithfulness_llm_judge": null,
+            "llm_judge_error": null,
             "abstention_correct": null,
-            "clarification_correct": false,
+            "clarification_correct": true,
             "is_abstention": false,
-            "retrieval_recall_at_k": 1.0,
-            "mean_reciprocal_rank": 0.3333,
+            "retrieval_recall_at_k": 0.5,
+            "mean_reciprocal_rank": 0.2,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
             "citation_accuracy": null,
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.6,
+            "faithfulness_lexical_proxy": 0.375,
             "confidence_indicator": 0.0001,
             "is_supported": false,
             "retrieved_chunk_ids": [
                 "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
+                "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935",
+                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
                 "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
-                "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf",
-                "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
-                "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936"
+                "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf"
             ],
             "citation_verification": [],
             "status": "success"
@@ -2196,24 +2898,38 @@
             "question_id": "QA-057",
             "question_type": "direct",
             "question": "What is the current price of CloudNote Pro's Enterprise plan?",
-            "predicted_answer": "The current price of CloudNote Pro's Enterprise plan is custom, as it is not a fixed price but tailored based on customer requirements. [57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2]",
+            "predicted_answer": "The current price of CloudNote Pro's Enterprise plan is custom, as stated in the knowledge base sample document [57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2].",
             "expected_answer": "CloudNote Pro's Enterprise plan has a custom price (not a fixed price).",
             "answer_correctness": {
                 "exact_match": 0,
-                "token_precision": 0.4583,
-                "token_recall": 0.8462,
-                "token_f1": 0.5946
+                "token_precision": 0.3684,
+                "token_recall": 0.5385,
+                "token_f1": 0.4375
             },
+            "answer_correctness_multi_reference": {
+                "exact_match": 0,
+                "token_precision": 0.5789,
+                "token_recall": 1.0,
+                "token_f1": 0.7333,
+                "best_reference_index": 2,
+                "reference_count": 3,
+                "best_reference": "The current price of CloudNote Pro's Enterprise plan is custom."
+            },
+            "answer_correctness_llm_judge": 1.0,
+            "faithfulness_llm_judge": 1.0,
+            "llm_judge_error": null,
             "abstention_correct": null,
             "clarification_correct": null,
             "is_abstention": false,
             "retrieval_recall_at_k": 1.0,
             "mean_reciprocal_rank": 0.25,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 0.5,
             "citation_accuracy": 1.0,
             "citation_count": 1,
             "verified_citation_count": 1,
             "has_citations": true,
-            "faithfulness_lexical_proxy": 0.5417,
+            "faithfulness_lexical_proxy": 0.7368,
             "confidence_indicator": 0.6503,
             "is_supported": true,
             "retrieved_chunk_ids": [
@@ -2221,7 +2937,7 @@
                 "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936",
                 "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
                 "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
-                "fd7932ca9294a8d0aa37c38ba956febcc3a400998b21d3855c3577f661fd3ad1"
+                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1"
             ],
             "citation_verification": [
                 {
@@ -2235,27 +2951,33 @@
             "question_id": "QA-058",
             "question_type": "unanswerable",
             "question": "What is the name of the person who founded CloudNote Pro?",
-            "predicted_answer": "The supplied documents do not contain enough information about who founded CloudNote Pro.",
+            "predicted_answer": "The supplied documents do not contain enough information to determine the name of the person who founded CloudNote Pro.",
             "expected_answer": "The supplied documents do not identify the founder of CloudNote Pro.",
             "answer_correctness": null,
+            "answer_correctness_multi_reference": null,
+            "answer_correctness_llm_judge": null,
+            "faithfulness_llm_judge": null,
+            "llm_judge_error": null,
             "abstention_correct": true,
             "clarification_correct": null,
             "is_abstention": true,
             "retrieval_recall_at_k": null,
             "mean_reciprocal_rank": null,
+            "source_recall_at_k": null,
+            "source_mean_reciprocal_rank": null,
             "citation_accuracy": null,
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.5385,
+            "faithfulness_lexical_proxy": 0.3684,
             "confidence_indicator": 0.0539,
             "is_supported": false,
             "retrieved_chunk_ids": [
                 "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936",
                 "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
                 "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
-                "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd",
-                "19dbe3ebc8afb79d4dc98d1181e1d28dd9d1c30c023b0534412d699d35dd9943"
+                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
+                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613"
             ],
             "citation_verification": [],
             "status": "success"
@@ -2264,19 +2986,25 @@
             "question_id": "QA-059",
             "question_type": "unanswerable",
             "question": "What is the phone number for the CloudNote Pro support team?",
-            "predicted_answer": "The supplied documents do not contain information about the phone number for the CloudNote Pro support team.",
+            "predicted_answer": "The supplied documents do not contain enough information about the CloudNote Pro support team's phone number.",
             "expected_answer": "The supplied documents do not provide a CloudNote Pro support phone number.",
             "answer_correctness": null,
+            "answer_correctness_multi_reference": null,
+            "answer_correctness_llm_judge": null,
+            "faithfulness_llm_judge": null,
+            "llm_judge_error": null,
             "abstention_correct": true,
             "clarification_correct": null,
             "is_abstention": true,
             "retrieval_recall_at_k": null,
             "mean_reciprocal_rank": null,
+            "source_recall_at_k": null,
+            "source_mean_reciprocal_rank": null,
             "citation_accuracy": null,
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.5882,
+            "faithfulness_lexical_proxy": 0.4118,
             "confidence_indicator": 0.1176,
             "is_supported": false,
             "retrieved_chunk_ids": [
@@ -2284,7 +3012,7 @@
                 "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936",
                 "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
                 "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd",
-                "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59"
+                "580bf4dd40b298a418ff764edb26e3bf22d7bc3110d1598ef1a9dc1ed494b935"
             ],
             "citation_verification": [],
             "status": "success"
@@ -2296,24 +3024,30 @@
             "predicted_answer": "The supplied documents do not contain enough information to determine which country hosts the CloudNote Pro production database.",
             "expected_answer": "The supplied documents do not specify the country or region hosting the production PostgreSQL cluster.",
             "answer_correctness": null,
+            "answer_correctness_multi_reference": null,
+            "answer_correctness_llm_judge": null,
+            "faithfulness_llm_judge": null,
+            "llm_judge_error": null,
             "abstention_correct": true,
             "clarification_correct": null,
             "is_abstention": true,
             "retrieval_recall_at_k": null,
             "mean_reciprocal_rank": null,
+            "source_recall_at_k": null,
+            "source_mean_reciprocal_rank": null,
             "citation_accuracy": null,
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.2778,
-            "confidence_indicator": 0.0318,
+            "faithfulness_lexical_proxy": 0.5,
+            "confidence_indicator": 0.0324,
             "is_supported": false,
             "retrieved_chunk_ids": [
                 "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936",
                 "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
-                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1",
-                "0c142659f82919feb263da37dd7305fa1a87984121e0e94d12464c4f991ea613",
-                "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd"
+                "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
+                "74b9512345f6a18ad1f760f4d10f066a0dfadb0865ebc787fee4b43458b80eb9",
+                "0ccab7b3a835b835808bf9f824c125fb900b79b75f790195bb67a7ee466a32d1"
             ],
             "citation_verification": [],
             "status": "success"
@@ -2325,11 +3059,17 @@
             "predicted_answer": "The supplied documents do not contain enough information to determine the exact embedding model used by the CloudScale Vector API in production.",
             "expected_answer": "The CloudScale API document gives an example vector dimensionality but does not identify the production embedding model.",
             "answer_correctness": null,
+            "answer_correctness_multi_reference": null,
+            "answer_correctness_llm_judge": null,
+            "faithfulness_llm_judge": null,
+            "llm_judge_error": null,
             "abstention_correct": true,
             "clarification_correct": null,
             "is_abstention": true,
             "retrieval_recall_at_k": null,
             "mean_reciprocal_rank": null,
+            "source_recall_at_k": null,
+            "source_mean_reciprocal_rank": null,
             "citation_accuracy": null,
             "citation_count": 0,
             "verified_citation_count": 0,
@@ -2351,19 +3091,25 @@
             "question_id": "QA-062",
             "question_type": "unanswerable",
             "question": "What is the password for the CloudNote Pro administrator account?",
-            "predicted_answer": "The supplied documents do not contain information about the specific password for the CloudNote Pro administrator account.",
+            "predicted_answer": "The supplied documents do not contain enough information to determine the password for the CloudNote Pro administrator account.",
             "expected_answer": "The supplied documents do not provide an administrator password, and credentials should not be inferred or disclosed.",
             "answer_correctness": null,
+            "answer_correctness_multi_reference": null,
+            "answer_correctness_llm_judge": null,
+            "faithfulness_llm_judge": null,
+            "llm_judge_error": null,
             "abstention_correct": true,
             "clarification_correct": null,
             "is_abstention": true,
             "retrieval_recall_at_k": null,
             "mean_reciprocal_rank": null,
+            "source_recall_at_k": null,
+            "source_mean_reciprocal_rank": null,
             "citation_accuracy": null,
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.5882,
+            "faithfulness_lexical_proxy": 0.6111,
             "confidence_indicator": 0.0485,
             "is_supported": false,
             "retrieved_chunk_ids": [
@@ -2380,27 +3126,33 @@
             "question_id": "QA-063",
             "question_type": "unanswerable",
             "question": "What was the exact date and time of the Frankfurt login alert in ticket TKT-88430?",
-            "predicted_answer": "The supplied documents do not contain the exact date and time of the Frankfurt login alert in ticket TKT-88430. The transcript only states that the customer \"received an email saying a new login occurred from an unrecognized browser in Frankfurt, Germany\" but does not specify when this alert occurred.",
+            "predicted_answer": "The exact date and time of the Frankfurt login alert in ticket TKT-88430 is not specified in the provided document context.",
             "expected_answer": "The visible ticket content identifies the location as Frankfurt, Germany, but does not provide an exact timestamp for the login alert.",
             "answer_correctness": null,
+            "answer_correctness_multi_reference": null,
+            "answer_correctness_llm_judge": null,
+            "faithfulness_llm_judge": null,
+            "llm_judge_error": null,
             "abstention_correct": true,
             "clarification_correct": null,
             "is_abstention": true,
             "retrieval_recall_at_k": null,
             "mean_reciprocal_rank": null,
+            "source_recall_at_k": null,
+            "source_mean_reciprocal_rank": null,
             "citation_accuracy": null,
             "citation_count": 0,
             "verified_citation_count": 0,
             "has_citations": false,
-            "faithfulness_lexical_proxy": 0.76,
+            "faithfulness_lexical_proxy": 0.7273,
             "confidence_indicator": 0.0685,
             "is_supported": false,
             "retrieved_chunk_ids": [
                 "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
                 "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
                 "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
-                "f5e927c29bada8d088be3fd3a36b403f48cd417b8f9095c5086fdcfbf0a5c8d3",
-                "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf"
+                "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd",
+                "f5e927c29bada8d088be3fd3a36b403f48cd417b8f9095c5086fdcfbf0a5c8d3"
             ],
             "citation_verification": [],
             "status": "success"
