@@ -15,7 +15,9 @@ class RAGPipelineException(Exception):
             _, _, exc_traceback = sys.exc_info()
 
             if exc_traceback is not None:
-                # Extract filename and line number
+                while exc_traceback.tb_next is not None:
+                    exc_traceback = exc_traceback.tb_next
+
                 frame = exc_traceback.tb_frame
                 self.filename = Path(frame.f_code.co_filename).name
                 self.line_number = exc_traceback.tb_lineno

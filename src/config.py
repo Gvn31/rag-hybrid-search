@@ -29,6 +29,7 @@ SUPPORTED_DOCUMENT_TYPES = {
     ".pdf",".txt",".docx",".html",".md",".pptx"
 }
 MAX_FILE_SIZE_MB = 50  # Maximum file size in MB
+TESSERACT_CMD = os.getenv("TESSERACT_CMD")
 
 
 #embedding configuration
@@ -36,9 +37,9 @@ EMBEDDING_MODEL="sentence-transformers/all-MiniLM-L6-v2"
 
 
 #chunking configuration
-CHUNK_SIZE = 1000  # Configured chunk size
-CHUNKING_STRATEGY = "recursive"  # Options: "recursive", "sliding_window"
-CHUNK_OVERLAP = 200  # Configured overlap between chunks
+CHUNK_SIZE = 1000  # Maximum chunk length in characters
+CHUNKING_STRATEGY = "recursive"  # Options: fixed_size, recursive, semantic
+CHUNK_OVERLAP = 200  # Chunk overlap in characters
 SEMANTIC_SIMILARITY_THRESHOLD=0.75 #
 
 
