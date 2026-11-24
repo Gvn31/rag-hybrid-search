@@ -1,4 +1,3 @@
-
 import re
 import math
 
@@ -6,9 +5,7 @@ from src.logger import logger
 from src.exception import RAGPipelineException
 
 
-# ============================================================
-# 1. COLLECT CANONICAL CHUNK IDS
-# ============================================================
+# Collect chunk IDs
 
 def get_available_chunk_ids(retrieved_chunks):
     """Collect valid chunk IDs from retrieval results."""
@@ -38,9 +35,7 @@ def get_available_chunk_ids(retrieved_chunks):
     return available_ids
 
 
-# ============================================================
-# 2. EXTRACT CITATION IDS
-# ============================================================
+# Extract citation IDs
 
 def extract_citation_ids(answer, retrieved_chunks=None):
     """
@@ -107,7 +102,7 @@ def extract_citation_ids(answer, retrieved_chunks=None):
 
                     if chunk_id not in allowed_ids:
                         logger.warning(
-                            "Ignoring unverified citation ID: %s",
+                            "Ignoring unverified citation ID: {}",
                             chunk_id
                         )
                         continue
@@ -128,7 +123,7 @@ def extract_citation_ids(answer, retrieved_chunks=None):
         extracted_ids = list(dict.fromkeys(extracted_ids))
 
         logger.info(
-            "Extracted %s valid citation IDs",
+            "Extracted {} valid citation IDs",
             len(extracted_ids)
         )
 
@@ -139,9 +134,7 @@ def extract_citation_ids(answer, retrieved_chunks=None):
         raise RAGPipelineException(str(e)) from e
 
 
-# ============================================================
-# 3. VERIFY CITATIONS
-# ============================================================
+# Verify citations
 
 def verify_citations(citation_ids, retrieved_chunks):
     """Verify extracted IDs against retrieved chunk IDs."""
@@ -173,9 +166,7 @@ def verify_citations(citation_ids, retrieved_chunks):
         raise RAGPipelineException(str(e)) from e
 
 
-# ============================================================
-# 4. RESOLVE CITATION SOURCES
-# ============================================================
+# Resolve citation sources
 
 def get_citation_sources(verification_results, retrieved_chunks):
     """Resolve verified citation IDs to their source metadata."""
@@ -261,9 +252,7 @@ def get_citation_sources(verification_results, retrieved_chunks):
         raise RAGPipelineException(str(e)) from e
 
 
-# ============================================================
-# 5. CALCULATE CITATION ACCURACY
-# ============================================================
+# Calculate citation accuracy
 
 def calculate_citation_accuracy(verification_results):
 
@@ -287,9 +276,7 @@ def calculate_citation_accuracy(verification_results):
         raise RAGPipelineException(str(e)) from e
 
 
-# ============================================================
-# 6. CALCULATE EVIDENCE-BASED CONFIDENCE INDICATOR
-# ============================================================
+# Calculate confidence indicator
 
 def calculate_confidence_score(
     retrieved_chunks,
@@ -340,9 +327,7 @@ def calculate_confidence_score(
         raise RAGPipelineException(str(e)) from e
 
 
-# ============================================================
-# 7. VALIDATE ANSWER SUPPORT
-# ============================================================
+# Validate answer support
 
 def validate_answer_support(
     answer,
@@ -373,9 +358,7 @@ def validate_answer_support(
         raise RAGPipelineException(str(e)) from e
 
 
-# ============================================================
-# 8. COMPLETE CITATION PROCESSING
-# ============================================================
+# Process citations
 
 def process_citations(answer, retrieved_chunks):
     """
@@ -433,9 +416,7 @@ def process_citations(answer, retrieved_chunks):
         raise RAGPipelineException(str(e)) from e
 
 
-# ============================================================
-# 9. STANDALONE CITATION TEST
-# ============================================================
+# Run citation examples
 
 def main():
 
@@ -532,7 +513,7 @@ def main():
         print("\nAll citation extraction tests completed.")
 
     except RAGPipelineException as e:
-        logger.error("Citation test failed: %s", e)
+        logger.error("Citation test failed: {}", e)
         print(f"Citation test failed: {e}")
 
     except Exception as e:

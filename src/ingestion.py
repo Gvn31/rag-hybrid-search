@@ -1,24 +1,31 @@
-
 from pathlib import Path
 import sys
+import shutil
+import re
 from io import BytesIO
 
 from docx import Document
+from docx.table import Table
+from docx.text.paragraph import Paragraph
 from bs4 import BeautifulSoup
 from pptx import Presentation
 import pytesseract
 import fitz
 from PIL import Image
 
-from src.config import SUPPORTED_DOCUMENT_TYPES, MAX_FILE_SIZE_MB
+from src.config import (
+    SUPPORTED_DOCUMENT_TYPES,
+    MAX_FILE_SIZE_MB,
+    TESSERACT_CMD
+)
 from src.logger import logger
 from src.exception import RAGPipelineException
 
 
-# Configure Tesseract OCR
-pytesseract.pytesseract.tesseract_cmd = (
-    r"D:\tesseract-OCR\tesseract.exe"
-)
+if TESSERACT_CMD:
+    pytesseract.pytesseract.tesseract_cmd = TESSERACT_CMD
+elif shutil.which("tesseract"):
+    pytesseract.pytesseract.tesseract_cmd = shutil.which("tesseract")
 
 
 # Validate document existence, format and file size
@@ -74,29 +81,39 @@ def extract_text(file_path: str) -> list[dict]:
                     text = page.get_text().strip()
                     extraction_method = "native"
 
-                    # Use OCR if native text extraction returns empty
-                    if not text:
+                    # Use OCR when native extraction finds little text
+                    if len(text) < 40:
 
                         logger.info(
                             f"No native text found on page {page_number}. "
                             "Using OCR."
                         )
 
-                        pixmap = page.get_pixmap(
-                            matrix=fitz.Matrix(4, 4),
-                            alpha=False
-                        )
+                        try:
+                            pixmap = page.get_pixmap(
+                                matrix=fitz.Matrix(4, 4),
+                                alpha=False
+                            )
 
-                        image = Image.open(
-                            BytesIO(pixmap.tobytes("png"))
-                        )
+                            image = Image.open(
+                                BytesIO(pixmap.tobytes("png"))
+                            )
 
-                        text = pytesseract.image_to_string(
-                            image,
-                            config="--psm 11"
-                        ).strip()
+                            ocr_text = pytesseract.image_to_string(
+                                image,
+                                config="--psm 11"
+                            ).strip()
 
-                        extraction_method = "ocr"
+                            if len(ocr_text) > len(text):
+                                text = ocr_text
+                                extraction_method = "ocr"
+
+                        except Exception as ocr_error:
+                            logger.warning(
+                                "OCR failed on PDF page {}: {}",
+                                page_number,
+                                ocr_error
+                            )
 
                     if text:
 
@@ -122,22 +139,32 @@ def extract_text(file_path: str) -> list[dict]:
         elif extension == ".docx":
 
             doc = Document(str(path))
+            content_blocks = []
 
-            paragraphs = [
-                paragraph.text
-                for paragraph in doc.paragraphs
-                if paragraph.text.strip()
-            ]
+            for block in doc.element.body.iterchildren():
+                if block.tag.endswith("}p"):
+                    paragraph_text = Paragraph(block, doc).text.strip()
+                    if paragraph_text:
+                        content_blocks.append(paragraph_text)
 
-            table_text = [
-                cell.text
-                for table in doc.tables
-                for row in table.rows
-                for cell in row.cells
-                if cell.text.strip()
-            ]
+                elif block.tag.endswith("}tbl"):
+                    table = Table(block, doc)
+                    for row in table.rows:
+                        cells = [
+                            " ".join(
+                                paragraph.text.strip()
+                                for paragraph in cell.paragraphs
+                                if paragraph.text.strip()
+                            )
+                            for cell in row.cells
+                        ]
+                        row_text = " | ".join(
+                            cell for cell in cells if cell
+                        )
+                        if row_text:
+                            content_blocks.append(row_text)
 
-            text = "\n".join(paragraphs + table_text)
+            text = "\n".join(content_blocks)
 
             if text.strip():
 
@@ -158,11 +185,21 @@ def extract_text(file_path: str) -> list[dict]:
                 presentation.slides, start=1
             ):
 
-                slide_text = "\n".join(
-                    shape.text
-                    for shape in slide.shapes
-                    if shape.has_text_frame and shape.text.strip()
-                )
+                slide_parts = []
+                for shape in slide.shapes:
+                    if shape.has_text_frame and shape.text.strip():
+                        slide_parts.append(shape.text.strip())
+                    elif shape.has_table:
+                        for row in shape.table.rows:
+                            row_text = " | ".join(
+                                cell.text.strip()
+                                for cell in row.cells
+                                if cell.text.strip()
+                            )
+                            if row_text:
+                                slide_parts.append(row_text)
+
+                slide_text = "\n".join(slide_parts)
 
                 if slide_text.strip():
 
@@ -188,6 +225,10 @@ def extract_text(file_path: str) -> list[dict]:
             # Remove unnecessary HTML elements
             for element in soup(["script", "style"]):
                 element.decompose()
+
+            for heading in soup.find_all(re.compile(r"^h[1-6]$")):
+                level = int(heading.name[1])
+                heading.insert(0, f"{'#' * level} ")
 
             # Extract text after removing unwanted elements
             text = soup.get_text(
