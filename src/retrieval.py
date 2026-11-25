@@ -1,5 +1,6 @@
-
 import math
+import re
+from pathlib import Path
 
 from src.config import (
     TOP_K,
@@ -17,6 +18,78 @@ from src.bm25_store import search_bm25
 
 # Weighted Reciprocal Rank Fusion configuration
 RRF_K = 60
+RAW_DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "raw"
+
+
+def infer_explicit_source_filter(query):
+    """Limit retrieval when the question explicitly names a source file/type."""
+    if not isinstance(query, str) or not query.strip():
+        return None
+
+    try:
+        raw_files = [
+            path for path in RAW_DATA_DIR.iterdir()
+            if path.is_file()
+        ] if RAW_DATA_DIR.is_dir() else []
+        lowered_query = query.casefold()
+
+        for path in raw_files:
+            if path.name.casefold() in lowered_query:
+                return {"source": path.name}
+
+        source_types = {
+            ".pdf": r"(?:pdf|portable document format)",
+            ".pptx": r"(?:pptx|powerpoint|slide deck)",
+            ".docx": r"(?:docx|word document)",
+            ".html": r"(?:html|web page)",
+            ".md": r"(?:markdown|md file)",
+            ".txt": r"(?:txt file|plain text file)"
+        }
+        source_context = re.compile(
+            r"\b(?:according to|in|from|within|described in|listed in)\s+"
+            r"(?:the\s+)?(?P<type>pdf|portable document format|pptx|"
+            r"powerpoint|slide deck|docx|word document|html|web page|"
+            r"markdown|md file|txt file|plain text file)\b"
+            r"|\bthe\s+(?P<type2>pdf|pptx|powerpoint|docx|html|"
+            r"markdown)\s+(?:says?|states?|lists?|shows?|describes?)\b",
+            flags=re.IGNORECASE
+        )
+        match = source_context.search(query)
+        if not match:
+            return None
+
+        named_type = (match.group("type") or match.group("type2") or "").casefold()
+        extension = next(
+            (
+                suffix for suffix, pattern in source_types.items()
+                if re.fullmatch(pattern, named_type, flags=re.IGNORECASE)
+            ),
+            None
+        )
+        if extension is None:
+            return None
+
+        matching_sources = sorted(
+            path.name for path in raw_files
+            if path.suffix.casefold() == extension
+        )
+        if not matching_sources:
+            return None
+        if len(matching_sources) == 1:
+            return {"source": matching_sources[0]}
+        return {"source": {"$in": matching_sources}}
+
+    except Exception as e:
+        logger.warning("Could not infer a source filter from the query: {}", e)
+        return None
+
+
+def combine_where_filters(where, inferred_filter):
+    if inferred_filter is None:
+        return where
+    if where is None:
+        return inferred_filter
+    return {"$and": [where, inferred_filter]}
 
 
 # Validate retrieval parameters
@@ -360,6 +433,11 @@ def hybrid_retrieval(
 
         logger.info("Starting hybrid retrieval")
 
+        inferred_filter = infer_explicit_source_filter(query)
+        effective_where = combine_where_filters(where, inferred_filter)
+        if inferred_filter:
+            logger.info("Applying explicit source filter: {}", inferred_filter)
+
         # Step 1: Generate the query embedding
         query_embedding = generate_query_embedding(query)
 
@@ -368,7 +446,7 @@ def hybrid_retrieval(
             query_embedding=query_embedding,
             top_k=top_k,
             user_id=user_id,
-            where=where
+            where=effective_where
         )
 
         # Step 3: Perform sparse keyword retrieval
@@ -376,7 +454,7 @@ def hybrid_retrieval(
             query=query,
             top_k=top_k,
             user_id=user_id,
-            where=where
+            where=effective_where
         )
 
         # Step 4: Combine both rankings using weighted RRF
@@ -525,3 +603,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
