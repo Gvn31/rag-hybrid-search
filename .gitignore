@@ -14,7 +14,7 @@ env/
 
 # Data
 data/raw/*
-data/processed/*
+data/evaluation/exports/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 data/evaluation/source_documents
@@ -61,4 +61,8 @@ logs/
 # Temporary files
 *.tmp
 data/evaluation/targeted_results.json
+data\evaluation\exports\indexed_chunks.json
+
+
+
 
