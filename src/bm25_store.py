@@ -1,4 +1,3 @@
-
 import json
 import math
 import re
@@ -511,6 +510,36 @@ def delete_document(source, user_id=None):
 
     except Exception as e:
         logger.exception("BM25 document deletion failed")
+        raise RAGPipelineException(str(e)) from e
+
+
+# Delete selected records from BM25
+def delete_chunks_by_ids(chunk_ids):
+    try:
+        if not isinstance(chunk_ids, (list, set, tuple)):
+            raise ValueError("chunk_ids must be a list, set or tuple")
+
+        ids = set(chunk_ids)
+        if not all(isinstance(item, str) and item.strip() for item in ids):
+            raise ValueError("chunk_ids must contain non-empty strings")
+
+        if not ids:
+            return 0
+
+        with INDEX_LOCK:
+            records = load_bm25_records()
+            kept_records = [record for record in records if record.get("id") not in ids]
+            deleted_count = len(records) - len(kept_records)
+            if deleted_count:
+                save_bm25_index(kept_records)
+
+        return deleted_count
+
+    except RAGPipelineException:
+        raise
+
+    except Exception as e:
+        logger.exception("Selected BM25 chunk deletion failed")
         raise RAGPipelineException(str(e)) from e
 
 
