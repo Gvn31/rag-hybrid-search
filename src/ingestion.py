@@ -109,11 +109,14 @@ def extract_text(file_path: str) -> list[dict]:
                                 extraction_method = "ocr"
 
                         except Exception as ocr_error:
-                            logger.warning(
-                                "OCR failed on PDF page {}: {}",
-                                page_number,
-                                ocr_error
+                            error_message = (
+                                f"OCR failed for {path.name} page "
+                                f"{page_number}. Install Tesseract OCR and "
+                                "set TESSERACT_CMD in the project .env file. "
+                                f"Details: {ocr_error}"
                             )
+                            logger.error(error_message)
+                            raise RAGPipelineException(error_message) from ocr_error
 
                     if text:
 
@@ -312,3 +315,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
