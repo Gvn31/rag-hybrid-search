@@ -1,5 +1,5 @@
-
 import json
+import hashlib
 from pathlib import Path
 from collections import Counter
 
@@ -16,18 +16,17 @@ OUTPUT_DIR = (
 )
 
 OUTPUT_FILE = OUTPUT_DIR / "indexed_chunks.json"
+INDEXING_MANIFEST_FILE = OUTPUT_DIR / "indexing_manifest.json"
 
 # Evaluation corpus source documents
 EVALUATION_SOURCES = [
     "api_documentation_sample.html",
-    "compliance_policy_sample.docx",
     "knowledge_base_sample.md",
-    "retrieval-augmented-generation-options.pdf",
+    "sample.pdf",
+    "sample.pptx",
     "sample-document-medium.docx",
     "support_transcripts_sample.txt"
 ]
-
-EXPECTED_CHUNK_COUNT = 112
 
 
 # Validate exported evaluation chunks
@@ -76,10 +75,12 @@ def validate_exported_chunks(chunks):
                     f"Invalid metadata at index {index}"
                 )
 
-        if len(chunks) != EXPECTED_CHUNK_COUNT:
+        present_sources = {chunk.get("source") for chunk in chunks}
+        missing_sources = set(EVALUATION_SOURCES) - present_sources
+        if missing_sources:
             raise ValueError(
-                f"Expected {EXPECTED_CHUNK_COUNT} chunks, "
-                f"but found {len(chunks)}"
+                "No indexed chunks found for source(s): "
+                + ", ".join(sorted(missing_sources))
             )
 
         logger.info(
@@ -94,10 +95,51 @@ def validate_exported_chunks(chunks):
 
 
 # Export only evaluation chunks from ChromaDB
+def validate_indexing_manifest():
+    """Reject exports when the latest indexing run is incomplete or stale."""
+
+    try:
+        if not INDEXING_MANIFEST_FILE.is_file():
+            raise ValueError(
+                "No indexing manifest found. Run the pipeline before exporting."
+            )
+
+        manifest = json.loads(
+            INDEXING_MANIFEST_FILE.read_text(encoding="utf-8")
+        )
+        if manifest.get("evaluation_ready") is not True:
+            incomplete = manifest.get("incomplete_sources", [])
+            raise ValueError(
+                "The latest pipeline run did not index every evaluation "
+                "source successfully: " + ", ".join(incomplete)
+            )
+
+        raw_dir = PROJECT_ROOT / "data" / "raw"
+        source_records = manifest.get("sources", {})
+        for source in EVALUATION_SOURCES:
+            source_path = raw_dir / source
+            record = source_records.get(source, {})
+            if record.get("status") != "success" or not source_path.is_file():
+                raise ValueError(f"Source was not indexed successfully: {source}")
+            current_hash = hashlib.sha256(source_path.read_bytes()).hexdigest()
+            if current_hash != record.get("sha256"):
+                raise ValueError(
+                    f"Raw source changed after indexing; rerun the pipeline: {source}"
+                )
+
+        return True
+
+    except Exception as e:
+        logger.exception("Indexing manifest validation failed")
+        raise RAGPipelineException(str(e)) from e
+
+
 def export_indexed_chunks():
 
     try:
         logger.info("Starting evaluation chunk export")
+
+        validate_indexing_manifest()
 
         # Initialize existing ChromaDB
         _, collection = initialize_vector_store()
@@ -252,4 +294,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
