@@ -1,4 +1,5 @@
 import math
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from src.logger import logger
 from src.exception import RAGPipelineException
@@ -12,12 +13,14 @@ from src.deduplication import (
 from src.vector_store import (
     store_embeddings,
     delete_document as delete_vector_document,
+    delete_chunks_by_ids as delete_vector_chunks_by_ids,
     initialize_vector_store
 )
 
 from src.bm25_store import (
     index_chunks,
     delete_document as delete_bm25_document,
+    delete_chunks_by_ids as delete_bm25_chunks_by_ids,
     load_bm25_records
 )
 
@@ -305,6 +308,36 @@ def verify_index_consistency(
         raise RAGPipelineException(str(e)) from e
 
 
+# Remove a failed batch from both indexes and confirm the previous state.
+def rollback_index_chunks(storage_ids, source, user_id, expected_chunk_ids):
+    failures = []
+    for store_name, delete_function in (
+        ("ChromaDB", delete_vector_chunks_by_ids),
+        ("BM25", delete_bm25_chunks_by_ids)
+    ):
+        try:
+            delete_function(storage_ids)
+        except Exception as error:
+            failures.append(f"{store_name}: {error}")
+
+    try:
+        verification = verify_index_consistency(
+            source=source,
+            expected_chunk_ids=expected_chunk_ids,
+            user_id=user_id
+        )
+        if verification.get("status") != "success":
+            failures.append("Index IDs differ after rollback")
+    except Exception as error:
+        failures.append(f"Consistency check: {error}")
+
+    if failures:
+        raise RAGPipelineException(
+            "Index rollback did not restore a consistent state: "
+            + "; ".join(failures)
+        )
+
+
 # Delete a document from both indexes
 def delete_document_from_indexes(source, user_id=None):
     try:
@@ -489,44 +522,112 @@ def index_embedded_chunks(
 
             return indexing_summary
 
-        # Step 4: Store unique chunks in ChromaDB
-        logger.info("Storing unique chunks in ChromaDB")
-
-        chroma_count = store_embeddings(
-            embedded_chunks=unique_chunks,
-            user_id=user_id
-        )
-
-        indexing_summary["chroma_indexed"] = chroma_count
-
-        # Step 5: Index the same chunks in BM25
-        logger.info("Indexing unique chunks in BM25")
-
-        try:
-            bm25_count = index_chunks(
-                chunks=unique_chunks,
-                user_id=user_id
-            )
-
-            indexing_summary["bm25_indexed"] = bm25_count
-
-        except Exception as e:
-            indexing_summary["status"] = "partial_failure"
-
-            logger.critical(
-                f"ChromaDB indexing succeeded but BM25 failed for {source}. "
-                "Manual reconciliation or retry is required."
-            )
-
+        # Record existing IDs so a failed parallel write can be rolled back safely.
+        before_chroma_ids = get_chroma_chunk_ids(source, user_id)
+        before_bm25_ids = get_bm25_chunk_ids(source, user_id)
+        if before_chroma_ids != before_bm25_ids:
             raise RAGPipelineException(
-                f"Partial indexing failure for {source}. "
-                f"ChromaDB stored {chroma_count} chunks. "
-                f"BM25 indexing failed: {str(e)}"
-            ) from e
+                f"Indexes were inconsistent before updating {source}"
+            )
+
+        new_chunk_ids = {
+            chunk["metadata"]["chunk_id"]
+            for chunk in unique_chunks
+        }
+        existing_chunk_id_collisions = new_chunk_ids & before_chroma_ids
+        if existing_chunk_id_collisions:
+            raise RAGPipelineException(
+                "Chunk IDs already exist for this source. "
+                "Replace the document before indexing changed chunks."
+            )
+
+        new_storage_ids = {
+            f"{user_id}_{chunk['metadata']['chunk_id']}"
+            if user_id is not None else chunk["metadata"]["chunk_id"]
+            for chunk in unique_chunks
+        }
+
+        logger.info("Indexing chunks in ChromaDB and BM25 concurrently")
+        write_tasks = {
+            "chroma": None,
+            "bm25": None
+        }
+        write_errors = {}
+
+        with ThreadPoolExecutor(
+            max_workers=2,
+            thread_name_prefix="rag-index"
+        ) as executor:
+            futures = {
+                executor.submit(
+                    store_embeddings,
+                    unique_chunks,
+                    user_id
+                ): "chroma",
+                executor.submit(
+                    index_chunks,
+                    unique_chunks,
+                    user_id
+                ): "bm25"
+            }
+
+            for future in as_completed(futures):
+                store_name = futures[future]
+                try:
+                    write_tasks[store_name] = future.result()
+                except Exception as error:
+                    write_errors[store_name] = error
+
+        if write_errors:
+            indexing_summary["status"] = "partial_failure"
+            try:
+                rollback_index_chunks(
+                    new_storage_ids,
+                    source,
+                    user_id,
+                    before_chroma_ids
+                )
+            except Exception as rollback_error:
+                logger.exception(
+                    "Parallel index rollback failed for {}: {}",
+                    source,
+                    rollback_error
+                )
+                raise RAGPipelineException(
+                    f"Index write failed and rollback was incomplete for {source}; "
+                    "check ChromaDB and BM25 consistency"
+                )
+
+            error_details = "; ".join(
+                f"{name}: {error}" for name, error in write_errors.items()
+            )
+            logger.error("Parallel indexing failed for {}: {}", source, error_details)
+            raise RAGPipelineException(
+                f"Parallel indexing failed for {source}: {error_details}"
+            )
+
+        chroma_count = write_tasks["chroma"]
+        bm25_count = write_tasks["bm25"]
+        indexing_summary["chroma_indexed"] = chroma_count
+        indexing_summary["bm25_indexed"] = bm25_count
 
         # Step 6: Compare indexed counts
         if chroma_count != bm25_count:
             indexing_summary["status"] = "count_mismatch"
+
+            try:
+                rollback_index_chunks(
+                    new_storage_ids,
+                    source,
+                    user_id,
+                    before_chroma_ids
+                )
+            except Exception as rollback_error:
+                logger.exception("Index rollback after count mismatch failed")
+                raise RAGPipelineException(
+                    f"Index count mismatch and rollback failed for {source}: "
+                    f"{rollback_error}"
+                ) from rollback_error
 
             raise RAGPipelineException(
                 f"Index count mismatch: "
@@ -534,10 +635,7 @@ def index_embedded_chunks(
             )
 
         # Step 7: Verify the actual chunk IDs in both indexes
-        expected_chunk_ids = {
-            chunk["metadata"]["chunk_id"]
-            for chunk in unique_chunks
-        }
+        expected_chunk_ids = before_chroma_ids | new_chunk_ids
 
         verification = verify_index_consistency(
             source=source,
@@ -549,6 +647,20 @@ def index_embedded_chunks(
 
         if verification["status"] != "success":
             indexing_summary["status"] = "verification_failed"
+
+            try:
+                rollback_index_chunks(
+                    new_storage_ids,
+                    source,
+                    user_id,
+                    before_chroma_ids
+                )
+            except Exception as rollback_error:
+                logger.exception("Index rollback after verification failure failed")
+                raise RAGPipelineException(
+                    f"Index verification failed and rollback was incomplete "
+                    f"for {source}: {rollback_error}"
+                ) from rollback_error
 
             raise RAGPipelineException(
                 f"ChromaDB and BM25 chunk IDs do not match "
