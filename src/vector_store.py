@@ -392,6 +392,35 @@ def delete_document(source, user_id=None):
         raise RAGPipelineException(str(e)) from e
 
 
+# Delete selected stored chunk IDs
+def delete_chunks_by_ids(chunk_ids):
+    try:
+        if not isinstance(chunk_ids, (list, set, tuple)):
+            raise ValueError("chunk_ids must be a list, set or tuple")
+
+        ids = list(dict.fromkeys(chunk_ids))
+        if not all(isinstance(item, str) and item.strip() for item in ids):
+            raise ValueError("chunk_ids must contain non-empty strings")
+
+        if not ids:
+            return 0
+
+        _, collection = initialize_vector_store()
+        existing = collection.get(ids=ids)
+        existing_ids = existing.get("ids", [])
+        if existing_ids:
+            collection.delete(ids=existing_ids)
+
+        return len(existing_ids)
+
+    except RAGPipelineException:
+        raise
+
+    except Exception as e:
+        logger.exception("Selected ChromaDB chunk deletion failed")
+        raise RAGPipelineException(str(e)) from e
+
+
 # Return the total number of stored chunks
 def get_collection_count():
     try:
@@ -512,4 +541,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
