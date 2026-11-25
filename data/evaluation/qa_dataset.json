@@ -1,928 +1,1432 @@
 {
-  "dataset_name": "Hybrid RAG Evaluation Q&A Dataset",
-  "version": "1.3",
+  "dataset_name": "Hybrid RAG Evaluation Q&A Dataset - New Corpus",
+  "version": "1.0",
   "language": "English",
-  "description": "Manually authored, source-grounded evaluation cases derived from the exported 112-chunk review file. Questions are divided into straightforward, multi_hop, ambiguous, and unanswerable categories.",
-  "source_export": "data/evaluation/exports/indexed_chunks.json",
-  "review_source": "data/evaluation/exports/qa_review.txt",
-  "total_questions": 63,
-  "category_counts": {
-    "straightforward": 45,
+  "description": "Source-grounded evaluation questions for the six newly indexed documents. Chunk references use the current indexed_chunks.json export.",
+  "source_documents": [
+    "api_documentation_sample.html",
+    "knowledge_base_sample.md",
+    "sample-document-medium.docx",
+    "sample.pdf",
+    "sample.pptx",
+    "support_transcripts_sample.txt"
+  ],
+  "question_counts": {
+    "direct": 44,
     "multi_hop": 6,
     "ambiguous": 6,
-    "unanswerable": 6
+    "unanswerable": 7
   },
   "questions": [
     {
-      "id": "QA-001",
-      "category": "straightforward",
-      "question": "What authentication mechanism must CloudScale Vector API requests use?",
-      "expected_answer": "A valid Bearer token must be included in the Authorization HTTP header.",
+      "id": "NEW-001",
+      "question": "Which authentication header must CloudScale Vector API requests include?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "A valid Bearer token in the Authorization HTTP header.",
+      "acceptable_answers": [],
       "answerable": true,
+      "relevant_chunk_ids": [
+        "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500"
+      ],
+      "relevant_sources": [
+        "api_documentation_sample.html"
+      ],
       "source_chunks": [
         {
-          "source": "api_documentation_sample.html",
-          "chunk_id": "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50"
+          "chunk_id": "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500",
+          "source": "api_documentation_sample.html"
         }
       ]
     },
     {
-      "id": "QA-002",
-      "category": "straightforward",
-      "question": "Which endpoint inserts or updates vector embeddings and their metadata?",
+      "id": "NEW-002",
+      "question": "What permission scopes can CloudScale API keys have?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Read-only or read-write.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500"
+      ],
+      "relevant_sources": [
+        "api_documentation_sample.html"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500",
+          "source": "api_documentation_sample.html"
+        }
+      ]
+    },
+    {
+      "id": "NEW-003",
+      "question": "Which endpoint inserts or updates vector embeddings with metadata?",
+      "category": "direct",
+      "question_type": "direct",
       "expected_answer": "POST /v2/vectors/upsert.",
+      "acceptable_answers": [],
       "answerable": true,
-      "source_chunks": [
-        {
-          "source": "api_documentation_sample.html",
-          "chunk_id": "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50"
-        }
-      ]
-    },
-    {
-      "id": "QA-003",
-      "category": "straightforward",
-      "question": "What is the maximum batch size supported by the CloudScale upsert endpoint?",
-      "expected_answer": "Up to 1,000 vectors per request.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "api_documentation_sample.html",
-          "chunk_id": "0d1bfdc535b4c8aefdbe96d2b18f11ae1979dd35645040b7cc7877b5ae845a50"
-        }
-      ]
-    },
-    {
-      "id": "QA-004",
-      "category": "straightforward",
-      "question": "What is the default top_k value for a CloudScale vector query?",
-      "expected_answer": "The default top_k is 10.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "api_documentation_sample.html",
-          "chunk_id": "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc"
-        }
-      ]
-    },
-    {
-      "id": "QA-005",
-      "category": "straightforward",
-      "question": "What is the maximum top_k value accepted by the CloudScale API documentation?",
-      "expected_answer": "The maximum top_k value is 100.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "api_documentation_sample.html",
-          "chunk_id": "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc"
-        }
+      "relevant_chunk_ids": [
+        "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500"
       ],
-      "acceptable_answers": [
-        "100"
-      ]
-    },
-    {
-      "id": "QA-006",
-      "category": "straightforward",
-      "question": "Which metadata filter operators are listed in the CloudScale API guide?",
-      "expected_answer": "The guide lists $eq, $in, and $gte.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "api_documentation_sample.html",
-          "chunk_id": "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc"
-        }
-      ]
-    },
-    {
-      "id": "QA-007",
-      "category": "straightforward",
-      "question": "What does HTTP 401 mean according to the CloudScale API guide?",
-      "expected_answer": "It means the Bearer token is missing, expired, or revoked.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "api_documentation_sample.html",
-          "chunk_id": "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc"
-        }
-      ]
-    },
-    {
-      "id": "QA-008",
-      "category": "straightforward",
-      "question": "What vector normalization practice is recommended for dot-product similarity?",
-      "expected_answer": "Normalize dense vectors to unit L2 length before upserting.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "api_documentation_sample.html",
-          "chunk_id": "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc"
-        }
-      ]
-    },
-    {
-      "id": "QA-009",
-      "category": "straightforward",
-      "question": "How often must API keys, database passwords, and TLS certificates be rotated?",
-      "expected_answer": "They must be rotated every 90 days through automated secrets management.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "compliance_policy_sample.docx",
-          "chunk_id": "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583"
-        }
+      "relevant_sources": [
+        "api_documentation_sample.html"
       ],
-      "acceptable_answers": [
-        "API keys, database passwords, and TLS certificates must rotate every 90 days via automated secrets management."
-      ]
-    },
-    {
-      "id": "QA-010",
-      "category": "straightforward",
-      "question": "How long can an interactive administrative session remain inactive before it terminates?",
-      "expected_answer": "It automatically terminates after 15 minutes of inactivity.",
-      "answerable": true,
       "source_chunks": [
         {
-          "source": "compliance_policy_sample.docx",
-          "chunk_id": "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583"
+          "chunk_id": "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500",
+          "source": "api_documentation_sample.html"
         }
       ]
     },
     {
-      "id": "QA-011",
-      "category": "straightforward",
-      "question": "Which authentication methods are mandatory for administrative consoles and VPN endpoints?",
-      "expected_answer": "Hardware security keys or time-based one-time passwords (TOTP) are mandatory.",
+      "id": "NEW-004",
+      "question": "What is the maximum batch size for a CloudScale vector upsert request?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "1,000 vectors per request.",
+      "acceptable_answers": [],
       "answerable": true,
-      "source_chunks": [
-        {
-          "source": "compliance_policy_sample.docx",
-          "chunk_id": "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf"
-        }
-      ]
-    },
-    {
-      "id": "QA-012",
-      "category": "straightforward",
-      "question": "What is the required containment start time for a Severity 2 high-risk incident?",
-      "expected_answer": "Containment actions must begin within 1 hour of detection.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "compliance_policy_sample.docx",
-          "chunk_id": "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549"
-        }
-      ]
-    },
-    {
-      "id": "QA-013",
-      "category": "straightforward",
-      "question": "When must the full root-cause analysis for a Severity 2 incident be delivered?",
-      "expected_answer": "Within 48 hours.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "compliance_policy_sample.docx",
-          "chunk_id": "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549"
-        }
+      "relevant_chunk_ids": [
+        "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500"
       ],
-      "acceptable_answers": [
-        "The full root-cause analysis for a Severity 2 incident must be delivered within 48 hours of detection."
-      ]
-    },
-    {
-      "id": "QA-014",
-      "category": "straightforward",
-      "question": "What encryption and retention rules apply to Tier 1 Restricted data?",
-      "expected_answer": "Tier 1 data (including PII, payment cards, and authentication secrets) uses AES-256-GCM with customer-managed keys and has a 7-year retention period for audit-regulated data.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "compliance_policy_sample.docx",
-          "chunk_id": "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549"
-        }
-      ]
-    },
-    {
-      "id": "QA-015",
-      "category": "straightforward",
-      "question": "What is the retention period for Tier 3 Internal data?",
-      "expected_answer": "Two years.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "compliance_policy_sample.docx",
-          "chunk_id": "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549"
-        }
+      "relevant_sources": [
+        "api_documentation_sample.html"
       ],
-      "acceptable_answers": [
-        "Tier 3 Internal data is retained for two years."
-      ]
-    },
-    {
-      "id": "QA-016",
-      "category": "straightforward",
-      "question": "What must happen during a Severity 1 critical breach?",
-      "expected_answer": "The Incident Commander must be paged within 15 minutes, and executive leadership must be notified within 1 hour.",
-      "answerable": true,
       "source_chunks": [
         {
-          "source": "compliance_policy_sample.docx",
-          "chunk_id": "d0fff9c2cebe36c03b72bc851f30253a6c2632cb5766b24abfcff489445ec583"
+          "chunk_id": "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500",
+          "source": "api_documentation_sample.html"
         }
       ]
     },
     {
-      "id": "QA-017",
-      "category": "straightforward",
-      "question": "Which technologies are named for CloudNote Pro's client applications?",
-      "expected_answer": "Electron for macOS and Windows, React for the web, and Swift/Kotlin for iOS and Android.",
+      "id": "NEW-005",
+      "question": "Which endpoint runs a nearest-neighbor vector similarity search?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "POST /v2/vectors/query.",
+      "acceptable_answers": [],
       "answerable": true,
-      "source_chunks": [
-        {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
-        }
+      "relevant_chunk_ids": [
+        "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500"
       ],
-      "acceptable_answers": [
-        "CloudNote Pro operates on a multi-tenant cloud architecture with cross-platform client applications built with Electron (macOS, Windows), React (Web), and Swift/Kotlin (iOS, Android)."
+      "relevant_sources": [
+        "api_documentation_sample.html"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500",
+          "source": "api_documentation_sample.html"
+        }
       ]
     },
     {
-      "id": "QA-018",
-      "category": "straightforward",
-      "question": "Which database stores CloudNote Pro metadata and permissions?",
+      "id": "NEW-006",
+      "question": "In the query API, what does the namespace identify?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "The target index partition used to isolate tenant datasets.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "0947d867a63db97f1c12f6792540291d359f0e83d37a6a1ad7d5482f492f2213",
+        "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500"
+      ],
+      "relevant_sources": [
+        "api_documentation_sample.html"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "0947d867a63db97f1c12f6792540291d359f0e83d37a6a1ad7d5482f492f2213",
+          "source": "api_documentation_sample.html"
+        },
+        {
+          "chunk_id": "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500",
+          "source": "api_documentation_sample.html"
+        }
+      ]
+    },
+    {
+      "id": "NEW-007",
+      "question": "What are the default and maximum values for the query top_k parameter?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "The default is 10 and the maximum is 100.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "0947d867a63db97f1c12f6792540291d359f0e83d37a6a1ad7d5482f492f2213"
+      ],
+      "relevant_sources": [
+        "api_documentation_sample.html"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "0947d867a63db97f1c12f6792540291d359f0e83d37a6a1ad7d5482f492f2213",
+          "source": "api_documentation_sample.html"
+        }
+      ]
+    },
+    {
+      "id": "NEW-008",
+      "question": "Which operators can a CloudScale metadata filter support?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "$eq, $in, and $gte.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "0947d867a63db97f1c12f6792540291d359f0e83d37a6a1ad7d5482f492f2213"
+      ],
+      "relevant_sources": [
+        "api_documentation_sample.html"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "0947d867a63db97f1c12f6792540291d359f0e83d37a6a1ad7d5482f492f2213",
+          "source": "api_documentation_sample.html"
+        }
+      ]
+    },
+    {
+      "id": "NEW-009",
+      "question": "Which client technologies are listed for CloudNote Pro across desktop, web, and mobile?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Electron for macOS and Windows, React for web, and Swift/Kotlin for iOS and Android.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
+      ],
+      "relevant_sources": [
+        "knowledge_base_sample.md"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
+          "source": "knowledge_base_sample.md"
+        }
+      ]
+    },
+    {
+      "id": "NEW-010",
+      "question": "What language is CloudNote Pro’s CRDT synchronization service written in, and what latency does it target?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Rust; it merges concurrent edits with sub-50ms latency.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
+      ],
+      "relevant_sources": [
+        "knowledge_base_sample.md"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
+          "source": "knowledge_base_sample.md"
+        }
+      ]
+    },
+    {
+      "id": "NEW-011",
+      "question": "What database and access-control feature store CloudNote Pro metadata and permissions?",
+      "category": "direct",
+      "question_type": "direct",
       "expected_answer": "A PostgreSQL cluster with row-level security.",
+      "acceptable_answers": [],
       "answerable": true,
-      "source_chunks": [
-        {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
-        }
-      ]
-    },
-    {
-      "id": "QA-019",
-      "category": "straightforward",
-      "question": "How quickly does the CloudNote Pro CRDT synchronization service merge concurrent edits?",
-      "expected_answer": "It is described as operating with sub-50-millisecond latency.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
-        }
+      "relevant_chunk_ids": [
+        "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
       ],
-      "acceptable_answers": [
-        "The CRDT synchronization service merges concurrent edits with sub-50ms latency."
-      ]
-    },
-    {
-      "id": "QA-020",
-      "category": "straightforward",
-      "question": "What is the Starter plan's workspace member limit?",
-      "expected_answer": "Three workspace members.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
-        }
+      "relevant_sources": [
+        "knowledge_base_sample.md"
       ],
-      "acceptable_answers": [
-        "The Starter plan allows 3 workspace members."
+      "source_chunks": [
+        {
+          "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
+          "source": "knowledge_base_sample.md"
+        }
       ]
     },
     {
-      "id": "QA-021",
-      "category": "straightforward",
-      "question": "What is the Team Plan's REST API rate limit?",
-      "expected_answer": "1,000 requests per minute.",
+      "id": "NEW-012",
+      "question": "How are CloudNote Pro document blobs and media stored?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "In AES-256-encrypted object storage with automated regional replication.",
+      "acceptable_answers": [],
       "answerable": true,
-      "source_chunks": [
-        {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
-        }
+      "relevant_chunk_ids": [
+        "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
       ],
-      "acceptable_answers": [
-        "The Team Plan's REST API rate limit is 1,000 req/min."
-      ]
-    },
-    {
-      "id": "QA-022",
-      "category": "straightforward",
-      "question": "How long is version history retained on the Starter plan?",
-      "expected_answer": "Seven days.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
-        }
-      ]
-    },
-    {
-      "id": "QA-023",
-      "category": "straightforward",
-      "question": "Which encryption and compliance standards are stated in the CloudNote Pro guide?",
-      "expected_answer": "It states TLS 1.3 with strict certificate pinning on mobile clients, AES-256-GCM encryption at rest with customer-managed keys available on Enterprise plans, annual SOC 2 Type II audits, GDPR compliance, and HIPAA BAAs available upon request.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84"
-        }
-      ]
-    },
-    {
-      "id": "QA-024",
-      "category": "straightforward",
-      "question": "What should a user do when a sync conflict occurs because a parent folder was deleted while another user added documents offline?",
-      "expected_answer": "Open the Conflict Resolution Drawer, compare the Local Version and Cloud Version timestamps, then choose Keep Both or Merge into Active Workspace.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6"
-        }
+      "relevant_sources": [
+        "knowledge_base_sample.md"
       ],
-      "acceptable_answers": [
-        "Open the Conflict Resolution Drawer, compare the Local Version and Cloud Version timestamps, then choose Keep Both to restore the deleted folder or Merge into Active Workspace to move orphaned notes to the root."
-      ]
-    },
-    {
-      "id": "QA-025",
-      "category": "straightforward",
-      "question": "Why did the customer's monthly invoice increase from $15 to $24 in support ticket TKT-88412?",
-      "expected_answer": "Two additional team members accepted workspace invitations, adding two seats at $4.50 each under the Team Plan.",
-      "answerable": true,
       "source_chunks": [
         {
-          "source": "support_transcripts_sample.txt",
-          "chunk_id": "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad"
+          "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
+          "source": "knowledge_base_sample.md"
         }
       ]
     },
     {
-      "id": "QA-026",
-      "category": "straightforward",
-      "question": "What problem did the customer report in ticket TKT-88419?",
-      "expected_answer": "The macOS desktop app freezes while exporting a notebook larger than 50 pages to PDF and crashes at 80% progress.",
+      "id": "NEW-013",
+      "question": "What causes the structural sync conflict described in the knowledge base?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "One user deletes a parent folder while another offline user adds new documents inside it.",
+      "acceptable_answers": [],
       "answerable": true,
-      "source_chunks": [
-        {
-          "source": "support_transcripts_sample.txt",
-          "chunk_id": "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd"
-        }
-      ]
-    },
-    {
-      "id": "QA-027",
-      "category": "straightforward",
-      "question": "What security concern was raised in ticket TKT-88430?",
-      "expected_answer": "The customer received an alert about a login from an unrecognized browser in Frankfurt, Germany, despite being based in Bengaluru and not having travelled recently.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "support_transcripts_sample.txt",
-          "chunk_id": "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511"
-        }
+      "relevant_chunk_ids": [
+        "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6"
       ],
-      "acceptable_answers": [
-        "A new login from an unrecognized browser in Frankfurt, Germany was reported."
-      ]
-    },
-    {
-      "id": "QA-028",
-      "category": "straightforward",
-      "question": "What feature did the customer request in ticket TKT-88425?",
-      "expected_answer": "They requested a one-click way to export AI meeting-summary action items directly into Jira or Linear tasks.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "support_transcripts_sample.txt",
-          "chunk_id": "f5e927c29bada8d088be3fd3a36b403f48cd417b8f9095c5086fdcfbf0a5c8d3"
-        }
-      ]
-    },
-    {
-      "id": "QA-029",
-      "category": "straightforward",
-      "question": "What HTTP error did the customer report in ticket TKT-88438?",
-      "expected_answer": "HTTP 429 Too Many Requests.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "support_transcripts_sample.txt",
-          "chunk_id": "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59"
-        }
+      "relevant_sources": [
+        "knowledge_base_sample.md"
       ],
-      "acceptable_answers": [
-        "The customer reported an HTTP 429 Too Many Requests error in ticket TKT-88438."
-      ]
-    },
-    {
-      "id": "QA-030",
-      "category": "straightforward",
-      "question": "Which special text characters does the sample document recommend checking during document-processing tests?",
-      "expected_answer": "It recommends checking non-ASCII characters such as café, naïve, and Zürich; smart quotes; currency symbols such as €, £, and ¥; and long words that force line wrapping.",
-      "answerable": true,
       "source_chunks": [
         {
-          "source": "sample-document-medium.docx",
-          "chunk_id": "7cc7c1d2ed87a6e605818d6c285edc5e2f8c77a9189f730c1c3be4ce675e155a"
+          "chunk_id": "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6",
+          "source": "knowledge_base_sample.md"
         }
       ]
     },
     {
-      "id": "QA-031",
-      "category": "straightforward",
-      "question": "What kinds of structures does the sample document say a good test document should contain?",
-      "expected_answer": "Headings at several levels, ordinary paragraphs, bulleted and numbered lists, a data table, an embedded image, and page breaks.",
+      "id": "NEW-014",
+      "question": "Where should a user go to resolve the sync conflict, and what should they compare?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Open the Conflict Resolution Drawer and compare the Local Version and Cloud Version timestamps.",
+      "acceptable_answers": [],
       "answerable": true,
-      "source_chunks": [
-        {
-          "source": "sample-document-medium.docx",
-          "chunk_id": "f77c0bcb275643ce9e6bba706cf556dba17b7e949eef93b59cfc292bda333dbe"
-        }
-      ]
-    },
-    {
-      "id": "QA-032",
-      "category": "straightforward",
-      "question": "Does the sample document contain macros, scripts, or tracking?",
-      "expected_answer": "No, the sample document contains no macros, scripts, or tracking.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "sample-document-medium.docx",
-          "chunk_id": "077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2"
-        }
+      "relevant_chunk_ids": [
+        "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6"
       ],
-      "acceptable_answers": [
-        "No macros, no scripts, and no tracking of any kind."
-      ]
-    },
-    {
-      "id": "QA-033",
-      "category": "straightforward",
-      "question": "What is the sample document's stated purpose?",
-      "expected_answer": "It is a stable fixture for developers, QA testers, and product teams to test uploads, previews, conversions, and integrations.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "sample-document-medium.docx",
-          "chunk_id": "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb"
-        }
+      "relevant_sources": [
+        "knowledge_base_sample.md"
       ],
-      "acceptable_answers": [
-        "It provides a realistic sample file for developers, QA testers, and product teams to test uploads, previews, conversions, and integrations."
+      "source_chunks": [
+        {
+          "chunk_id": "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6",
+          "source": "knowledge_base_sample.md"
+        }
       ]
     },
     {
-      "id": "QA-034",
-      "category": "straightforward",
-      "question": "What does the sample document say about using it as a legal, financial, or medical template?",
-      "expected_answer": "It explicitly says it should not be treated as a template for legal, financial, or medical documents.",
+      "id": "NEW-015",
+      "question": "What two choices does CloudNote Pro offer for resolving orphaned notes after a folder conflict?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Keep Both restores the folder structure with the offline notes; Merge into Active Workspace moves orphaned notes to the root directory.",
+      "acceptable_answers": [],
       "answerable": true,
-      "source_chunks": [
-        {
-          "source": "sample-document-medium.docx",
-          "chunk_id": "2a9b7e9a8feb16b83201ee917ce8d17024a929479934b160894a3514a678d147"
-        }
+      "relevant_chunk_ids": [
+        "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6"
       ],
-      "acceptable_answers": [
-        "Nothing in the sample should be treated as a template for legal, financial, or medical documents."
-      ]
-    },
-    {
-      "id": "QA-035",
-      "category": "straightforward",
-      "question": "What are the four broad steps in the RAG process described in the AWS guide?",
-      "expected_answer": "Create embeddings to ingest internal documents into a vector database; convert the user query into a vector and retrieve similar vectors; pass retrieved context with the query to the foundation model; and return the generated response to the user.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "retrieval-augmented-generation-options.pdf",
-          "chunk_id": "d65bad5bc0b0ee0cc4fd4c2d9c5a960887ce59c349ab172874e0b511d9e95e45"
-        }
+      "relevant_sources": [
+        "knowledge_base_sample.md"
       ],
-      "acceptable_answers": [
-        "Create embeddings for internal documents and store them in a vector database; a human submits a natural-language query; an orchestrator retrieves relevant data with similarity search and adds it to the prompt; then the query and context go to the LLM, which generates the response."
-      ]
-    },
-    {
-      "id": "QA-036",
-      "category": "straightforward",
-      "question": "What is the role of a vector database in a production-level RAG system?",
-      "expected_answer": "It stores an index of embeddings together with associated text and metadata, optimized for search and retrieval.",
-      "answerable": true,
       "source_chunks": [
         {
-          "source": "retrieval-augmented-generation-options.pdf",
-          "chunk_id": "398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2"
+          "chunk_id": "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6",
+          "source": "knowledge_base_sample.md"
         }
       ]
     },
     {
-      "id": "QA-037",
-      "category": "straightforward",
-      "question": "What does the retriever do in a RAG system?",
-      "expected_answer": "For a user query, it fetches relevant context from the vector database and ranks the retrieved results according to the system's requirements.",
+      "id": "NEW-016",
+      "question": "How many workspace members can the CloudNote Pro Starter plan have?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Up to 3 members.",
+      "acceptable_answers": [],
       "answerable": true,
-      "source_chunks": [
-        {
-          "source": "retrieval-augmented-generation-options.pdf",
-          "chunk_id": "398c6ff49722fe27ab33f1f74656a96b09c4fe8272b2155173a51ad663bf74e2"
-        }
+      "relevant_chunk_ids": [
+        "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
       ],
-      "acceptable_answers": [
-        "For a user query, the retriever fetches relevant context from the vector database and ranks the responses based on business requirements."
-      ]
-    },
-    {
-      "id": "QA-038",
-      "category": "straightforward",
-      "question": "Name two similarity metrics mentioned for vector search in the AWS guide.",
-      "expected_answer": "L2 distance and cosine distance.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "retrieval-augmented-generation-options.pdf",
-          "chunk_id": "5919bdba946e055295ebb55b928a4c91c40abdec696abbc369ec9ad50b56a281"
-        }
-      ]
-    },
-    {
-      "id": "QA-039",
-      "category": "straightforward",
-      "question": "Which vector database options are listed as supported by Amazon Bedrock Knowledge Bases in the cited chunk?",
-      "expected_answer": "Amazon OpenSearch Serverless, Amazon Aurora PostgreSQL-Compatible Edition, Pinecone, Redis Enterprise Cloud, and MongoDB Atlas.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "retrieval-augmented-generation-options.pdf",
-          "chunk_id": "74b9512345f6a18ad1f760f4d10f066a0dfadb0865ebc787fee4b43458b80eb9"
-        }
-      ]
-    },
-    {
-      "id": "QA-040",
-      "category": "straightforward",
-      "question": "What are two advantages of using Amazon Kendra for RAG?",
-      "expected_answer": "Amazon Kendra handles the entire vector search process, so a separate vector database is not needed. It also provides pre-built connectors for popular data sources, including databases, website crawlers, Amazon S3, Microsoft SharePoint, and Atlassian Confluence.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "retrieval-augmented-generation-options.pdf",
-          "chunk_id": "9188d58cd23c7c5402ad9ffc3018269dd4d6f7b3bfd4718c6ff8e6eee584f629"
-        }
-      ]
-    },
-    {
-      "id": "QA-041",
-      "category": "straightforward",
-      "question": "What is one reason to choose a custom RAG architecture instead of a fully managed option?",
-      "expected_answer": "Custom RAG architectures provide more control over components such as the retriever or vector database.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "retrieval-augmented-generation-options.pdf",
-          "chunk_id": "b71493a13b701bae8d059fff6925181536ce63278a0d6a38e80c12b701995e8b"
-        }
+      "relevant_sources": [
+        "knowledge_base_sample.md"
       ],
-      "acceptable_answers": [
-        "A custom RAG architecture gives you flexibility to choose your own vector database or access an unsupported data source.",
-        "Custom RAG lets you choose the retriever or vector database and access unsupported data sources."
+      "source_chunks": [
+        {
+          "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
+          "source": "knowledge_base_sample.md"
+        }
       ]
     },
     {
-      "id": "QA-042",
-      "category": "straightforward",
-      "question": "What is the difference between the RetrieveAndGenerate and Retrieve APIs described for Amazon Bedrock?",
-      "expected_answer": "RetrieveAndGenerate performs retrieval, augments the prompt, and generates a response; Retrieve queries the knowledge base and returns retrieved information directly for use by the application.",
+      "id": "NEW-017",
+      "question": "What is the Team plan price and its REST API rate limit?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "$12 per user per month and 1,000 requests per minute.",
+      "acceptable_answers": [],
       "answerable": true,
-      "source_chunks": [
-        {
-          "source": "retrieval-augmented-generation-options.pdf",
-          "chunk_id": "c104e98f449482b6e465006c4e3e9c97d9c26fb32875c7ec15581eec39b632a9"
-        }
+      "relevant_chunk_ids": [
+        "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
       ],
-      "acceptable_answers": [
-        "RetrieveAndGenerate retrieves information, adds it to the prompt, and generates an answer; Retrieve returns retrieved information to the application without generating an answer.",
-        "RetrieveAndGenerate queries the knowledge base, augments the prompt with retrieved search results as context, and returns an LLM-generated response. Retrieve queries the knowledge base and returns retrieved information directly so the application can process it or build a separate workflow."
-      ]
-    },
-    {
-      "id": "QA-043",
-      "category": "straightforward",
-      "question": "What does the AWS guide say is a limitation of fine-tuned models for document question answering?",
-      "expected_answer": "Fine-tuned models do not provide references to source material in their responses.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "retrieval-augmented-generation-options.pdf",
-          "chunk_id": "a2faf4eda99fff0ecd5578f6414620df7204c685ebc61a5f25753373b47e2707"
-        }
+      "relevant_sources": [
+        "knowledge_base_sample.md"
       ],
-      "acceptable_answers": [
-        "Fine-tuned models can have an increased risk of hallucination when used to answer questions.",
-        "Fine-tuned models do not provide references to source material in their responses, and using them can increase hallucination risk."
+      "source_chunks": [
+        {
+          "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
+          "source": "knowledge_base_sample.md"
+        }
       ]
     },
     {
-      "id": "QA-044",
-      "category": "straightforward",
-      "question": "Which AWS service can run OCR on scanned documents during an Amazon Q Business enrichment workflow?",
-      "expected_answer": "A Lambda function runs OCR on scanned documents and extracts their text.",
+      "id": "NEW-018",
+      "question": "What protects CloudNote Pro client-server traffic in transit?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "TLS 1.3 with strict certificate pinning on mobile clients.",
+      "acceptable_answers": [],
       "answerable": true,
-      "source_chunks": [
-        {
-          "source": "retrieval-augmented-generation-options.pdf",
-          "chunk_id": "344958f829e9b20440b62cf55dafbf8d6293fec5dc29e795af30b65d6bba5791"
-        }
+      "relevant_chunk_ids": [
+        "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84"
       ],
-      "acceptable_answers": [
-        "Amazon Q Business can use a Lambda function to run OCR on scanned documents and extract their text during ingestion.",
-        "AWS Lambda function"
-      ]
-    },
-    {
-      "id": "QA-045",
-      "category": "multi_hop",
-      "question": "A team uses the Starter plan and wants to know both its maximum workspace size and API request allowance. What are the two limits?",
-      "expected_answer": "The Starter plan allows up to 3 workspace members and 60 REST API requests per minute.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
-        }
-      ]
-    },
-    {
-      "id": "QA-046",
-      "category": "multi_hop",
-      "question": "A company stores customer contracts and source code as Tier 2 data. What encryption applies, and how long is the retention period?",
-      "expected_answer": "Tier 2 data uses AES-256 encryption at rest and TLS 1.3 in transit, with a 5-year retention period.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "compliance_policy_sample.docx",
-          "chunk_id": "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549"
-        }
-      ]
-    },
-    {
-      "id": "QA-047",
-      "category": "multi_hop",
-      "question": "A CloudNote Pro user is offline when a parent folder is deleted, then adds new documents to that folder. What caused the conflict and what are the documented recovery choices?",
-      "expected_answer": "The structural conflict occurs because one user deleted the parent folder while the offline user added documents inside it. The user should open the Conflict Resolution Drawer, compare local and cloud timestamps, and choose Keep Both or Merge into Active Workspace.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6"
-        }
+      "relevant_sources": [
+        "knowledge_base_sample.md"
       ],
-      "acceptable_answers": [
-        "The conflict occurred because one user deleted the parent folder while another offline user added documents inside it. Recovery choices are Keep Both or Merge into Active Workspace."
-      ]
-    },
-    {
-      "id": "QA-048",
-      "category": "multi_hop",
-      "question": "An API client receives HTTP 400 after submitting a vector query. Which two causes are documented, and what should be checked?",
-      "expected_answer": "The guide lists a vector dimensionality mismatch or invalid JSON filter syntax. The client should check that the query vector matches the index dimensionality and that the filter JSON is valid.",
-      "answerable": true,
       "source_chunks": [
         {
-          "source": "api_documentation_sample.html",
-          "chunk_id": "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc"
+          "chunk_id": "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
+          "source": "knowledge_base_sample.md"
         }
       ]
     },
     {
-      "id": "QA-049",
-      "category": "multi_hop",
-      "question": "A customer has the Team Plan and asks how many API requests per minute are allowed and whether SSO/SAML is included by default. What does the plan table say?",
-      "expected_answer": "The Team Plan allows 1,000 requests per minute. SSO/SAML 2.0 is not included by default; it is listed as an add-on for $3 per user per month.",
+      "id": "NEW-019",
+      "question": "What encryption is used for documents at rest, and which plan offers customer-managed keys?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "AES-256-GCM; customer-managed keys are available on Enterprise plans.",
+      "acceptable_answers": [],
       "answerable": true,
+      "relevant_chunk_ids": [
+        "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84"
+      ],
+      "relevant_sources": [
+        "knowledge_base_sample.md"
+      ],
       "source_chunks": [
         {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
+          "chunk_id": "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
+          "source": "knowledge_base_sample.md"
         }
       ]
     },
     {
-      "id": "QA-050",
-      "category": "multi_hop",
-      "question": "For Tier 1 Restricted data, identify example data types, encryption, and retention period.",
-      "expected_answer": "Examples are PII, payment cards, and authentication secrets. The required encryption is AES-256-GCM with customer-managed keys, and the retention period is 7 years for audit-regulated data.",
+      "id": "NEW-020",
+      "question": "Which compliance standards or agreements are listed for CloudNote Pro?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Annual SOC 2 Type II audits, GDPR compliance, and HIPAA Business Associate Agreements upon request.",
+      "acceptable_answers": [],
       "answerable": true,
+      "relevant_chunk_ids": [
+        "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84"
+      ],
+      "relevant_sources": [
+        "knowledge_base_sample.md"
+      ],
       "source_chunks": [
         {
-          "source": "compliance_policy_sample.docx",
-          "chunk_id": "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549"
+          "chunk_id": "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
+          "source": "knowledge_base_sample.md"
         }
       ]
     },
     {
-      "id": "QA-051",
-      "category": "ambiguous",
-      "question": "What is the API limit?",
-      "expected_answer": "The question is ambiguous because the documents mention multiple limits. Please specify whether you mean the CloudScale API's top_k maximum, the upsert batch size, or a CloudNote Pro subscription plan's requests per minute.",
+      "id": "NEW-021",
+      "question": "Who published the sample business document and where is the publisher based?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Pine & Birch, a technology consulting firm in Toronto.",
+      "acceptable_answers": [],
       "answerable": true,
+      "relevant_chunk_ids": [
+        "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
+        "67233bc1c3301c3b15aca19686153b5ea328891a50d24d4e556b154df8b38d38",
+        "c726e99c888ce074ea55d33878e3fa7a67252c4db743ea98f3d4980a3c741cda"
+      ],
+      "relevant_sources": [
+        "sample-document-medium.docx"
+      ],
       "source_chunks": [
         {
-          "source": "api_documentation_sample.html",
-          "chunk_id": "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc"
-        }
-      ]
-    },
-    {
-      "id": "QA-052",
-      "category": "ambiguous",
-      "question": "How long is data kept?",
-      "expected_answer": "The question is ambiguous because retention depends on the data classification tier or subscription feature. Please specify the policy tier or the type of data/version history you mean.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "compliance_policy_sample.docx",
-          "chunk_id": "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549"
+          "chunk_id": "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
+          "source": "sample-document-medium.docx"
         },
         {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
-        }
-      ]
-    },
-    {
-      "id": "QA-053",
-      "category": "ambiguous",
-      "question": "What encryption is used?",
-      "expected_answer": "Please clarify whether you mean CloudNote Pro's document encryption, the compliance policy's tier-specific encryption, or encryption in transit. The documents describe different controls for each context.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84"
+          "chunk_id": "67233bc1c3301c3b15aca19686153b5ea328891a50d24d4e556b154df8b38d38",
+          "source": "sample-document-medium.docx"
         },
         {
-          "source": "compliance_policy_sample.docx",
-          "chunk_id": "563ed1dd4eb6ca0787d55655780761267cb52b18fc354c508700492899539549"
+          "chunk_id": "c726e99c888ce074ea55d33878e3fa7a67252c4db743ea98f3d4980a3c741cda",
+          "source": "sample-document-medium.docx"
         }
       ]
     },
     {
-      "id": "QA-054",
-      "category": "ambiguous",
-      "question": "What happened to the customer?",
-      "expected_answer": "The support file contains several customer tickets with different issues. Please provide a ticket ID (for example, TKT-88412 or TKT-88430) so I can identify the correct interaction.",
+      "id": "NEW-022",
+      "question": "How does the sample business document describe repeated downloads?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "The content is deterministic and identical downloads are byte-for-byte identical.",
+      "acceptable_answers": [],
       "answerable": true,
-      "source_chunks": [
-        {
-          "source": "support_transcripts_sample.txt",
-          "chunk_id": "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad"
-        },
-        {
-          "source": "support_transcripts_sample.txt",
-          "chunk_id": "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511"
-        }
-      ]
-    },
-    {
-      "id": "QA-055",
-      "category": "ambiguous",
-      "question": "Which database should we use for RAG?",
-      "expected_answer": "The AWS guide describes several options rather than naming one universally best database. Please specify constraints such as existing infrastructure, latency, graph-query needs, or how much control you need.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "retrieval-augmented-generation-options.pdf",
-          "chunk_id": "30beab85a35ffb4fb9282818412c4323c8503072116c32a5eb962f9b0eec798f"
-        },
-        {
-          "source": "retrieval-augmented-generation-options.pdf",
-          "chunk_id": "16a73f7d53519bc8a2d5e77597b318cce2d940851a3f52e0b5f0985eb5aea27d"
-        }
-      ]
-    },
-    {
-      "id": "QA-056",
-      "category": "ambiguous",
-      "question": "Is the platform secure?",
-      "expected_answer": "The question is too broad to answer with a single yes/no. Please specify the security area (authentication, encryption, incident response, access control, or compliance) and which product or policy document you mean.",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "compliance_policy_sample.docx",
-          "chunk_id": "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf"
-        },
-        {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84"
-        }
-      ]
-    },
-    {
-      "id": "QA-057",
-      "category": "straightforward",
-      "question": "What is the current price of CloudNote Pro's Enterprise plan?",
-      "expected_answer": "CloudNote Pro's Enterprise plan has a custom price (not a fixed price).",
-      "answerable": true,
-      "source_chunks": [
-        {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
-        }
+      "relevant_chunk_ids": [
+        "077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2",
+        "3f4f4809f0a456cc6d8033a7ea5db646530085577a3b35f3f1d31f7ea3464b55",
+        "babc2fe4e86e5a2532f1531f798185dcb8371f9dc1bacb18d40d8982a1efe532"
       ],
-      "acceptable_answers": [
-        "The CloudNote Pro Enterprise plan is custom priced.",
-        "The current price of CloudNote Pro's Enterprise plan is custom."
-      ]
-    },
-    {
-      "id": "QA-058",
-      "category": "unanswerable",
-      "question": "What is the name of the person who founded CloudNote Pro?",
-      "expected_answer": "The supplied documents do not identify the founder of CloudNote Pro.",
-      "answerable": false,
+      "relevant_sources": [
+        "sample-document-medium.docx"
+      ],
       "source_chunks": [
         {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "7fd7336627844ca8962e3cc3204248a8d2a00f29ffd31a213a87c5e1e7da8936"
+          "chunk_id": "077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2",
+          "source": "sample-document-medium.docx"
+        },
+        {
+          "chunk_id": "3f4f4809f0a456cc6d8033a7ea5db646530085577a3b35f3f1d31f7ea3464b55",
+          "source": "sample-document-medium.docx"
+        },
+        {
+          "chunk_id": "babc2fe4e86e5a2532f1531f798185dcb8371f9dc1bacb18d40d8982a1efe532",
+          "source": "sample-document-medium.docx"
         }
       ]
     },
     {
-      "id": "QA-059",
-      "category": "unanswerable",
-      "question": "What is the phone number for the CloudNote Pro support team?",
-      "expected_answer": "The supplied documents do not provide a CloudNote Pro support phone number.",
-      "answerable": false,
+      "id": "NEW-023",
+      "question": "Does the sample DOCX contain macros, scripts, or tracking?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "No; it states that it has no macros, scripts, or tracking.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2",
+        "3f4f4809f0a456cc6d8033a7ea5db646530085577a3b35f3f1d31f7ea3464b55",
+        "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
+        "babc2fe4e86e5a2532f1531f798185dcb8371f9dc1bacb18d40d8982a1efe532",
+        "c726e99c888ce074ea55d33878e3fa7a67252c4db743ea98f3d4980a3c741cda"
+      ],
+      "relevant_sources": [
+        "sample-document-medium.docx"
+      ],
       "source_chunks": [
         {
-          "source": "support_transcripts_sample.txt",
-          "chunk_id": "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad"
+          "chunk_id": "077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2",
+          "source": "sample-document-medium.docx"
+        },
+        {
+          "chunk_id": "3f4f4809f0a456cc6d8033a7ea5db646530085577a3b35f3f1d31f7ea3464b55",
+          "source": "sample-document-medium.docx"
+        },
+        {
+          "chunk_id": "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
+          "source": "sample-document-medium.docx"
+        },
+        {
+          "chunk_id": "babc2fe4e86e5a2532f1531f798185dcb8371f9dc1bacb18d40d8982a1efe532",
+          "source": "sample-document-medium.docx"
+        },
+        {
+          "chunk_id": "c726e99c888ce074ea55d33878e3fa7a67252c4db743ea98f3d4980a3c741cda",
+          "source": "sample-document-medium.docx"
         }
       ]
     },
     {
-      "id": "QA-060",
-      "category": "unanswerable",
-      "question": "Which country hosts the CloudNote Pro production database?",
-      "expected_answer": "The supplied documents do not specify the country or region hosting the production PostgreSQL cluster.",
-      "answerable": false,
+      "id": "NEW-024",
+      "question": "What should testers compare after parsing the sample DOCX?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "The extracted text, page count, and metadata against the download page values.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2",
+        "3f4f4809f0a456cc6d8033a7ea5db646530085577a3b35f3f1d31f7ea3464b55",
+        "babc2fe4e86e5a2532f1531f798185dcb8371f9dc1bacb18d40d8982a1efe532"
+      ],
+      "relevant_sources": [
+        "sample-document-medium.docx"
+      ],
       "source_chunks": [
         {
-          "source": "knowledge_base_sample.md",
-          "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
+          "chunk_id": "077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2",
+          "source": "sample-document-medium.docx"
+        },
+        {
+          "chunk_id": "3f4f4809f0a456cc6d8033a7ea5db646530085577a3b35f3f1d31f7ea3464b55",
+          "source": "sample-document-medium.docx"
+        },
+        {
+          "chunk_id": "babc2fe4e86e5a2532f1531f798185dcb8371f9dc1bacb18d40d8982a1efe532",
+          "source": "sample-document-medium.docx"
         }
       ]
     },
     {
-      "id": "QA-061",
-      "category": "unanswerable",
-      "question": "What is the exact embedding model used by the CloudScale Vector API in production?",
-      "expected_answer": "The CloudScale API document gives an example vector dimensionality but does not identify the production embedding model.",
-      "answerable": false,
+      "id": "NEW-025",
+      "question": "What document structures does the sample business file include?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Headings, paragraphs, bulleted and numbered lists, a data table, an embedded image, and page breaks.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
+        "67233bc1c3301c3b15aca19686153b5ea328891a50d24d4e556b154df8b38d38",
+        "c726e99c888ce074ea55d33878e3fa7a67252c4db743ea98f3d4980a3c741cda"
+      ],
+      "relevant_sources": [
+        "sample-document-medium.docx"
+      ],
       "source_chunks": [
         {
-          "source": "api_documentation_sample.html",
-          "chunk_id": "1adad560cf1360a07de4cd7ef1174209fffc9ee4d5971ea0877e35ac261ad7cc"
+          "chunk_id": "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
+          "source": "sample-document-medium.docx"
+        },
+        {
+          "chunk_id": "67233bc1c3301c3b15aca19686153b5ea328891a50d24d4e556b154df8b38d38",
+          "source": "sample-document-medium.docx"
+        },
+        {
+          "chunk_id": "c726e99c888ce074ea55d33878e3fa7a67252c4db743ea98f3d4980a3c741cda",
+          "source": "sample-document-medium.docx"
         }
       ]
     },
     {
-      "id": "QA-062",
-      "category": "unanswerable",
-      "question": "What is the password for the CloudNote Pro administrator account?",
-      "expected_answer": "The supplied documents do not provide an administrator password, and credentials should not be inferred or disclosed.",
-      "answerable": false,
+      "id": "NEW-026",
+      "question": "What are the customer, product, quantity, and total for DOCX order PB-100003?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Silverline Freight; Data Migration; quantity 4; $9,600.00.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "c98106a0c9aaab1e7e1d83468723cbd92b2c9c1634af5e164570fb64f420f657"
+      ],
+      "relevant_sources": [
+        "sample-document-medium.docx"
+      ],
       "source_chunks": [
         {
-          "source": "compliance_policy_sample.docx",
-          "chunk_id": "b60178fa2911301a2e67769fdacfdc6440d9944834a73c54e599208cfc1b8adf"
+          "chunk_id": "c98106a0c9aaab1e7e1d83468723cbd92b2c9c1634af5e164570fb64f420f657",
+          "source": "sample-document-medium.docx"
         }
       ]
     },
     {
-      "id": "QA-063",
-      "category": "unanswerable",
-      "question": "What was the exact date and time of the Frankfurt login alert in ticket TKT-88430?",
-      "expected_answer": "The visible ticket content identifies the location as Frankfurt, Germany, but does not provide an exact timestamp for the login alert.",
-      "answerable": false,
+      "id": "NEW-027",
+      "question": "According to the PDF, why should a document’s original structure be preserved?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "It maintains meaning and context and supports better chunking, retrieval, and accurate answers.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "cd2c276b4054a1c9116d00dcec3f34e90e44ee46b6b7c19bcbe7418988c6e657"
+      ],
+      "relevant_sources": [
+        "sample.pdf"
+      ],
       "source_chunks": [
         {
-          "source": "support_transcripts_sample.txt",
-          "chunk_id": "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511"
+          "chunk_id": "cd2c276b4054a1c9116d00dcec3f34e90e44ee46b6b7c19bcbe7418988c6e657",
+          "source": "sample.pdf"
         }
       ]
+    },
+    {
+      "id": "NEW-028",
+      "question": "What benefits does the PDF attribute to good chunking?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Improved retrieval relevance, reduced noise, and better context understanding.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "43162b8c9f7feaa0e83584fe19038b3796668d05ccfc1bf663f8a2a368b4f22d"
+      ],
+      "relevant_sources": [
+        "sample.pdf"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "43162b8c9f7feaa0e83584fe19038b3796668d05ccfc1bf663f8a2a368b4f22d",
+          "source": "sample.pdf"
+        }
+      ]
+    },
+    {
+      "id": "NEW-029",
+      "question": "How does the PDF define semantic chunking, and what documents is it best for?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "It splits by meaning and semantic similarity and is best for complex documents.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "43162b8c9f7feaa0e83584fe19038b3796668d05ccfc1bf663f8a2a368b4f22d",
+        "d5db11b35eb091fe9676c818bc6d4310d074061e4d8dca2cb4085c9fd24bd156"
+      ],
+      "relevant_sources": [
+        "sample.pdf"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "43162b8c9f7feaa0e83584fe19038b3796668d05ccfc1bf663f8a2a368b4f22d",
+          "source": "sample.pdf"
+        },
+        {
+          "chunk_id": "d5db11b35eb091fe9676c818bc6d4310d074061e4d8dca2cb4085c9fd24bd156",
+          "source": "sample.pdf"
+        }
+      ]
+    },
+    {
+      "id": "NEW-030",
+      "question": "What four ingestion architecture outcomes are listed as key takeaways in the PDF?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Handle multiple document types, preserve structure and metadata, generate high-quality embeddings, and keep the index updated.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "664fe891aa9744592456e048c0613b512344d6d238b9de0b1586de8e11688dc7"
+      ],
+      "relevant_sources": [
+        "sample.pdf"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "664fe891aa9744592456e048c0613b512344d6d238b9de0b1586de8e11688dc7",
+          "source": "sample.pdf"
+        }
+      ]
+    },
+    {
+      "id": "NEW-031",
+      "question": "Which quality checks does the PDF say an ingestion pipeline should perform?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Check for missing content, OCR errors, and chunk-size validation.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "6f2b40554219ce09c7477b1d3f099150675ad237e4c073766fe208257ddeaa64"
+      ],
+      "relevant_sources": [
+        "sample.pdf"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "6f2b40554219ce09c7477b1d3f099150675ad237e4c073766fe208257ddeaa64",
+          "source": "sample.pdf"
+        }
+      ]
+    },
+    {
+      "id": "NEW-032",
+      "question": "Name common metadata fields shown in the PDF.",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Source, location, permissions, content type, custom tags, and timestamps.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "700007f10c11b8760af1f0b4c77cc3aeec113680ac88a710a70492459ac3626a"
+      ],
+      "relevant_sources": [
+        "sample.pdf"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "700007f10c11b8760af1f0b4c77cc3aeec113680ac88a710a70492459ac3626a",
+          "source": "sample.pdf"
+        }
+      ]
+    },
+    {
+      "id": "NEW-033",
+      "question": "What steps does the presentation list for integrating analytics?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Create an account and property, paste the tracking snippet, and optionally add custom analytics.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "0b848e00bc4deeb892906cb33814387ebe1cad4ca0895b60a75ff884a06f5b74"
+      ],
+      "relevant_sources": [
+        "sample.pptx"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "0b848e00bc4deeb892906cb33814387ebe1cad4ca0895b60a75ff884a06f5b74",
+          "source": "sample.pptx"
+        }
+      ]
+    },
+    {
+      "id": "NEW-034",
+      "question": "Where does the presentation say to find the tracking snippet?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Select Admin, choose the account and property, then select Tracking Info > Tracking Code.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "39fe8c137aa4a4b72eae163b66b7add6022c531735846e5b7a5dc049fcfb272f"
+      ],
+      "relevant_sources": [
+        "sample.pptx"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "39fe8c137aa4a4b72eae163b66b7add6022c531735846e5b7a5dc049fcfb272f",
+          "source": "sample.pptx"
+        }
+      ]
+    },
+    {
+      "id": "NEW-035",
+      "question": "How do you reach the Events Overview interface?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Reporting > Behavior > Events > Overview.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "3a8bcc783a5d955c530300945841360d673fa715e4b8bbe6a33677641dbf8fbe"
+      ],
+      "relevant_sources": [
+        "sample.pptx"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "3a8bcc783a5d955c530300945841360d673fa715e4b8bbe6a33677641dbf8fbe",
+          "source": "sample.pptx"
+        }
+      ]
+    },
+    {
+      "id": "NEW-036",
+      "question": "How do you reach the Real-time Events interface?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Reporting > Real-time > Events.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "7436aa8e5326e9aaeafbdc754e156c05951253b5aed569e5d8faaf6a0b4dd054"
+      ],
+      "relevant_sources": [
+        "sample.pptx"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "7436aa8e5326e9aaeafbdc754e156c05951253b5aed569e5d8faaf6a0b4dd054",
+          "source": "sample.pptx"
+        }
+      ]
+    },
+    {
+      "id": "NEW-037",
+      "question": "How do you reach the Audience Overview interface?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Reporting > Audience > Overview.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "d993a8463d611b74917c01179d44aff65a6b6ae00338935b0d0487f6ea899136"
+      ],
+      "relevant_sources": [
+        "sample.pptx"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "d993a8463d611b74917c01179d44aff65a6b6ae00338935b0d0487f6ea899136",
+          "source": "sample.pptx"
+        }
+      ]
+    },
+    {
+      "id": "NEW-038",
+      "question": "Which API should service-worker hits use, according to the presentation?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "The Measurement Protocol API.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "618b35610bda2fd469359a7f6698ed8b99c970c44c7fa3d11e534da756f5caa9"
+      ],
+      "relevant_sources": [
+        "sample.pptx"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "618b35610bda2fd469359a7f6698ed8b99c970c44c7fa3d11e534da756f5caa9",
+          "source": "sample.pptx"
+        }
+      ]
+    },
+    {
+      "id": "NEW-039",
+      "question": "Which package and initialization call are shown for offline Google Analytics?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Install sw-offline-google-analytics and call goog.offlineGoogleAnalytics.initialize() in the service worker.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "754a9adee8291709e7a8364a0c4204bab650d4a629d97e3ec9bee7f4282a9ef6"
+      ],
+      "relevant_sources": [
+        "sample.pptx"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "754a9adee8291709e7a8364a0c4204bab650d4a629d97e3ec9bee7f4282a9ef6",
+          "source": "sample.pptx"
+        }
+      ]
+    },
+    {
+      "id": "NEW-040",
+      "question": "Why did the customer’s invoice rise from $15 to $24 in support record 001?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Two additional team members accepted invitations, adding two Team Plan seats at $4.50 each.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad"
+      ],
+      "relevant_sources": [
+        "support_transcripts_sample.txt"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
+          "source": "support_transcripts_sample.txt"
+        }
+      ]
+    },
+    {
+      "id": "NEW-041",
+      "question": "Where can a customer manage active CloudNote Pro seats?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Settings > Billing > Team Members.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad"
+      ],
+      "relevant_sources": [
+        "support_transcripts_sample.txt"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "0f9d90cce9feb4ecf3874e91e18b045635e706590659099d5a65297fd3d5b5ad",
+          "source": "support_transcripts_sample.txt"
+        }
+      ]
+    },
+    {
+      "id": "NEW-042",
+      "question": "What did support do after the unrecognized Frankfurt login, and what did it ask the customer to do?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "Support revoked active session tokens and enforced a password reset; the customer should set a unique passphrase, enable TOTP, and check their primary email password.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511"
+      ],
+      "relevant_sources": [
+        "support_transcripts_sample.txt"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
+          "source": "support_transcripts_sample.txt"
+        }
+      ]
+    },
+    {
+      "id": "NEW-043",
+      "question": "What caused the macOS PDF export crash in version 4.2.1, and what workaround was offered?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "A memory-allocation bug rendering high-resolution embedded tables caused it; support advised exporting through the web app.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd"
+      ],
+      "relevant_sources": [
+        "support_transcripts_sample.txt"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd",
+          "source": "support_transcripts_sample.txt"
+        }
+      ]
+    },
+    {
+      "id": "NEW-044",
+      "question": "Why was the API backup script throttled despite sending about 300 requests, and what fixes were suggested?",
+      "category": "direct",
+      "question_type": "direct",
+      "expected_answer": "/v2/notes/export has a 60-requests-per-minute burst limit despite the 1,000 workspace-wide limit. Use exponential backoff or batch up to 25 note IDs per request.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59"
+      ],
+      "relevant_sources": [
+        "support_transcripts_sample.txt"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
+          "source": "support_transcripts_sample.txt"
+        }
+      ]
+    },
+    {
+      "id": "NEW-045",
+      "question": "A Team Plan workspace sends about 300 requests per minute but gets 429 errors on note exports. Why, and what should it change?",
+      "category": "multi_hop",
+      "question_type": "multi_hop",
+      "expected_answer": "The Team Plan limit is 1,000 per minute overall, but /v2/notes/export has a separate 60-per-minute burst limit. Use exponential backoff or batch up to 25 note IDs.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
+        "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59"
+      ],
+      "relevant_sources": [
+        "knowledge_base_sample.md",
+        "support_transcripts_sample.txt"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
+          "source": "knowledge_base_sample.md"
+        },
+        {
+          "chunk_id": "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
+          "source": "support_transcripts_sample.txt"
+        }
+      ]
+    },
+    {
+      "id": "NEW-046",
+      "question": "How can CloudNote Pro merge text edits automatically yet still require a user to resolve the folder conflict?",
+      "category": "multi_hop",
+      "question_type": "multi_hop",
+      "expected_answer": "The Rust CRDT service merges concurrent text edits, but deleting a parent folder while another offline user adds files inside it creates a structural conflict. Resolve it in the Conflict Resolution Drawer.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
+        "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6"
+      ],
+      "relevant_sources": [
+        "knowledge_base_sample.md"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2",
+          "source": "knowledge_base_sample.md"
+        },
+        {
+          "chunk_id": "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6",
+          "source": "knowledge_base_sample.md"
+        }
+      ]
+    },
+    {
+      "id": "NEW-047",
+      "question": "For the suspicious-login case, what actions were taken and which platform protections are documented?",
+      "category": "multi_hop",
+      "question_type": "multi_hop",
+      "expected_answer": "Support revoked active session tokens and enforced a password reset, then advised a unique passphrase and TOTP. Platform protections include TLS 1.3 with mobile certificate pinning and AES-256-GCM at rest.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
+        "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84"
+      ],
+      "relevant_sources": [
+        "support_transcripts_sample.txt",
+        "knowledge_base_sample.md"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
+          "source": "support_transcripts_sample.txt"
+        },
+        {
+          "chunk_id": "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
+          "source": "knowledge_base_sample.md"
+        }
+      ]
+    },
+    {
+      "id": "NEW-048",
+      "question": "Based on the PDF, what should ingestion do with scanned pages and how should it check the resulting chunks?",
+      "category": "multi_hop",
+      "question_type": "multi_hop",
+      "expected_answer": "Use OCR to convert scanned images to text, preserve document structure and metadata, then check for missing content, OCR errors, and chunk-size problems.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "3ee80240a0f30a1b277d6f70da9966b7f6a06997df2ac0d40a30a0dbdbe6ca15",
+        "cd2c276b4054a1c9116d00dcec3f34e90e44ee46b6b7c19bcbe7418988c6e657",
+        "6f2b40554219ce09c7477b1d3f099150675ad237e4c073766fe208257ddeaa64"
+      ],
+      "relevant_sources": [
+        "sample.pdf"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "3ee80240a0f30a1b277d6f70da9966b7f6a06997df2ac0d40a30a0dbdbe6ca15",
+          "source": "sample.pdf"
+        },
+        {
+          "chunk_id": "cd2c276b4054a1c9116d00dcec3f34e90e44ee46b6b7c19bcbe7418988c6e657",
+          "source": "sample.pdf"
+        },
+        {
+          "chunk_id": "6f2b40554219ce09c7477b1d3f099150675ad237e4c073766fe208257ddeaa64",
+          "source": "sample.pdf"
+        }
+      ]
+    },
+    {
+      "id": "NEW-049",
+      "question": "Describe an authenticated CloudScale vector query, including endpoint, required fields, and filter operators.",
+      "category": "multi_hop",
+      "question_type": "multi_hop",
+      "expected_answer": "Send POST /v2/vectors/query with a valid Bearer token in Authorization. Required fields include namespace and a vector matching index dimensionality; optional filters support $eq, $in, and $gte.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500",
+        "0947d867a63db97f1c12f6792540291d359f0e83d37a6a1ad7d5482f492f2213"
+      ],
+      "relevant_sources": [
+        "api_documentation_sample.html"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500",
+          "source": "api_documentation_sample.html"
+        },
+        {
+          "chunk_id": "0947d867a63db97f1c12f6792540291d359f0e83d37a6a1ad7d5482f492f2213",
+          "source": "api_documentation_sample.html"
+        }
+      ]
+    },
+    {
+      "id": "NEW-050",
+      "question": "Compare orders PB-100003 and PB-100005: who placed PB-100005, and how much larger was PB-100003?",
+      "category": "multi_hop",
+      "question_type": "multi_hop",
+      "expected_answer": "Harbourfront Textiles placed PB-100005. PB-100003 was $9,600 and PB-100005 was $297, so the difference is $9,303.",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "c98106a0c9aaab1e7e1d83468723cbd92b2c9c1634af5e164570fb64f420f657",
+        "67233bc1c3301c3b15aca19686153b5ea328891a50d24d4e556b154df8b38d38"
+      ],
+      "relevant_sources": [
+        "sample-document-medium.docx"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "c98106a0c9aaab1e7e1d83468723cbd92b2c9c1634af5e164570fb64f420f657",
+          "source": "sample-document-medium.docx"
+        },
+        {
+          "chunk_id": "67233bc1c3301c3b15aca19686153b5ea328891a50d24d4e556b154df8b38d38",
+          "source": "sample-document-medium.docx"
+        }
+      ]
+    },
+    {
+      "id": "NEW-051",
+      "question": "How do I fix the issue?",
+      "category": "ambiguous",
+      "question_type": "ambiguous",
+      "expected_answer": "Are you seeing the offline sync-conflict banner, or is the macOS app freezing while exporting a large notebook to PDF?",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6",
+        "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd"
+      ],
+      "relevant_sources": [
+        "knowledge_base_sample.md",
+        "support_transcripts_sample.txt"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6",
+          "source": "knowledge_base_sample.md"
+        },
+        {
+          "chunk_id": "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd",
+          "source": "support_transcripts_sample.txt"
+        }
+      ]
+    },
+    {
+      "id": "NEW-052",
+      "question": "What rate limit applies to me?",
+      "category": "ambiguous",
+      "question_type": "ambiguous",
+      "expected_answer": "Which CloudNote plan are you on, and do you mean the workspace-wide API limit or the /v2/notes/export burst limit?",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
+        "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59"
+      ],
+      "relevant_sources": [
+        "knowledge_base_sample.md",
+        "support_transcripts_sample.txt"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
+          "source": "knowledge_base_sample.md"
+        },
+        {
+          "chunk_id": "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59",
+          "source": "support_transcripts_sample.txt"
+        }
+      ]
+    },
+    {
+      "id": "NEW-053",
+      "question": "How should I secure it?",
+      "category": "ambiguous",
+      "question_type": "ambiguous",
+      "expected_answer": "Are you responding to a suspicious account login, or asking about CloudNote Pro’s general encryption and compliance protections?",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
+        "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84"
+      ],
+      "relevant_sources": [
+        "support_transcripts_sample.txt",
+        "knowledge_base_sample.md"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511",
+          "source": "support_transcripts_sample.txt"
+        },
+        {
+          "chunk_id": "a42d6c7944dd05cd9d370c3cd2caf1901fdf49c4599cce31d1d177d349100e84",
+          "source": "knowledge_base_sample.md"
+        }
+      ]
+    },
+    {
+      "id": "NEW-054",
+      "question": "Where do I find the overview?",
+      "category": "ambiguous",
+      "question_type": "ambiguous",
+      "expected_answer": "Do you mean the Events Overview, Real-time Overview, or Audience Overview?",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "3a8bcc783a5d955c530300945841360d673fa715e4b8bbe6a33677641dbf8fbe",
+        "f546f09ef752d74035998901d26b7a6a9b8181970bd33063442ef503ba8f9535",
+        "d993a8463d611b74917c01179d44aff65a6b6ae00338935b0d0487f6ea899136"
+      ],
+      "relevant_sources": [
+        "sample.pptx"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "3a8bcc783a5d955c530300945841360d673fa715e4b8bbe6a33677641dbf8fbe",
+          "source": "sample.pptx"
+        },
+        {
+          "chunk_id": "f546f09ef752d74035998901d26b7a6a9b8181970bd33063442ef503ba8f9535",
+          "source": "sample.pptx"
+        },
+        {
+          "chunk_id": "d993a8463d611b74917c01179d44aff65a6b6ae00338935b0d0487f6ea899136",
+          "source": "sample.pptx"
+        }
+      ]
+    },
+    {
+      "id": "NEW-055",
+      "question": "How do I track the event?",
+      "category": "ambiguous",
+      "question_type": "ambiguous",
+      "expected_answer": "Are you adding a custom app event, tracking a push-notification event, or sending a service-worker hit through the Measurement Protocol?",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "61b41c2cece4b48b9ced03391de4b3be9bb9d787d945809ba22f41c057f396b7",
+        "e2f8031222dbb2cd1fd729c268739189c671c46ff6715c98a74a3fb56e316c92",
+        "cc762a02df0d5f262d75f42dfc51efb129e00442b8ec8afbb97f67ba9ac52c0d",
+        "618b35610bda2fd469359a7f6698ed8b99c970c44c7fa3d11e534da756f5caa9"
+      ],
+      "relevant_sources": [
+        "sample.pptx"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "61b41c2cece4b48b9ced03391de4b3be9bb9d787d945809ba22f41c057f396b7",
+          "source": "sample.pptx"
+        },
+        {
+          "chunk_id": "e2f8031222dbb2cd1fd729c268739189c671c46ff6715c98a74a3fb56e316c92",
+          "source": "sample.pptx"
+        },
+        {
+          "chunk_id": "cc762a02df0d5f262d75f42dfc51efb129e00442b8ec8afbb97f67ba9ac52c0d",
+          "source": "sample.pptx"
+        },
+        {
+          "chunk_id": "618b35610bda2fd469359a7f6698ed8b99c970c44c7fa3d11e534da756f5caa9",
+          "source": "sample.pptx"
+        }
+      ]
+    },
+    {
+      "id": "NEW-056",
+      "question": "Which CloudNote plan should I choose?",
+      "category": "ambiguous",
+      "question_type": "ambiguous",
+      "expected_answer": "How many workspace members and how much storage do you need, and are version history, API volume, or SSO important?",
+      "acceptable_answers": [],
+      "answerable": true,
+      "relevant_chunk_ids": [
+        "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
+      ],
+      "relevant_sources": [
+        "knowledge_base_sample.md"
+      ],
+      "source_chunks": [
+        {
+          "chunk_id": "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
+          "source": "knowledge_base_sample.md"
+        }
+      ]
+    },
+    {
+      "id": "NEW-057",
+      "question": "In which AWS region is CloudNote Pro’s production object storage hosted?",
+      "category": "unanswerable",
+      "question_type": "unanswerable",
+      "expected_answer": "The documents do not specify the AWS region for CloudNote Pro production storage.",
+      "acceptable_answers": [],
+      "answerable": false,
+      "relevant_chunk_ids": [],
+      "relevant_sources": [],
+      "source_chunks": []
+    },
+    {
+      "id": "NEW-058",
+      "question": "What is the exact date and time that CloudNote Pro version 4.2.2 will be released?",
+      "category": "unanswerable",
+      "question_type": "unanswerable",
+      "expected_answer": "The transcript only says the patch is expected later that day; it gives no exact date or time.",
+      "acceptable_answers": [],
+      "answerable": false,
+      "relevant_chunk_ids": [],
+      "relevant_sources": [],
+      "source_chunks": []
+    },
+    {
+      "id": "NEW-059",
+      "question": "How many paying CloudNote Pro users are currently active?",
+      "category": "unanswerable",
+      "question_type": "unanswerable",
+      "expected_answer": "The documents do not state the current number of paying or active users.",
+      "acceptable_answers": [],
+      "answerable": false,
+      "relevant_chunk_ids": [],
+      "relevant_sources": [],
+      "source_chunks": []
+    },
+    {
+      "id": "NEW-060",
+      "question": "What uptime SLA does CloudNote Pro guarantee to Enterprise customers?",
+      "category": "unanswerable",
+      "question_type": "unanswerable",
+      "expected_answer": "The documents do not specify an Enterprise uptime SLA.",
+      "acceptable_answers": [],
+      "answerable": false,
+      "relevant_chunk_ids": [],
+      "relevant_sources": [],
+      "source_chunks": []
+    },
+    {
+      "id": "NEW-061",
+      "question": "Which named employee approved the HIPAA Business Associate Agreement?",
+      "category": "unanswerable",
+      "question_type": "unanswerable",
+      "expected_answer": "The documents say HIPAA Business Associate Agreements are available upon request but name no approver.",
+      "acceptable_answers": [],
+      "answerable": false,
+      "relevant_chunk_ids": [],
+      "relevant_sources": [],
+      "source_chunks": []
+    },
+    {
+      "id": "NEW-062",
+      "question": "What was CloudNote Pro’s audited revenue in fiscal year 2024?",
+      "category": "unanswerable",
+      "question_type": "unanswerable",
+      "expected_answer": "The documents do not state CloudNote Pro’s audited fiscal-year 2024 revenue.",
+      "acceptable_answers": [],
+      "answerable": false,
+      "relevant_chunk_ids": [],
+      "relevant_sources": [],
+      "source_chunks": []
+    },
+    {
+      "id": "NEW-063",
+      "question": "How many total seats are currently active on the account in support record 001?",
+      "category": "unanswerable",
+      "question_type": "unanswerable",
+      "expected_answer": "The transcript says two additional members accepted invitations but does not state the account’s total active seat count.",
+      "acceptable_answers": [],
+      "answerable": false,
+      "relevant_chunk_ids": [],
+      "relevant_sources": [],
+      "source_chunks": []
     }
-  ],
-  "reference_revision_note": "Added source-verified answer variants and corrected two references that asked for fewer facts than they contained. Added the concise source-supported answer 'AWS Lambda function' for QA-044 and corrected category_counts to match the question records. Added a concise, source-supported alternative for QA-057's custom Enterprise pricing answer."
+  ]
 }
