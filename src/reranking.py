@@ -1,4 +1,3 @@
-
 import sys
 
 import numpy as np
@@ -7,6 +6,12 @@ from sentence_transformers import CrossEncoder
 from src.config import RERANKER_MODEL, RERANK_TOP_K
 from src.logger import logger
 from src.exception import RAGPipelineException
+
+
+# Balance cross-encoder relevance with the hybrid search ranking
+RERANK_RRF_K = 60
+CROSS_ENCODER_RANK_WEIGHT = 0.45
+HYBRID_RANK_WEIGHT = 0.55
 
 
 # Store the Cross-Encoder model
@@ -185,7 +190,7 @@ def rerank_results(
             retrieved_chunks
         )
 
-        # Attach relevance scores to original chunks
+        # Keep both the cross-encoder and hybrid search signals
         reranked_chunks = []
 
         for chunk, score in zip(
@@ -198,9 +203,41 @@ def rerank_results(
 
             reranked_chunks.append(reranked_chunk)
 
-        # Sort by relevance score in descending order
-        reranked_chunks.sort(
+        # Rank candidates by cross-encoder score
+        cross_encoder_order = sorted(
+            reranked_chunks,
             key=lambda chunk: chunk["rerank_score"],
+            reverse=True
+        )
+        cross_encoder_ranks = {
+            chunk["id"]: rank
+            for rank, chunk in enumerate(cross_encoder_order, start=1)
+        }
+
+        # Rank candidates by their original hybrid score
+        hybrid_order = sorted(
+            reranked_chunks,
+            key=lambda chunk: chunk.get("rrf_score", 0.0),
+            reverse=True
+        )
+        hybrid_ranks = {
+            chunk["id"]: rank
+            for rank, chunk in enumerate(hybrid_order, start=1)
+        }
+
+        # Fuse the two rankings so exact sparse matches are not discarded
+        for chunk in reranked_chunks:
+            cross_rank = cross_encoder_ranks[chunk["id"]]
+            hybrid_rank = hybrid_ranks[chunk["id"]]
+            chunk["rerank_fused_score"] = (
+                CROSS_ENCODER_RANK_WEIGHT
+                / (RERANK_RRF_K + cross_rank)
+                + HYBRID_RANK_WEIGHT
+                / (RERANK_RRF_K + hybrid_rank)
+            )
+
+        reranked_chunks.sort(
+            key=lambda chunk: chunk["rerank_fused_score"],
             reverse=True
         )
 
@@ -390,3 +427,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
