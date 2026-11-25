@@ -29,7 +29,7 @@ SUPPORTED_DOCUMENT_TYPES = {
     ".pdf",".txt",".docx",".html",".md",".pptx"
 }
 MAX_FILE_SIZE_MB = 50  # Maximum file size in MB
-TESSERACT_CMD = os.getenv("TESSERACT_CMD")
+TESSERACT_CMD = r"D:\tesseract-OCR\tesseract.exe"
 
 
 #embedding configuration
