@@ -1,5 +1,8 @@
 import argparse
+import hashlib
+import json
 from pathlib import Path
+from datetime import datetime, timezone
 
 from src.config import (
     SUPPORTED_DOCUMENT_TYPES,
@@ -30,6 +33,9 @@ from src.evaluation import (
 # Set the project data directory
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 RAW_DATA_DIR = PROJECT_ROOT / "data" / "raw"
+INDEXING_MANIFEST_PATH = (
+    PROJECT_ROOT / "data" / "evaluation" / "exports" / "indexing_manifest.json"
+)
 
 # Default corpus for general document uploads
 DEFAULT_CORPUS_ID = "general"
@@ -51,6 +57,64 @@ def validate_corpus_id(corpus_id):
 
     except Exception as e:
         logger.exception("Corpus ID validation failed")
+        raise RAGPipelineException(str(e)) from e
+
+
+def save_indexing_manifest(raw_dir, document_files, results, strategy, corpus_id):
+    """Record which source versions were successfully indexed in this run."""
+
+    try:
+        result_by_source = {
+            result.get("source"): result
+            for result in results
+            if isinstance(result, dict)
+        }
+        document_names = {path.name for path in document_files}
+        sources = {}
+
+        for source in EVALUATION_SOURCES:
+            path = Path(raw_dir) / source
+            result = result_by_source.get(source, {})
+            status = result.get(
+                "status",
+                "missing" if source not in document_names else "failed"
+            )
+            file_hash = (
+                hashlib.sha256(path.read_bytes()).hexdigest()
+                if path.is_file()
+                else None
+            )
+            sources[source] = {
+                "status": status,
+                "sha256": file_hash,
+                "reason": result.get("reason")
+            }
+
+        incomplete_sources = [
+            source
+            for source, details in sources.items()
+            if details["status"] != "success" or not details["sha256"]
+        ]
+        manifest = {
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "strategy": strategy,
+            "corpus_id": corpus_id,
+            "evaluation_ready": not incomplete_sources,
+            "incomplete_sources": incomplete_sources,
+            "sources": sources
+        }
+
+        INDEXING_MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
+        temporary_path = INDEXING_MANIFEST_PATH.with_suffix(".tmp")
+        temporary_path.write_text(
+            json.dumps(manifest, ensure_ascii=False, indent=2),
+            encoding="utf-8"
+        )
+        temporary_path.replace(INDEXING_MANIFEST_PATH)
+        return manifest
+
+    except Exception as e:
+        logger.exception("Failed to save the indexing manifest")
         raise RAGPipelineException(str(e)) from e
 
 
@@ -281,15 +345,32 @@ def run_pipeline(
                 f"Processing: {file_path.name}"
             )
 
-            result = process_document(
-                file_path=file_path,
-                strategy=strategy,
-                user_id=user_id,
-                replace_existing=replace_existing,
-                corpus_id=corpus_id
-            )
+            try:
+                result = process_document(
+                    file_path=file_path,
+                    strategy=strategy,
+                    user_id=user_id,
+                    replace_existing=replace_existing,
+                    corpus_id=corpus_id
+                )
+            except Exception as e:
+                logger.exception("Document failed during pipeline: {}", file_path.name)
+                result = {
+                    "source": file_path.name,
+                    "corpus_id": corpus_id,
+                    "status": "failed",
+                    "reason": str(e)
+                }
 
             results.append(result)
+
+        indexing_manifest = save_indexing_manifest(
+            raw_dir=raw_dir,
+            document_files=document_files,
+            results=results,
+            strategy=strategy,
+            corpus_id=corpus_id
+        )
 
         # Calculate processing statistics
         successful = sum(
@@ -307,6 +388,12 @@ def run_pipeline(
             }
         )
 
+        failed = sum(
+            1
+            for result in results
+            if result.get("status") == "failed"
+        )
+
         # Read final index counts
         _, collection = initialize_vector_store()
         chroma_count = collection.count()
@@ -320,7 +407,16 @@ def run_pipeline(
         evaluation_report = None
 
         # Evaluate the indexed documents against the complete QA dataset.
-        if run_evaluation:
+        evaluation_skipped_reason = None
+        if run_evaluation and not indexing_manifest["evaluation_ready"]:
+            evaluation_skipped_reason = (
+                "Evaluation was skipped because these sources were not "
+                "successfully indexed: "
+                + ", ".join(indexing_manifest["incomplete_sources"])
+            )
+            logger.error(evaluation_skipped_reason)
+
+        if run_evaluation and indexing_manifest["evaluation_ready"]:
             logger.info("Starting end-to-end QA evaluation")
             dataset = load_qa_dataset()
             evaluation_report = evaluate_dataset(
@@ -337,10 +433,12 @@ def run_pipeline(
             "total_files": len(document_files),
             "successful": successful,
             "skipped": skipped,
+            "failed": failed,
             "corpus_id": corpus_id,
             "chroma_count": chroma_count,
             "bm25_count": bm25_count,
             "evaluation_completed": evaluation_report is not None,
+            "evaluation_skipped_reason": evaluation_skipped_reason,
             "evaluation_report": (
                 str(evaluation_report.get("report_path", EVALUATION_REPORT_PATH))
                 if evaluation_report else None
@@ -388,7 +486,7 @@ def run_chunking_strategy_comparison(
     evaluation_top_k=5,
     retrieval_top_k=50
 ):
-
+    comparison_started = False
     try:
         supported_strategies = {"fixed_size", "recursive", "semantic"}
         if (
@@ -404,6 +502,7 @@ def run_chunking_strategy_comparison(
         report_paths = {}
 
         for strategy in strategies:
+            comparison_started = True
             strategy_report_path = EVALUATION_REPORT_PATH.with_name(
                 f"evaluation_report_{strategy}.json"
             )
@@ -465,9 +564,37 @@ def run_chunking_strategy_comparison(
         }
 
     except RAGPipelineException:
+        if comparison_started:
+            try:
+                run_pipeline(
+                    raw_dir=raw_dir,
+                    strategy=CHUNKING_STRATEGY,
+                    user_id=user_id,
+                    replace_existing=True,
+                    corpus_id=corpus_id,
+                    run_evaluation=False
+                )
+            except Exception:
+                logger.exception(
+                    "Could not restore the configured chunking strategy after comparison failure"
+                )
         raise
 
     except Exception as e:
+        if comparison_started:
+            try:
+                run_pipeline(
+                    raw_dir=raw_dir,
+                    strategy=CHUNKING_STRATEGY,
+                    user_id=user_id,
+                    replace_existing=True,
+                    corpus_id=corpus_id,
+                    run_evaluation=False
+                )
+            except Exception:
+                logger.exception(
+                    "Could not restore the configured chunking strategy after comparison failure"
+                )
         logger.exception("Chunking strategy comparison failed")
         raise RAGPipelineException(str(e)) from e
 
@@ -598,6 +725,8 @@ def main():
                 f"{result.get('status', 'unknown')} | "
                 f"Corpus: {result.get('corpus_id', 'unknown')}"
             )
+            if result.get("reason"):
+                print(f"  Reason: {result['reason']}")
 
         print(
             "\nPipeline execution completed."
@@ -633,4 +762,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 
