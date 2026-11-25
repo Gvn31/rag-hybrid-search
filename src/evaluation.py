@@ -24,9 +24,9 @@ VALID_QUESTION_TYPES = {
 
 EVALUATION_SOURCES = [
     "api_documentation_sample.html",
-    "compliance_policy_sample.docx",
     "knowledge_base_sample.md",
-    "retrieval-augmented-generation-options.pdf",
+    "sample.pdf",
+    "sample.pptx",
     "sample-document-medium.docx",
     "support_transcripts_sample.txt"
 ]
@@ -1334,7 +1334,9 @@ def evaluate_single_question(
 
             answer=answer,
 
-            retrieved_chunks=retrieved_chunks
+            retrieved_chunks=retrieved_chunks,
+
+            query=question
 
         )
 
@@ -1559,6 +1561,24 @@ def evaluate_single_question(
             "faithfulness_lexical_proxy": faithfulness,
 
             "confidence_indicator": confidence,
+
+            "claim_citation_coverage": citation_output.get(
+                "citation_coverage"
+            ),
+
+            "answer_completeness": citation_output.get(
+                "answer_completeness"
+            ),
+
+            "claim_verification_available": (
+                citation_output.get("claim_verification", {}).get("available")
+                if isinstance(citation_output.get("claim_verification"), dict)
+                else False
+            ),
+
+            "confidence_components": citation_output.get(
+                "confidence_components"
+            ),
 
             "is_supported": citation_output.get("is_supported"),
 
@@ -1853,6 +1873,36 @@ def calculate_aggregate_metrics(results):
                 int(result.get("has_citations", False))
                 for result in answerable_results
             ]),
+            "claim_citation_coverage": calculate_average([
+                result.get("claim_citation_coverage")
+                for result in successful_results
+            ]),
+            "answer_completeness": calculate_average([
+                result.get("answer_completeness")
+                for result in answerable_results
+            ]),
+            "confidence_retrieval_relevance": calculate_average([
+                (result.get("confidence_components") or {}).get(
+                    "retrieval_relevance"
+                )
+                for result in successful_results
+            ]),
+            "confidence_citation_coverage": calculate_average([
+                (result.get("confidence_components") or {}).get(
+                    "citation_coverage"
+                )
+                for result in successful_results
+            ]),
+            "confidence_answer_completeness": calculate_average([
+                (result.get("confidence_components") or {}).get(
+                    "answer_completeness"
+                )
+                for result in answerable_results
+            ]),
+            "claim_verification_question_count": sum(
+                result.get("claim_verification_available") is True
+                for result in successful_results
+            ),
             "faithfulness_lexical_proxy": calculate_average([
                 result["faithfulness_lexical_proxy"]
                 for result in successful_results
@@ -1898,7 +1948,9 @@ def compare_chunking_strategies(strategy_results):
             "source_recall_at_k",
             "source_mean_reciprocal_rank",
             "citation_accuracy",
-            "faithfulness_lexical_proxy"
+            "faithfulness_lexical_proxy",
+            "claim_citation_coverage",
+            "answer_completeness"
         ]
 
         comparison = {}
@@ -2154,7 +2206,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
