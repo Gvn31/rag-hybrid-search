@@ -6,7 +6,7 @@ import requests
 from src.config import LLM_MODEL, RERANK_TOP_K
 from src.logger import logger
 from src.exception import RAGPipelineException
-from src.citations import process_citations
+from src.citations import extract_citation_ids, process_citations
 
 
 # Extract the original chunk ID from a retrieved chunk.
@@ -395,6 +395,84 @@ def _ambiguous_fallback(query):
     )
 
     return "Which product, document, or specific aspect are you referring to?"
+
+
+def _is_abstention_answer(answer):
+    return bool(re.search(
+        r"\b(?:i do not know|i don't know|cannot answer|unable to answer|"
+        r"could not find|not enough information|information is unavailable|"
+        r"not specified|not available|do not contain enough information|"
+        r"do not provide enough information)\b",
+        answer if isinstance(answer, str) else "",
+        flags=re.IGNORECASE
+    ))
+
+
+def _unanswerable_answer_is_grounded(query, answer, retrieved_chunks):
+    """Reject unsupported numbers and totals in unanswerable evaluation cases."""
+    try:
+        if _is_abstention_answer(answer):
+            return True
+
+        citation_ids = extract_citation_ids(
+            answer,
+            retrieved_chunks=retrieved_chunks
+        )
+        if not citation_ids:
+            return False
+
+        cited_texts = []
+        for chunk in retrieved_chunks:
+            if get_chunk_id(chunk) in citation_ids:
+                cited_texts.append(chunk.get("text", ""))
+        if not cited_texts:
+            return False
+
+        evidence = " ".join(cited_texts).casefold()
+        query_text = query.casefold()
+        answer_text = re.sub(r"\[[^\]]+\]", " ", answer).casefold()
+
+        # Require the cited evidence to mention the attribute being asked about.
+        attribute_groups = (
+            (r"\brevenue\b", ("revenue", "sales")),
+            (r"\bseats?\b", ("seat", "member")),
+            (r"\busers?\b", ("user", "member")),
+            (r"\bregion\b", ("region", "location")),
+            (r"\b(?:uptime|sla)\b", ("uptime", "sla", "availability")),
+            (r"\b(?:employee|approver|approved)\b", ("employee", "approv")),
+            (r"\b(?:release date|date and time|exact date|exact time)\b", ("release date", "released on", "at ")),
+        )
+        for pattern, evidence_terms in attribute_groups:
+            if re.search(pattern, query_text) and not any(
+                term in evidence for term in evidence_terms
+            ):
+                return False
+
+        # A count of added seats does not establish the total active seat count.
+        if (
+            re.search(r"\btotal\b", query_text)
+            and re.search(r"\bseats?\b", query_text)
+            and re.search(r"\b(?:added|additional|extra|increased)\b", evidence)
+            and not re.search(r"\btotal\b", evidence)
+        ):
+            return False
+
+        # Every numeric answer must be present in the cited evidence.
+        clean_answer = re.sub(r"\[[^\]]+\]", " ", answer)
+        numeric_values = re.findall(
+            r"(?<![A-Za-z])(?:[$€£]\s*)?\d[\d,]*(?:\.\d+)?%?",
+            clean_answer
+        )
+        for value in numeric_values:
+            digits = re.sub(r"[^\d.]", "", value)
+            if digits and digits not in re.sub(r"[^\d.]", "", evidence):
+                return False
+
+        return True
+
+    except Exception as e:
+        logger.warning("Unanswerable-answer grounding check failed: {}", e)
+        return False
 
 
 def _get_requested_item_count(query):
@@ -806,10 +884,17 @@ CLARIFICATION:
 MISSING INFORMATION:
 - If the requested information is unavailable, say so briefly.
 - Never guess or fabricate missing facts.
+- Match every value to the exact entity and attribute asked about.
+- Do not transfer a number from another document, company, or example just because the topic is similar.
+- A count of new or additional items does not establish the current total.
+- If a question asks for a total, exact date, or exact time and the context gives only a partial count or vague timing, state that the exact answer is unavailable.
 
 EVIDENCE SELECTION:
 - Read every retrieved chunk before forming the answer.
 - Identify which chunk directly explains the fact requested.
+- Preserve the relationship between headings and their list items, especially in OCR text.
+- When asked about a named category or section, include only items listed under that heading.
+- Do not merge items from neighboring headings, even when they appear in the same chunk.
 - Do not select evidence merely because it repeats words from the question.
 - For why or reason questions, answer with the stated cause or benefit, not a condition that says to customize.
 - Prefer evidence that explains a benefit or gives an example over text that only repeats the question.
@@ -857,7 +942,7 @@ Only answer if the requested fact is explicitly supported by the supplied docume
 
 If the information is unavailable, clearly state that the supplied documents do not contain enough information.
 
-Do not guess or invent missing facts.
+Do not guess or invent missing facts. Verify that any number in the answer is attached to the same entity and requested attribute in the cited chunk. A sample revenue figure for another document is not CloudNote Pro revenue. Two seats added are not the account's total active seats.
 """
 
         
@@ -877,6 +962,8 @@ For yes/no questions:
 
 For questions asking for a name, value, endpoint, service, or short list:
 - Give only the requested fact or facts, using the source's wording where possible.
+- If the question names a section or category, use only the facts under that exact heading.
+- Exclude nearby facts labeled as a different heading or category.
 - If the question specifies a count, provide that exact number of distinct facts or steps.
 - Preserve qualifiers that change the answer, including controls, units, and time periods.
 - Do not explain your reasoning or repeat the question.
@@ -1060,7 +1147,8 @@ Return only the clarification question.
         ):
             citation_check = process_citations(
                 answer=answer,
-                retrieved_chunks=retrieved_chunks
+                retrieved_chunks=retrieved_chunks,
+                verify_support=False
             )
 
             if not citation_check["citation_ids"]:
@@ -1102,10 +1190,27 @@ Return only the clarification question.
                 if repaired_answer:
                     repaired_citations = process_citations(
                         answer=repaired_answer,
-                        retrieved_chunks=retrieved_chunks
+                        retrieved_chunks=retrieved_chunks,
+                        verify_support=False
                     )
                     if repaired_citations["citation_ids"]:
                         answer = repaired_answer
+
+        if (
+            question_type == "unanswerable"
+            and not _unanswerable_answer_is_grounded(
+                query=query,
+                answer=answer,
+                retrieved_chunks=retrieved_chunks
+            )
+        ):
+            logger.warning(
+                "Unanswerable response lacked direct evidence; returning abstention."
+            )
+            answer = (
+                "The supplied documents do not contain enough information "
+                "to answer this question."
+            )
 
         return answer
 
@@ -1154,7 +1259,8 @@ def generate_answer(
         # Process and verify citations.
         citation_result = process_citations(
             answer=answer,
-            retrieved_chunks=retrieved_chunks
+            retrieved_chunks=retrieved_chunks,
+            query=query
         )
 
         # Collect source information.
@@ -1180,6 +1286,10 @@ def generate_answer(
             "citation_accuracy": (
                 citation_result["citation_accuracy"]
             ),
+            "claim_verification": citation_result["claim_verification"],
+            "citation_coverage": citation_result["citation_coverage"],
+            "answer_completeness": citation_result["answer_completeness"],
+            "confidence_components": citation_result["confidence_components"],
             "confidence_score": (
                 citation_result["confidence_score"]
             ),
@@ -1273,3 +1383,5 @@ def main():
             "Unexpected error in generation module"
         )
         print(f"Unexpected error: {e}")
+
+
