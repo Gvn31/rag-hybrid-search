@@ -39,7 +39,7 @@ def infer_explicit_source_filter(query):
 
         source_types = {
             ".pdf": r"(?:pdf|portable document format)",
-            ".pptx": r"(?:pptx|powerpoint|slide deck)",
+            ".pptx": r"(?:pptx|powerpoint|slide deck|presentation|presentations|slides?)",
             ".docx": r"(?:docx|word document)",
             ".html": r"(?:html|web page)",
             ".md": r"(?:markdown|md file)",
@@ -48,9 +48,9 @@ def infer_explicit_source_filter(query):
         source_context = re.compile(
             r"\b(?:according to|in|from|within|described in|listed in)\s+"
             r"(?:the\s+)?(?P<type>pdf|portable document format|pptx|"
-            r"powerpoint|slide deck|docx|word document|html|web page|"
+            r"powerpoint|slide deck|presentations?|slides?|docx|word document|html|web page|"
             r"markdown|md file|txt file|plain text file)\b"
-            r"|\bthe\s+(?P<type2>pdf|pptx|powerpoint|docx|html|"
+            r"|\bthe\s+(?P<type2>pdf|pptx|powerpoint|presentations?|slides?|docx|html|"
             r"markdown)\s+(?:says?|states?|lists?|shows?|describes?)\b",
             flags=re.IGNORECASE
         )
@@ -405,7 +405,60 @@ def reciprocal_rank_fusion(
         raise RAGPipelineException(str(e)) from e
 
 
-# Execute the complete hybrid retrieval pipeline
+# Add a focused secondary query for scanned-page chunk checks.
+def build_retrieval_queries(query):
+    base_query = query.strip()
+    queries = [base_query]
+    lowered = base_query.casefold()
+    asks_about_ocr = bool(
+        re.search(r"\b(?:scanned|scan|ocr)\b", lowered)
+    )
+    asks_to_check_chunks = bool(
+        re.search(r"\b(?:check|verify|validate|inspect)\w*\b", lowered)
+        and re.search(r"\bchunks?\b", lowered)
+    )
+
+    if asks_about_ocr and asks_to_check_chunks:
+        queries.append(
+            "scanned-page OCR chunk quality checks missing content "
+            "OCR errors chunk-size validation"
+        )
+
+    return list(dict.fromkeys(queries))
+
+
+# Merge rankings from the original and expanded queries.
+def merge_query_results(result_lists, query_weights, top_k):
+    validate_retrieval_parameters(top_k)
+    if len(result_lists) != len(query_weights):
+        raise ValueError("Each query result list must have a query weight")
+
+    fused_results = {}
+    for results, weight in zip(result_lists, query_weights):
+        seen_ids = set()
+        for rank, result in enumerate(results, start=1):
+            chunk_id = result["id"]
+            if chunk_id in seen_ids:
+                continue
+            seen_ids.add(chunk_id)
+
+            if chunk_id not in fused_results:
+                fused_results[chunk_id] = dict(result)
+                fused_results[chunk_id]["rrf_score"] = 0.0
+
+            fused_results[chunk_id]["rrf_score"] += (
+                weight / (RRF_K + rank)
+            )
+
+    ranked_results = sorted(
+        fused_results.values(),
+        key=lambda result: result["rrf_score"],
+        reverse=True
+    )
+    return ranked_results[:top_k]
+
+
+# Execute the complete hybrid retrieval pipeline.
 def hybrid_retrieval(
     query,
     top_k=TOP_K,
@@ -419,58 +472,64 @@ def hybrid_retrieval(
             raise ValueError("Search query cannot be empty")
 
         validate_retrieval_parameters(top_k)
-
-        validate_rrf_weights(
-            dense_weight,
-            sparse_weight
-        )
+        validate_rrf_weights(dense_weight, sparse_weight)
 
         if user_id is not None:
             if not isinstance(user_id, str) or not user_id.strip():
-                raise ValueError(
-                    "user_id must be a non-empty string"
-                )
+                raise ValueError("user_id must be a non-empty string")
 
         logger.info("Starting hybrid retrieval")
-
         inferred_filter = infer_explicit_source_filter(query)
         effective_where = combine_where_filters(where, inferred_filter)
         if inferred_filter:
             logger.info("Applying explicit source filter: {}", inferred_filter)
 
-        # Step 1: Generate the query embedding
-        query_embedding = generate_query_embedding(query)
+        query_variants = build_retrieval_queries(query)
+        query_results = []
 
-        # Step 2: Perform dense vector retrieval
-        dense_results = dense_retrieval(
-            query_embedding=query_embedding,
-            top_k=top_k,
-            user_id=user_id,
-            where=effective_where
-        )
+        for query_index, search_query in enumerate(query_variants):
+            query_embedding = generate_query_embedding(search_query)
+            dense_results = dense_retrieval(
+                query_embedding=query_embedding,
+                top_k=top_k,
+                user_id=user_id,
+                where=effective_where
+            )
+            sparse_results = sparse_retrieval(
+                query=search_query,
+                top_k=top_k,
+                user_id=user_id,
+                where=effective_where
+            )
+            fused_results = reciprocal_rank_fusion(
+                dense_results=dense_results,
+                sparse_results=sparse_results,
+                top_k=top_k,
+                dense_weight=dense_weight,
+                sparse_weight=sparse_weight
+            )
+            query_results.append(fused_results)
 
-        # Step 3: Perform sparse keyword retrieval
-        sparse_results = sparse_retrieval(
-            query=query,
-            top_k=top_k,
-            user_id=user_id,
-            where=effective_where
-        )
+            logger.info(
+                "Hybrid query variant {}/{} returned {} candidates",
+                query_index + 1,
+                len(query_variants),
+                len(fused_results)
+            )
 
-        # Step 4: Combine both rankings using weighted RRF
-        final_results = reciprocal_rank_fusion(
-            dense_results=dense_results,
-            sparse_results=sparse_results,
-            top_k=top_k,
-            dense_weight=dense_weight,
-            sparse_weight=sparse_weight
-        )
+        if len(query_results) == 1:
+            final_results = query_results[0]
+        else:
+            final_results = merge_query_results(
+                result_lists=query_results,
+                query_weights=[0.65, 0.35],
+                top_k=top_k
+            )
 
         logger.info(
-            f"Hybrid retrieval completed with "
-            f"{len(final_results)} results"
+            "Hybrid retrieval completed with {} results",
+            len(final_results)
         )
-
         return final_results
 
     except RAGPipelineException:
@@ -603,6 +662,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 
 
 
