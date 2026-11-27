@@ -28,6 +28,90 @@ elif shutil.which("tesseract"):
     pytesseract.pytesseract.tesseract_cmd = shutil.which("tesseract")
 
 
+def extract_ocr_text(image):
+    candidates = []
+
+    for page_segmentation_mode in (3, 6, 11):
+        try:
+            data = pytesseract.image_to_data(
+                image,
+                config=f"--psm {page_segmentation_mode}",
+                output_type=pytesseract.Output.DICT
+            )
+
+            lines = {}
+            words = []
+
+            for index, raw_word in enumerate(data.get("text", [])):
+                word = raw_word.strip()
+                try:
+                    confidence = float(data["conf"][index])
+                except (KeyError, IndexError, TypeError, ValueError):
+                    confidence = -1
+
+                if not word or confidence < 15:
+                    continue
+
+                key = (
+                    data["block_num"][index],
+                    data["par_num"][index],
+                    data["line_num"][index]
+                )
+                position = (
+                    data["top"][index],
+                    data["left"][index],
+                    word,
+                    confidence
+                )
+                lines.setdefault(key, []).append(position)
+                words.append((word, confidence))
+
+            ordered_lines = sorted(
+                lines.values(),
+                key=lambda line: (
+                    min(item[0] for item in line),
+                    min(item[1] for item in line)
+                )
+            )
+            text = "\n".join(
+                " ".join(item[2] for item in sorted(line, key=lambda item: item[1]))
+                for line in ordered_lines
+            ).strip()
+
+            if text:
+                average_confidence = sum(
+                    confidence for _, confidence in words
+                ) / len(words)
+                score = average_confidence + min(len(words), 100) * 0.05
+                candidates.append((score, text, page_segmentation_mode))
+
+        except Exception as ocr_error:
+            logger.warning(
+                "OCR layout mode {} failed: {}",
+                page_segmentation_mode,
+                ocr_error
+            )
+
+    if candidates:
+        score, text, selected_mode = max(candidates, key=lambda item: item[0])
+        logger.info(
+            "Selected OCR layout mode {} with score {:.1f}",
+            selected_mode,
+            score
+        )
+        return text
+
+    for page_segmentation_mode in (3, 11):
+        text = pytesseract.image_to_string(
+            image,
+            config=f"--psm {page_segmentation_mode}"
+        ).strip()
+        if text:
+            return text
+
+    return ""
+
+
 # Validate document existence, format and file size
 def validate_document(file_path: str) -> Path:
     try:
@@ -99,10 +183,7 @@ def extract_text(file_path: str) -> list[dict]:
                                 BytesIO(pixmap.tobytes("png"))
                             )
 
-                            ocr_text = pytesseract.image_to_string(
-                                image,
-                                config="--psm 11"
-                            ).strip()
+                            ocr_text = extract_ocr_text(image)
 
                             if len(ocr_text) > len(text):
                                 text = ocr_text
@@ -315,4 +396,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
 
