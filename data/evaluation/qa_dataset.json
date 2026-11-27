@@ -87,7 +87,9 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "1,000 vectors per request.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "An upsert request can contain up to 1,000 vectors."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "b985967ead6bfd7dfe0f3e87427d7bd523c3d4c878f3f25604b96749ed208500"
@@ -155,7 +157,9 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "The default is 10 and the maximum is 100.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "The query top_k default is 10, with a maximum of 100."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "0947d867a63db97f1c12f6792540291d359f0e83d37a6a1ad7d5482f492f2213"
@@ -218,7 +222,10 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "Rust; it merges concurrent edits with sub-50ms latency.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "The service uses Rust and targets under 50 ms while merging concurrent edits.",
+        "The Rust CRDT synchronization service merges concurrent edits with a target latency under 50 ms."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
@@ -239,7 +246,9 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "A PostgreSQL cluster with row-level security.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "CloudNote Pro stores metadata and permissions in a PostgreSQL cluster protected by row-level security."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "57695f621c80751ac5af20009d108e7d6d459255730caa65ad6a7b697602a5a2"
@@ -281,7 +290,9 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "One user deletes a parent folder while another offline user adds new documents inside it.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "A structural conflict occurs if one user deletes a parent folder while another offline user adds documents inside it."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6"
@@ -302,7 +313,9 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "Open the Conflict Resolution Drawer and compare the Local Version and Cloud Version timestamps.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "Open the Conflict Resolution Drawer, then compare the Local Version and Cloud Version timestamps."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "90a467c3af470a5cd80dd807abe3e7465f3f9c4d3575fcb5247c18a847493af6"
@@ -344,7 +357,9 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "Up to 3 members.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "The Starter plan supports up to 3 members."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
@@ -365,7 +380,9 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "$12 per user per month and 1,000 requests per minute.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "The Team plan costs $12 per user per month and allows 1,000 REST API requests per minute."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb"
@@ -449,7 +466,9 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "Pine & Birch, a technology consulting firm in Toronto.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "Pine & Birch, a Toronto-based technology consulting firm, published the document."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "5ff22e45ee4aa5d012544ac67f9ec5de8a77eaa19e3a2a859da0b903230417eb",
@@ -480,7 +499,10 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "The content is deterministic and identical downloads are byte-for-byte identical.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "Repeated downloads are deterministic: the same file is byte-for-byte identical.",
+        "Repeated downloads are deterministic: each download is byte-for-byte identical, supporting reliable fixtures and checksums."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2",
@@ -511,7 +533,9 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "No; it states that it has no macros, scripts, or tracking.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "No—the DOCX contains no macros, scripts, or tracking."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "077774109238954f63c889fc825b0d8ed3fcd08ab193dd443e4811707398f5a2",
@@ -635,17 +659,19 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "It maintains meaning and context and supports better chunking, retrieval, and accurate answers.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "Preserving the original layout and hierarchy retains meaning and context and supports better chunking, retrieval, and accurate answers."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
-        "cd2c276b4054a1c9116d00dcec3f34e90e44ee46b6b7c19bcbe7418988c6e657"
+        "dd9caa72ab278d52c4705c77b2af338d76982d9728784fc0d78d9a8549c3cce0"
       ],
       "relevant_sources": [
         "sample.pdf"
       ],
       "source_chunks": [
         {
-          "chunk_id": "cd2c276b4054a1c9116d00dcec3f34e90e44ee46b6b7c19bcbe7418988c6e657",
+          "chunk_id": "dd9caa72ab278d52c4705c77b2af338d76982d9728784fc0d78d9a8549c3cce0",
           "source": "sample.pdf"
         }
       ]
@@ -656,17 +682,19 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "Improved retrieval relevance, reduced noise, and better context understanding.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "Good chunking improves retrieval relevance, reduces noise, and improves the model’s understanding of context."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
-        "43162b8c9f7feaa0e83584fe19038b3796668d05ccfc1bf663f8a2a368b4f22d"
+        "ea9b75f8344ba3451e8ee6fb002e539d1ac369a9dd51e1ac483e64d6f9e2f8b1"
       ],
       "relevant_sources": [
         "sample.pdf"
       ],
       "source_chunks": [
         {
-          "chunk_id": "43162b8c9f7feaa0e83584fe19038b3796668d05ccfc1bf663f8a2a368b4f22d",
+          "chunk_id": "ea9b75f8344ba3451e8ee6fb002e539d1ac369a9dd51e1ac483e64d6f9e2f8b1",
           "source": "sample.pdf"
         }
       ]
@@ -680,19 +708,14 @@
       "acceptable_answers": [],
       "answerable": true,
       "relevant_chunk_ids": [
-        "43162b8c9f7feaa0e83584fe19038b3796668d05ccfc1bf663f8a2a368b4f22d",
-        "d5db11b35eb091fe9676c818bc6d4310d074061e4d8dca2cb4085c9fd24bd156"
+        "ea9b75f8344ba3451e8ee6fb002e539d1ac369a9dd51e1ac483e64d6f9e2f8b1"
       ],
       "relevant_sources": [
         "sample.pdf"
       ],
       "source_chunks": [
         {
-          "chunk_id": "43162b8c9f7feaa0e83584fe19038b3796668d05ccfc1bf663f8a2a368b4f22d",
-          "source": "sample.pdf"
-        },
-        {
-          "chunk_id": "d5db11b35eb091fe9676c818bc6d4310d074061e4d8dca2cb4085c9fd24bd156",
+          "chunk_id": "ea9b75f8344ba3451e8ee6fb002e539d1ac369a9dd51e1ac483e64d6f9e2f8b1",
           "source": "sample.pdf"
         }
       ]
@@ -706,14 +729,14 @@
       "acceptable_answers": [],
       "answerable": true,
       "relevant_chunk_ids": [
-        "664fe891aa9744592456e048c0613b512344d6d238b9de0b1586de8e11688dc7"
+        "031a72601125078c1658fb5613017d4dd4a1e4e86a86278a22e1cbffb38ee089"
       ],
       "relevant_sources": [
         "sample.pdf"
       ],
       "source_chunks": [
         {
-          "chunk_id": "664fe891aa9744592456e048c0613b512344d6d238b9de0b1586de8e11688dc7",
+          "chunk_id": "031a72601125078c1658fb5613017d4dd4a1e4e86a86278a22e1cbffb38ee089",
           "source": "sample.pdf"
         }
       ]
@@ -727,14 +750,19 @@
       "acceptable_answers": [],
       "answerable": true,
       "relevant_chunk_ids": [
-        "6f2b40554219ce09c7477b1d3f099150675ad237e4c073766fe208257ddeaa64"
+        "66028f35c1b21d948b4c4e32f536b828d70077029b8ea7a5b8a3f9a67682e5ce",
+        "3b468d866dfecd35cd5d9a450bbcea97c01b6bdf2af67317d79ad52b52267eb0"
       ],
       "relevant_sources": [
         "sample.pdf"
       ],
       "source_chunks": [
         {
-          "chunk_id": "6f2b40554219ce09c7477b1d3f099150675ad237e4c073766fe208257ddeaa64",
+          "chunk_id": "66028f35c1b21d948b4c4e32f536b828d70077029b8ea7a5b8a3f9a67682e5ce",
+          "source": "sample.pdf"
+        },
+        {
+          "chunk_id": "3b468d866dfecd35cd5d9a450bbcea97c01b6bdf2af67317d79ad52b52267eb0",
           "source": "sample.pdf"
         }
       ]
@@ -748,14 +776,14 @@
       "acceptable_answers": [],
       "answerable": true,
       "relevant_chunk_ids": [
-        "700007f10c11b8760af1f0b4c77cc3aeec113680ac88a710a70492459ac3626a"
+        "9b4ef170f34ce7764903bb6e8c8b287c8c8883e0f23ad111f3fd0296f5331d0d"
       ],
       "relevant_sources": [
         "sample.pdf"
       ],
       "source_chunks": [
         {
-          "chunk_id": "700007f10c11b8760af1f0b4c77cc3aeec113680ac88a710a70492459ac3626a",
+          "chunk_id": "9b4ef170f34ce7764903bb6e8c8b287c8c8883e0f23ad111f3fd0296f5331d0d",
           "source": "sample.pdf"
         }
       ]
@@ -787,7 +815,10 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "Select Admin, choose the account and property, then select Tracking Info > Tracking Code.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "Admin > Account > select the account > Properties > select the property > Tracking Info > Tracking Code.",
+        "Open Admin, select the account and its property, then go to Tracking Info > Tracking Code."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "39fe8c137aa4a4b72eae163b66b7add6022c531735846e5b7a5dc049fcfb272f"
@@ -808,7 +839,9 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "Reporting > Behavior > Events > Overview.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "In Reporting, choose Behavior > Events > Overview."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "3a8bcc783a5d955c530300945841360d673fa715e4b8bbe6a33677641dbf8fbe"
@@ -829,7 +862,9 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "Reporting > Real-time > Events.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "In Reporting, choose Real-time > Events."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "7436aa8e5326e9aaeafbdc754e156c05951253b5aed569e5d8faaf6a0b4dd054"
@@ -850,7 +885,9 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "Reporting > Audience > Overview.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "In Reporting, choose Audience > Overview."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "d993a8463d611b74917c01179d44aff65a6b6ae00338935b0d0487f6ea899136"
@@ -955,7 +992,9 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "Support revoked active session tokens and enforced a password reset; the customer should set a unique passphrase, enable TOTP, and check their primary email password.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "Support revoked active sessions and enforced a password reset; the customer should use a unique passphrase, enable TOTP, and secure the primary email account."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "53c813519eb7556ef1e5dcec515520ccd15c44728d6d6c053ebe2bd34f976511"
@@ -976,7 +1015,10 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "A memory-allocation bug rendering high-resolution embedded tables caused it; support advised exporting through the web app.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "A memory-allocation bug while rendering high-resolution embedded tables caused the crash; support advised exporting through the web app.",
+        "A memory-allocation bug while rendering high-resolution embedded tables caused the export crash; the workaround is to export through the web app."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "5b40bf6c02df6dad6ed513f657cba0d23e1737ae25fdffc48cb066d7be1cf1cd"
@@ -997,7 +1039,9 @@
       "category": "direct",
       "question_type": "direct",
       "expected_answer": "/v2/notes/export has a 60-requests-per-minute burst limit despite the 1,000 workspace-wide limit. Use exponential backoff or batch up to 25 note IDs per request.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "/v2/notes/export has a 60-requests-per-minute burst limit due to payload size; use exponential backoff or batch up to 25 note IDs per request."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "71d2f655dbd93fc10f64fa083c12389f8f3c83e1ac8af080520f114a6a6f8b59"
@@ -1018,7 +1062,9 @@
       "category": "multi_hop",
       "question_type": "multi_hop",
       "expected_answer": "The Team Plan limit is 1,000 per minute overall, but /v2/notes/export has a separate 60-per-minute burst limit. Use exponential backoff or batch up to 25 note IDs.",
-      "acceptable_answers": [],
+      "acceptable_answers": [
+        "/v2/notes/export has a 60-requests-per-minute burst limit despite the workspace limit; use exponential backoff or batch up to 25 note IDs."
+      ],
       "answerable": true,
       "relevant_chunk_ids": [
         "a354cf44c9428c38b0eaf8d6d4a382e4e2267d0bde1bd52e91c4e7f719dc92fb",
@@ -1101,24 +1147,24 @@
       "acceptable_answers": [],
       "answerable": true,
       "relevant_chunk_ids": [
-        "3ee80240a0f30a1b277d6f70da9966b7f6a06997df2ac0d40a30a0dbdbe6ca15",
-        "cd2c276b4054a1c9116d00dcec3f34e90e44ee46b6b7c19bcbe7418988c6e657",
-        "6f2b40554219ce09c7477b1d3f099150675ad237e4c073766fe208257ddeaa64"
+        "8fa502c49db12ade0b9c4c6b4da783d53d4cb03ff780bc4df60bc96b154b1868",
+        "dd9caa72ab278d52c4705c77b2af338d76982d9728784fc0d78d9a8549c3cce0",
+        "66028f35c1b21d948b4c4e32f536b828d70077029b8ea7a5b8a3f9a67682e5ce"
       ],
       "relevant_sources": [
         "sample.pdf"
       ],
       "source_chunks": [
         {
-          "chunk_id": "3ee80240a0f30a1b277d6f70da9966b7f6a06997df2ac0d40a30a0dbdbe6ca15",
+          "chunk_id": "8fa502c49db12ade0b9c4c6b4da783d53d4cb03ff780bc4df60bc96b154b1868",
           "source": "sample.pdf"
         },
         {
-          "chunk_id": "cd2c276b4054a1c9116d00dcec3f34e90e44ee46b6b7c19bcbe7418988c6e657",
+          "chunk_id": "dd9caa72ab278d52c4705c77b2af338d76982d9728784fc0d78d9a8549c3cce0",
           "source": "sample.pdf"
         },
         {
-          "chunk_id": "6f2b40554219ce09c7477b1d3f099150675ad237e4c073766fe208257ddeaa64",
+          "chunk_id": "66028f35c1b21d948b4c4e32f536b828d70077029b8ea7a5b8a3f9a67682e5ce",
           "source": "sample.pdf"
         }
       ]
