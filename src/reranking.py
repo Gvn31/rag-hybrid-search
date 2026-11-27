@@ -1,4 +1,5 @@
 import sys
+import re
 
 import numpy as np
 from sentence_transformers import CrossEncoder
@@ -109,58 +110,82 @@ def validate_input(query, retrieved_chunks, top_k):
         raise RAGPipelineException(str(e))
 
 
-# Calculate relevance scores for query-document pairs
-def calculate_relevance_scores(query, retrieved_chunks):
+# Build a focused query for scanned-page quality checks.
+def _build_rerank_queries(query):
+    queries = [query.strip()]
+    lowered = query.casefold()
+    asks_about_scanned_pages = bool(
+        re.search(r"\b(?:scanned|scan|ocr)\b", lowered)
+    )
+    asks_to_check_chunks = bool(
+        re.search(r"\b(?:check|verify|validate|inspect)\w*\b", lowered)
+        and re.search(r"\bchunks?\b", lowered)
+    )
 
+    if asks_about_scanned_pages and asks_to_check_chunks:
+        queries.append(
+            "What quality checks should be done on extracted chunks? "
+            "Check for missing content, OCR errors, and chunk-size validation."
+        )
+
+    return queries
+
+
+# Score each candidate against every query variant.
+def _calculate_query_score_matrix(query_variants, retrieved_chunks):
+    if not retrieved_chunks:
+        return np.empty((len(query_variants), 0), dtype=np.float64)
+
+    model = get_reranker_model()
+    sentence_pairs = [
+        (query_variant.strip(), chunk["text"])
+        for query_variant in query_variants
+        for chunk in retrieved_chunks
+    ]
+    scores = model.predict(
+        sentence_pairs,
+        batch_size=16,
+        show_progress_bar=False
+    )
+    scores = np.asarray(scores, dtype=np.float64).reshape(
+        len(query_variants), len(retrieved_chunks)
+    )
+
+    if not np.all(np.isfinite(scores)):
+        raise ValueError("Cross-Encoder generated invalid relevance scores")
+
+    return scores
+
+
+# Calculate relevance scores for query-document pairs.
+def calculate_relevance_scores(query, retrieved_chunks):
     try:
         if not retrieved_chunks:
             return []
 
-        # Load the Cross-Encoder model
-        model = get_reranker_model()
-
-        # Create query-document pairs
-        sentence_pairs = [
-            (query.strip(), chunk["text"])
-            for chunk in retrieved_chunks
-        ]
-
-        # Predict relevance scores
-        scores = model.predict(
-            sentence_pairs,
-            batch_size=16,
-            show_progress_bar=False
+        query_variants = _build_rerank_queries(query)
+        scores = _calculate_query_score_matrix(
+            query_variants,
+            retrieved_chunks
         )
-
-        # Convert model output into a consistent array
-        scores = np.asarray(scores, dtype=np.float64).reshape(-1)
-
-        # Validate score count
-        if len(scores) != len(retrieved_chunks):
-            raise ValueError(
-                "Relevance score count does not match chunk count"
-            )
-
-        # Validate score values
-        if not np.all(np.isfinite(scores)):
-            raise ValueError(
-                "Cross-Encoder generated invalid relevance scores"
-            )
+        if len(query_variants) == 1:
+            combined_scores = scores[0]
+        else:
+            combined_scores = 0.6 * scores[0] + 0.4 * scores[1]
 
         logger.info(
-            f"Calculated relevance scores for {len(scores)} chunks"
+            "Calculated relevance scores for {} chunks using {} query variant(s)",
+            len(retrieved_chunks),
+            len(query_variants)
         )
-
-        return scores.tolist()
+        return combined_scores.tolist()
 
     except RAGPipelineException:
         raise
 
     except Exception as e:
-        logger.exception(
-            "Failed to calculate relevance scores"
-        )
-        raise RAGPipelineException(str(e))
+        logger.exception("Failed to calculate relevance scores")
+        raise RAGPipelineException(str(e)) from e
 
 
 # Rerank retrieved chunks using Cross-Encoder relevance scores
@@ -169,41 +194,38 @@ def rerank_results(
     retrieved_chunks,
     top_k=RERANK_TOP_K
 ):
-
     try:
-        # Validate input
-        validate_input(
-            query,
-            retrieved_chunks,
-            top_k
-        )
-
+        validate_input(query, retrieved_chunks, top_k)
         if not retrieved_chunks:
-            logger.warning(
-                "No retrieved chunks available for reranking"
-            )
+            logger.warning("No retrieved chunks available for reranking")
             return []
 
-        # Calculate relevance scores
-        relevance_scores = calculate_relevance_scores(
-            query,
+        query_variants = _build_rerank_queries(query)
+        query_score_matrix = _calculate_query_score_matrix(
+            query_variants,
             retrieved_chunks
         )
+        if len(query_variants) == 1:
+            relevance_scores = query_score_matrix[0]
+        else:
+            relevance_scores = (
+                0.6 * query_score_matrix[0]
+                + 0.4 * query_score_matrix[1]
+            )
 
-        # Keep both the cross-encoder and hybrid search signals
         reranked_chunks = []
-
-        for chunk, score in zip(
-            retrieved_chunks,
-            relevance_scores
+        expanded_scores = {}
+        for index, (chunk, score) in enumerate(
+            zip(retrieved_chunks, relevance_scores)
         ):
             reranked_chunk = chunk.copy()
-
             reranked_chunk["rerank_score"] = float(score)
-
             reranked_chunks.append(reranked_chunk)
+            if len(query_variants) > 1:
+                expanded_scores[chunk["id"]] = float(
+                    query_score_matrix[1][index]
+                )
 
-        # Rank candidates by cross-encoder score
         cross_encoder_order = sorted(
             reranked_chunks,
             key=lambda chunk: chunk["rerank_score"],
@@ -213,8 +235,6 @@ def rerank_results(
             chunk["id"]: rank
             for rank, chunk in enumerate(cross_encoder_order, start=1)
         }
-
-        # Rank candidates by their original hybrid score
         hybrid_order = sorted(
             reranked_chunks,
             key=lambda chunk: chunk.get("rrf_score", 0.0),
@@ -225,40 +245,47 @@ def rerank_results(
             for rank, chunk in enumerate(hybrid_order, start=1)
         }
 
-        # Fuse the two rankings so exact sparse matches are not discarded
         for chunk in reranked_chunks:
             cross_rank = cross_encoder_ranks[chunk["id"]]
             hybrid_rank = hybrid_ranks[chunk["id"]]
             chunk["rerank_fused_score"] = (
-                CROSS_ENCODER_RANK_WEIGHT
-                / (RERANK_RRF_K + cross_rank)
-                + HYBRID_RANK_WEIGHT
-                / (RERANK_RRF_K + hybrid_rank)
+                CROSS_ENCODER_RANK_WEIGHT / (RERANK_RRF_K + cross_rank)
+                + HYBRID_RANK_WEIGHT / (RERANK_RRF_K + hybrid_rank)
             )
 
         reranked_chunks.sort(
             key=lambda chunk: chunk["rerank_fused_score"],
             reverse=True
         )
-
-        # Select final top-ranked chunks
         final_results = reranked_chunks[:top_k]
 
-        logger.info(
-            f"Reranking completed: "
-            f"{len(final_results)} final chunks selected"
-        )
+        # Keep the strongest secondary-query match in the final context.
+        if len(query_variants) > 1 and top_k > 1 and final_results:
+            best_expanded_match = max(
+                reranked_chunks,
+                key=lambda chunk: expanded_scores.get(chunk["id"], float("-inf"))
+            )
+            if best_expanded_match["id"] not in {
+                chunk["id"] for chunk in final_results
+            }:
+                final_results[-1] = best_expanded_match
+                final_results.sort(
+                    key=lambda chunk: chunk["rerank_fused_score"],
+                    reverse=True
+                )
 
+        logger.info(
+            "Reranking completed: {} final chunks selected",
+            len(final_results)
+        )
         return final_results
 
     except RAGPipelineException:
         raise
 
     except Exception as e:
-        logger.exception(
-            "Cross-Encoder reranking failed"
-        )
-        raise RAGPipelineException(str(e))
+        logger.exception("Cross-Encoder reranking failed")
+        raise RAGPipelineException(str(e)) from e
 
 
 # Execute hybrid retrieval followed by Cross-Encoder reranking
@@ -427,5 +454,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
 
 
