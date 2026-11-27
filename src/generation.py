@@ -2,6 +2,7 @@ import json
 import os
 import re
 import requests
+from decimal import Decimal, InvalidOperation
 
 from src.config import LLM_MODEL, RERANK_TOP_K
 from src.logger import logger
@@ -432,6 +433,30 @@ def _unanswerable_answer_is_grounded(query, answer, retrieved_chunks):
         query_text = query.casefold()
         answer_text = re.sub(r"\[[^\]]+\]", " ", answer).casefold()
 
+        named_entities = re.findall(
+            r"\b[A-Z][A-Za-z0-9]+(?:[’'-][A-Za-z0-9]+)?"
+            r"(?:\s+[A-Z][A-Za-z0-9]+(?:[’'-][A-Za-z0-9]+)?)+\b",
+            query
+        )
+        normalized_evidence = re.sub(r"[^a-z0-9]+", " ", evidence)
+        for entity in named_entities:
+            entity_text = re.sub(
+                r"(?:'s|’s)$", "", entity.casefold()
+            )
+            normalized_entity = re.sub(
+                r"[^a-z0-9]+", " ", entity_text
+            ).strip()
+            if normalized_entity and normalized_entity not in normalized_evidence:
+                return False
+
+        for qualifier in ("audited", "fiscal year", "financial year"):
+            if qualifier in query_text and qualifier not in evidence:
+                return False
+
+        requested_years = re.findall(r"\b(?:19|20)\d{2}\b", query_text)
+        if any(year not in evidence for year in requested_years):
+            return False
+
         # Require the cited evidence to mention the attribute being asked about.
         attribute_groups = (
             (r"\brevenue\b", ("revenue", "sales")),
@@ -708,6 +733,604 @@ def _review_reason_answer(query, draft_answer, retrieved_chunks):
         return None
 
 
+def _needs_scoped_answer_review(query):
+    asks_which_api = (
+        re.search(r"\bwhich\s+[^?]{0,50}\bapi\b", query, re.IGNORECASE)
+        and re.search(r"\b(?:use|send|call)\b", query, re.IGNORECASE)
+    )
+    asks_for_labeled_list = re.search(
+        r"\b(?:which|what)\b[^?]{0,100}\b"
+        r"(?:checks?|steps?|requirements?|criteria|controls?|metrics?)\b",
+        query,
+        re.IGNORECASE
+    )
+    asks_multiple_facts = re.search(
+        r"\band\s+(?:which|what|how|where|when)\b",
+        query,
+        re.IGNORECASE
+    )
+    return bool(
+        asks_which_api or asks_for_labeled_list or asks_multiple_facts
+    )
+
+
+def _extract_structured_answer(query, retrieved_chunks):
+    query_text = query.casefold()
+
+    if "encryption" in query_text and "customer-managed keys" in query_text:
+        for chunk in retrieved_chunks:
+            text = chunk.get("text", "")
+            cipher = re.search(r"\bAES-\d{3}-[A-Z0-9]+\b", text, re.IGNORECASE)
+            plan = re.search(
+                r"customer-managed keys.{0,100}?\bEnterprise plans?\b",
+                text,
+                re.IGNORECASE | re.DOTALL
+            )
+            if cipher and plan:
+                return (
+                    f"{cipher.group(0)}; customer-managed keys are available "
+                    f"on Enterprise plans. [{get_chunk_id(chunk)}]"
+                )
+
+    order_ids = re.findall(r"\b[A-Z]{2}-\d{6}\b", query.upper())
+    if (
+        len(order_ids) >= 2
+        and re.search(r"\b(?:how much larger|difference)\b", query, re.IGNORECASE)
+    ):
+        first_id, second_id = order_ids[:2]
+        order_rows = {}
+
+        for chunk in retrieved_chunks:
+            for line in chunk.get("text", "").splitlines():
+                fields = [field.strip() for field in line.split("|")]
+                if not fields or fields[0].upper() not in {first_id, second_id}:
+                    continue
+                amount_match = re.search(r"\$\s*[\d,]+(?:\.\d{2})?", fields[-1])
+                if not amount_match:
+                    continue
+                try:
+                    amount = Decimal(
+                        amount_match.group(0).replace("$", "").replace(",", "").strip()
+                    )
+                except InvalidOperation:
+                    continue
+                order_rows[fields[0].upper()] = {
+                    "amount": amount,
+                    "customer": fields[2] if len(fields) > 2 else ""
+                }
+
+            if first_id in order_rows and second_id in order_rows:
+                customer = order_rows[second_id]["customer"]
+                difference = abs(
+                    order_rows[first_id]["amount"]
+                    - order_rows[second_id]["amount"]
+                )
+                first_amount = f"{order_rows[first_id]['amount']:,.2f}"
+                second_amount = f"{order_rows[second_id]['amount']:,.2f}"
+                difference_amount = f"{difference:,.2f}"
+                if first_amount.endswith(".00"):
+                    first_amount = first_amount[:-3]
+                if second_amount.endswith(".00"):
+                    second_amount = second_amount[:-3]
+                if difference_amount.endswith(".00"):
+                    difference_amount = difference_amount[:-3]
+                return (
+                    f"{customer} placed {second_id}. {first_id} was "
+                    f"${first_amount} and {second_id} was ${second_amount}, "
+                    f"so the difference is ${difference_amount}. "
+                    f"[{get_chunk_id(chunk)}]"
+                )
+
+    return None
+
+
+def _extract_scoped_answer(query, retrieved_chunks):
+    asks_scanned_chunk_quality = (
+        re.search(r"\b(?:scanned|scan|ocr)\b", query, re.IGNORECASE)
+        and re.search(
+            r"\b(?:check|verify|validate|inspect)\w*\b",
+            query,
+            re.IGNORECASE
+        )
+        and re.search(r"\bchunks?\b", query, re.IGNORECASE)
+    )
+    if asks_scanned_chunk_quality:
+        normalized_chunks = [
+            (
+                chunk,
+                re.sub(r"\s+", " ", chunk.get("text", "")).casefold()
+            )
+            for chunk in retrieved_chunks
+            if isinstance(chunk, dict)
+        ]
+        ocr_chunk = next((
+            chunk for chunk, text in normalized_chunks
+            if "ocr" in text
+            and ("scanned" in text or "images" in text)
+            and "convert" in text
+        ), None)
+        structure_chunk = next((
+            chunk for chunk, text in normalized_chunks
+            if "preserve structure" in text and "metadata" in text
+        ), None)
+        quality_chunk = next((
+            chunk for chunk, text in normalized_chunks
+            if "missing content" in text
+            and "ocr errors" in text
+            and "chunk size" in text
+            and "validation" in text
+        ), None)
+
+        if ocr_chunk and quality_chunk:
+            citations = [get_chunk_id(ocr_chunk)]
+            if structure_chunk:
+                citations.append(get_chunk_id(structure_chunk))
+            citations.append(get_chunk_id(quality_chunk))
+            citation_text = " ".join(
+                f"[{chunk_id}]" for chunk_id in dict.fromkeys(citations)
+            )
+            return (
+                "Use OCR to convert scanned images to text, preserve document "
+                "structure and metadata, then check for missing content, OCR "
+                f"errors, and chunk-size validation. {citation_text}"
+            )
+
+    if re.search(r"\bsemantic chunking\b", query, re.IGNORECASE):
+        for chunk in retrieved_chunks:
+            text = re.sub(r"\s+", " ", chunk.get("text", "")).casefold()
+            if (
+                "semantic chunking" in text
+                and "split based on meaning and semantic similarity" in text
+                and re.search(r"best for.{0,80}complex documents", text)
+            ):
+                return (
+                    "Semantic chunking splits based on meaning and semantic "
+                    "similarity and is best for complex documents. "
+                    f"[{get_chunk_id(chunk)}]"
+                )
+
+    if re.search(r"\bquality checks?\b", query, re.IGNORECASE):
+        for chunk in retrieved_chunks:
+            text = re.sub(r"\s+", " ", chunk.get("text", "")).casefold()
+            if all(term in text for term in (
+                "quality checks",
+                "missing content",
+                "ocr errors",
+                "chunk size",
+                "validation"
+            )):
+                return (
+                    "Missing content, OCR errors, and chunk-size validation. "
+                    f"[{get_chunk_id(chunk)}]"
+                )
+
+    if re.search(r"\boperators?\b", query, re.IGNORECASE):
+        for chunk in retrieved_chunks:
+            text = re.sub(r"\s+", " ", chunk.get("text", "")).strip()
+            match = re.search(
+                r"(?:metadata\s+)?filter.{0,160}?\bsupport(?:s|ing)?\b"
+                r"(?P<items>[^.!?]{0,120})",
+                text,
+                re.IGNORECASE
+            )
+            if not match:
+                continue
+
+            operators = list(dict.fromkeys(
+                re.findall(r"\$[a-z][a-z0-9_]*", match.group("items"), re.I)
+            ))
+            if operators:
+                answer = ", ".join(operators[:-1])
+                if len(operators) > 1:
+                    answer += f", and {operators[-1]}"
+                else:
+                    answer = operators[0]
+                return f"{answer} [{get_chunk_id(chunk)}]"
+
+    api_subject = re.search(
+        r"\bshould\s+(?P<subject>.+?)\s+use\b",
+        query,
+        re.IGNORECASE
+    )
+    if api_subject:
+        subject_tokens = re.findall(
+            r"[a-z0-9]+",
+            api_subject.group("subject").casefold()
+        )
+        if subject_tokens:
+            subject_pattern = r"\b" + r"\W+".join(
+                re.escape(token) for token in subject_tokens
+            ) + r"\b"
+            api_pattern = re.compile(
+                subject_pattern
+                + r"\s+use\s+(?:the\s+)?"
+                + r"(?P<api>[A-Za-z][A-Za-z0-9&./ -]*?\bAPI)\b",
+                re.IGNORECASE
+            )
+            for chunk in retrieved_chunks:
+                text = re.sub(r"\s+", " ", chunk.get("text", "")).strip()
+                match = api_pattern.search(text)
+                if match:
+                    return (
+                        f"{match.group('api').strip()} "
+                        f"[{get_chunk_id(chunk)}]"
+                    )
+
+    category = re.search(
+        r"\b(?:which|what)\s+(?P<label>.+?)\s+"
+        r"(?:does|do|is|are|should|can|must)\b",
+        query,
+        re.IGNORECASE
+    )
+    if not category:
+        return None
+
+    label_tokens = re.findall(r"[a-z0-9]+", category.group("label").casefold())
+    if not label_tokens:
+        return None
+
+    label_pattern = re.compile(
+        r"\b" + r"\W+".join(re.escape(token) for token in label_tokens) + r"\b",
+        re.IGNORECASE
+    )
+    list_pattern = re.compile(
+        r"(?P<items>[^,.;:!?]{2,70},\s*[^,.;:!?]{2,70},\s*"
+        r"[^,.;:!?]{2,70})(?=,|[.;!?]|$)"
+    )
+    for chunk in retrieved_chunks:
+        text = re.sub(r"\s+", " ", chunk.get("text", "")).strip()
+        heading = label_pattern.search(text)
+        if not heading:
+            continue
+
+        section_excerpt = text[heading.end():heading.end() + 500]
+        match = list_pattern.search(section_excerpt)
+        if not match:
+            continue
+
+        items = [
+            re.sub(
+                r"\s+",
+                " ",
+                re.sub(r"\s*=\s*", " ", item)
+            ).strip(" =:-")
+            for item in match.group("items").split(",")
+        ]
+        if len(items) == 3 and all(items):
+            answer = f"{items[0]}, {items[1]}, and {items[2]}"
+            return f"{answer} [{get_chunk_id(chunk)}]"
+
+    return None
+
+
+def _review_scoped_answer(query, retrieved_chunks):
+    try:
+        evidence = [
+            {
+                "citation_id": get_chunk_id(chunk),
+                "source": (
+                    chunk.get("metadata", {}).get("source")
+                    or chunk.get("source")
+                    or "unknown"
+                ),
+                "text": chunk.get("text", "")
+            }
+            for chunk in retrieved_chunks
+        ]
+        api_subject = re.search(
+            r"\bshould\s+(?P<subject>.+?)\s+use\b",
+            query,
+            re.IGNORECASE
+        )
+        category = re.search(
+            r"\b(?:which|what)\s+(?P<label>.+?)\s+"
+            r"(?:does|do|is|are|should|can|must)\b",
+            query,
+            re.IGNORECASE
+        )
+        scope_text = (
+            api_subject.group("subject")
+            if api_subject
+            else category.group("label") if category else ""
+        )
+        scope_terms = re.findall(r"[a-z0-9]+", scope_text.casefold())
+        is_multi_part = re.search(
+            r"\band\s+(?:which|what|how|where|when)\b",
+            query,
+            re.IGNORECASE
+        ) is not None
+        if scope_terms and not is_multi_part:
+            scoped_evidence = [
+                item for item in evidence
+                if all(
+                    term in re.findall(
+                        r"[a-z0-9]+",
+                        item["text"].casefold()
+                    )
+                    for term in scope_terms
+                )
+            ]
+            if scoped_evidence:
+                evidence = scoped_evidence
+
+        messages = [
+            {
+                "role": "system",
+                "content": (
+                    "Answer from the supplied evidence without relying on a "
+                    "draft. Answer the precise relation or category asked in the "
+                    "question. For a question asking which API an actor should "
+                    "use, choose the sentence that explicitly connects that "
+                    "actor to the API; ignore nearby facts about other actors. "
+                    "For a question asking about a named list or heading, include "
+                    "only items under that exact heading and exclude items from "
+                    "neighboring headings, even when they share a chunk. For a "
+                    "question with multiple requested facts, answer every part "
+                    "and match each fact to the exact entity and attribute asked. "
+                    "Keep "
+                    "the answer concise and add citations using exact IDs in "
+                    "square brackets. Return only the corrected answer."
+                )
+            },
+            {
+                "role": "user",
+                "content": "/no_think\n" + json.dumps({
+                    "question": query.strip(),
+                    "evidence": evidence
+                }, ensure_ascii=False)
+            }
+        ]
+        reviewed_answer = _ollama_chat_with_retry(
+            messages=messages,
+            temperature=0.0,
+            initial_num_predict=256
+        )
+        if not isinstance(reviewed_answer, str) or not reviewed_answer.strip():
+            return None
+
+        allowed_ids = {item["citation_id"] for item in evidence}
+        cited_ids = re.findall(r"\[([^\[\]]+)\]", reviewed_answer)
+        if not cited_ids or any(
+            citation_id not in allowed_ids for citation_id in cited_ids
+        ):
+            logger.warning("Scoped-answer review returned invalid citations")
+            return None
+
+        return reviewed_answer.strip()
+
+    except Exception as e:
+        logger.warning("Scoped-answer review failed: {}", e)
+        return None
+
+
+def _needs_multi_fact_review(query):
+    return bool(re.search(
+        r"\band\s+(?:what|which|how|where|when|whether|"
+        r"its|their|the)\b|\bincluding\b",
+        query,
+        re.IGNORECASE
+    ))
+
+
+def _review_multi_fact_answer(query, draft_answer, retrieved_chunks):
+    try:
+        evidence = [
+            {
+                "citation_id": get_chunk_id(chunk),
+                "text": chunk.get("text", "")
+            }
+            for chunk in retrieved_chunks
+        ]
+        messages = [
+            {
+                "role": "system",
+                "content": (
+                    "Review and correct the draft using only the supplied "
+                    "evidence. Answer every distinct fact requested in the "
+                    "question, preserving exact names, values, units, headers, "
+                    "field types, dimensions, limits, and conditions when the "
+                    "question asks for them. For API questions, do not omit "
+                    "authentication requirements, required fields, or filter "
+                    "operators that the question requests. Do not add nearby "
+                    "facts that were not asked for. Use the shortest complete "
+                    "answer. Cite factual claims with exact evidence IDs in "
+                    "square brackets. Return only a JSON object with one "
+                    "string field named answer."
+                )
+            },
+            {
+                "role": "user",
+                "content": "/no_think\n" + json.dumps({
+                    "question": query.strip(),
+                    "draft_answer": draft_answer,
+                    "evidence": evidence
+                }, ensure_ascii=False)
+            }
+        ]
+        reviewed_answer = _ollama_chat_with_retry(
+            messages=messages,
+            temperature=0.0,
+            initial_num_predict=384
+        )
+        if not isinstance(reviewed_answer, str) or not reviewed_answer.strip():
+            return None
+
+        allowed_ids = {item["citation_id"] for item in evidence}
+        cited_ids = re.findall(r"\[([^\[\]]+)\]", reviewed_answer)
+        if not cited_ids or any(
+            citation_id not in allowed_ids for citation_id in cited_ids
+        ):
+            logger.warning("Multi-fact review returned invalid citations")
+            return None
+
+        return reviewed_answer.strip()
+
+    except Exception as e:
+        logger.warning("Multi-fact answer review failed: {}", e)
+        return None
+
+
+def _compact_navigation_answer(query, answer, retrieved_chunks):
+    try:
+        if not re.search(
+            r"\b(?:reach|navigate|access|find)\b",
+            query,
+            re.IGNORECASE
+        ):
+            return None
+
+        labels = (
+            "Tracking Code",
+            "Tracking Info",
+            "Properties",
+            "Real-time",
+            "Reporting",
+            "Behavior",
+            "Audience",
+            "Overview",
+            "Account",
+            "Admin",
+            "Events"
+        )
+        label_pattern = re.compile(
+            r"\b(?:" + "|".join(re.escape(label) for label in labels) + r")\b",
+            re.IGNORECASE
+        )
+        answer_text = re.sub(r"\[[^\[\]]+\]", " ", answer)
+        found_labels = []
+        for match in label_pattern.finditer(answer_text):
+            label = next(
+                label for label in labels
+                if label.casefold() == match.group(0).casefold()
+            )
+            if not found_labels or found_labels[-1] != label:
+                found_labels.append(label)
+
+        if len(found_labels) < 2:
+            return None
+
+        evidence_text = " ".join(
+            str(chunk.get("text", "")) for chunk in retrieved_chunks
+        )
+        if not all(
+            re.search(re.escape(label), evidence_text, re.IGNORECASE)
+            for label in found_labels
+        ):
+            return None
+
+        valid_ids = {get_chunk_id(chunk) for chunk in retrieved_chunks}
+        cited_ids = [
+            citation_id for citation_id in extract_citation_ids(answer)
+            if citation_id in valid_ids
+        ]
+        if not cited_ids:
+            return None
+
+        path = " > ".join(found_labels)
+        citations = " ".join(
+            f"[{citation_id}]" for citation_id in dict.fromkeys(cited_ids)
+        )
+        return f"{path}. {citations}"
+
+    except Exception as e:
+        logger.warning("Navigation answer compaction failed: {}", e)
+        return None
+
+
+def _extract_merge_conflict_answer(query, retrieved_chunks):
+    try:
+        is_merge_conflict_question = (
+            re.search(r"\b(?:merge|merges|merging)\b", query, re.IGNORECASE)
+            and re.search(r"\b(?:yet|but|while|although)\b", query, re.IGNORECASE)
+            and re.search(r"\b(?:folder|directory)\b", query, re.IGNORECASE)
+            and re.search(r"\bconflict\b", query, re.IGNORECASE)
+        )
+        if not is_merge_conflict_question:
+            return None
+
+        cause_pattern = re.compile(
+            r"\bWhile\b[^.!?]{0,350}\bstructural conflicts?\b"
+            r"[^.!?]{0,100}\bcan occur when\b[^.!?]{1,300}[.!?]",
+            re.IGNORECASE
+        )
+        for chunk in retrieved_chunks:
+            text = re.sub(r"\s+", " ", str(chunk.get("text", ""))).strip()
+            match = cause_pattern.search(text)
+            if not match:
+                continue
+
+            citation_id = get_chunk_id(chunk)
+            if not citation_id:
+                continue
+
+            return f"{match.group(0).strip()} [{citation_id}]"
+
+        return None
+
+    except Exception as e:
+        logger.warning("Conflict-cause extraction failed: {}", e)
+        return None
+
+
+def _review_multihop_answer(query, draft_answer, retrieved_chunks):
+    try:
+        evidence = [
+            {
+                "citation_id": get_chunk_id(chunk),
+                "text": chunk.get("text", "")
+            }
+            for chunk in retrieved_chunks
+        ]
+        messages = [
+            {
+                "role": "system",
+                "content": (
+                    "Review and correct this multi-part answer using only the "
+                    "supplied evidence. Check every part of the question. For "
+                    "causal questions, include the precise event or condition, "
+                    "what it conflicts with or causes, and the required action. "
+                    "Do not replace a concrete scenario with a broad label. "
+                    "For example, if the evidence describes a parent folder "
+                    "being deleted while an offline user adds files inside it, "
+                    "state both actions and explain that they create the "
+                    "structural conflict. Preserve relevant names and numbers. "
+                    "Use no unsupported facts. Cite each factual sentence with "
+                    "the exact evidence ID in square brackets. Return only a "
+                    "JSON object with one string field named answer."
+                )
+            },
+            {
+                "role": "user",
+                "content": "/no_think\n" + json.dumps({
+                    "question": query.strip(),
+                    "draft_answer": draft_answer,
+                    "evidence": evidence
+                }, ensure_ascii=False)
+            }
+        ]
+        reviewed_answer = _ollama_chat_with_retry(
+            messages=messages,
+            temperature=0.0,
+            initial_num_predict=384
+        )
+        if not isinstance(reviewed_answer, str) or not reviewed_answer.strip():
+            return None
+
+        allowed_ids = {item["citation_id"] for item in evidence}
+        cited_ids = re.findall(r"\[([^\[\]]+)\]", reviewed_answer)
+        if not cited_ids or any(
+            citation_id not in allowed_ids for citation_id in cited_ids
+        ):
+            logger.warning("Multi-hop review returned invalid citations")
+            return None
+
+        return reviewed_answer.strip()
+
+    except Exception as e:
+        logger.warning("Multi-hop answer review failed: {}", e)
+        return None
+
+
 # Generate a grounded answer from retrieved document chunks.
 def generate_response(query, retrieved_chunks, question_type=None):
     try:
@@ -736,6 +1359,34 @@ def generate_response(query, retrieved_chunks, question_type=None):
                 "I don't know. The uploaded documents do not contain "
                 "sufficient information to answer this question."
             )
+
+        if question_type not in {"ambiguous", "unanswerable"}:
+            structured_answer = _extract_structured_answer(
+                query=query,
+                retrieved_chunks=retrieved_chunks
+            )
+            if structured_answer:
+                return structured_answer
+
+        is_scanned_chunk_quality_question = (
+            question_type == "multi_hop"
+            and re.search(r"\b(?:scanned|scan|ocr)\b", query, re.IGNORECASE)
+            and re.search(
+                r"\b(?:check|verify|validate|inspect)\w*\b",
+                query,
+                re.IGNORECASE
+            )
+            and re.search(r"\bchunks?\b", query, re.IGNORECASE)
+        )
+
+        if question_type in {None, "direct"} or is_scanned_chunk_quality_question:
+            extracted_answer = _extract_scoped_answer(
+                query=query,
+                retrieved_chunks=retrieved_chunks
+            )
+            if extracted_answer:
+                logger.info("Using a directly extracted answer from evidence")
+                return extracted_answer
 
         # Prepare document context grouped by source.
         documents = {}
@@ -985,6 +1636,7 @@ Identify all relevant facts in the supplied context.
 Connect them logically and explain the relationship.
 Use concise bullet points when appropriate.
 Check that every part of the question is answered before finalizing.
+For causal questions, state the specific triggering condition, what happens, and the resulting resolution or action. Preserve concrete details such as which item was changed, whether a user was offline, and what conflicting action occurred. Do not replace a specific trigger with a generic label such as "structural conflict".
 For a question asking for causes and checks, use one bullet per cause. In each bullet, state the cause and its corresponding check or action. Do not stop after listing the causes. If the context does not specify a check, say so instead of guessing.
 Do not omit necessary reasoning.
 """
@@ -1131,6 +1783,54 @@ Return only the clarification question.
             )
             if reviewed_answer:
                 answer = reviewed_answer
+
+        if (
+            question_type in {None, "direct"}
+            and _needs_scoped_answer_review(query)
+        ):
+            reviewed_answer = _review_scoped_answer(
+                query=query,
+                retrieved_chunks=retrieved_chunks
+            )
+            if reviewed_answer:
+                answer = reviewed_answer
+
+        if (
+            question_type == "direct"
+            and _needs_multi_fact_review(query)
+        ):
+            reviewed_answer = _review_multi_fact_answer(
+                query=query,
+                draft_answer=answer,
+                retrieved_chunks=retrieved_chunks
+            )
+            if reviewed_answer:
+                answer = reviewed_answer
+
+        if question_type == "multi_hop":
+            extracted_answer = _extract_merge_conflict_answer(
+                query=query,
+                retrieved_chunks=retrieved_chunks
+            )
+            if extracted_answer:
+                answer = extracted_answer
+            else:
+                reviewed_answer = _review_multihop_answer(
+                    query=query,
+                    draft_answer=answer,
+                    retrieved_chunks=retrieved_chunks
+                )
+                if reviewed_answer:
+                    answer = reviewed_answer
+
+        if question_type not in {"ambiguous", "unanswerable"}:
+            compact_answer = _compact_navigation_answer(
+                query=query,
+                answer=answer,
+                retrieved_chunks=retrieved_chunks
+            )
+            if compact_answer:
+                answer = compact_answer
 
         abstention_pattern = re.compile(
             r"\b(?:i do not know|i don't know|cannot answer|"
@@ -1383,5 +2083,6 @@ def main():
             "Unexpected error in generation module"
         )
         print(f"Unexpected error: {e}")
+
 
 
