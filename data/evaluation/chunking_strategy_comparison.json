@@ -1,0 +1,42 @@
+{
+    "strategies": [
+        "fixed_size",
+        "recursive",
+        "semantic"
+    ],
+    "retrieval_comparison_method": "Source-level relevance is used because chunk IDs change by strategy.",
+    "reports": {
+        "fixed_size": "D:\\rag-hybrid-search\\data\\evaluation\\evaluation_report_fixed_size.json",
+        "recursive": "D:\\rag-hybrid-search\\data\\evaluation\\evaluation_report_recursive.json",
+        "semantic": "D:\\rag-hybrid-search\\data\\evaluation\\evaluation_report_semantic.json"
+    },
+    "metrics": {
+        "fixed_size": {
+            "answer_token_f1": 0.6676,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 0.9911,
+            "citation_accuracy": 0.9783,
+            "faithfulness_lexical_proxy": 0.8298,
+            "claim_citation_coverage": 0.881,
+            "answer_completeness": 0.74
+        },
+        "recursive": {
+            "answer_token_f1": 0.6582,
+            "source_recall_at_k": 1.0,
+            "source_mean_reciprocal_rank": 1.0,
+            "citation_accuracy": 1.0,
+            "faithfulness_lexical_proxy": 0.8327,
+            "claim_citation_coverage": 0.873,
+            "answer_completeness": 0.816
+        },
+        "semantic": {
+            "answer_token_f1": 0.4249,
+            "source_recall_at_k": 0.9732,
+            "source_mean_reciprocal_rank": 0.9688,
+            "citation_accuracy": 0.92,
+            "faithfulness_lexical_proxy": 0.6551,
+            "claim_citation_coverage": 0.9524,
+            "answer_completeness": 0.5818
+        }
+    }
+}
